@@ -268,8 +268,7 @@
 
 </div>
 
-<!-- INITIALISATION FIREBASE -->
-<script type="module">
+    // INITIALISATION FIREBASE AVEC SÉCURITÉ ANTI-CRASH
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
     import { getAuth } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
     import { getFirestore } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
@@ -283,9 +282,16 @@
       appId: "1:495681138016:web:9c10f0a169f1a807bd0205"
     };
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
+    let app, auth, db;
+    
+    try {
+        app = initializeApp(firebaseConfig);
+        auth = getAuth(app);
+        db = getFirestore(app);
+    } catch (error) {
+        console.error("Firebase bloqué, mais le jeu continue.");
+    }
+
 
     // --- BASE DE DONNÉES COMPLÈTE (22 Rôles) ---
     const rolesDB = [
