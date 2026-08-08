@@ -104,13 +104,13 @@
 <div id="app-container">
     
     <header id="main-header" style="display: none;">
-        <button class="back-btn" onclick="window.returnToMenu()">❮ Quitter</button>
+        <button class="back-btn" onclick="returnToMenu()">❮ Quitter</button>
         <span id="header-turn" style="font-weight:700; font-size:1.1rem; color: #b794f4;"></span>
         <div style="font-weight: 600; background: rgba(183,148,244,0.2); padding: 5px 10px; border-radius: 10px; color: #b794f4;">💎 <span id="ui-tokens">0</span></div>
     </header>
 
     <!-- BOUTON PANNEAU ADMIN FLOTTANT -->
-    <div id="admin-panel-btn" onclick="window.openAdminPanel()">⚙️</div>
+    <div id="admin-panel-btn" onclick="openAdminPanel()">⚙️</div>
 
     <!-- ÉCRAN LOGIN -->
     <div id="screen-login" class="screen active" style="justify-content: center;">
@@ -122,11 +122,11 @@
         <input type="email" id="login-email" class="input-field" placeholder="Email (ex: nassim57132@gmail.com)">
         <input type="password" id="login-pass" class="input-field" placeholder="Mot de passe">
         
-        <button class="btn" onclick="window.login('email')">Connexion Email</button>
-        <button class="btn outline" style="color: var(--text-dark); border-color: var(--border-color);" onclick="window.login('google')">🌐 Continuer avec Google</button>
+        <button class="btn" onclick="login('email')">Connexion Email</button>
+        <button class="btn outline" style="color: var(--text-dark); border-color: var(--border-color);" onclick="login('google')">🌐 Continuer avec Google</button>
         
         <div style="text-align: center; margin: 15px 0; color: var(--text-muted);">OU</div>
-        <button class="btn" style="background: #a0aec0;" onclick="window.login('guest')">Jouer en Invité</button>
+        <button class="btn" style="background: #a0aec0;" onclick="login('guest')">Jouer en Invité</button>
     </div>
 
     <!-- ÉCRAN ACCUEIL -->
@@ -136,7 +136,7 @@
             <h2 style="margin: 5px 0 15px 0;" id="home-username">Joueur</h2>
             <p style="margin:0; font-size:0.8rem; font-weight:600;" id="home-title">Novice</p>
         </div>
-        <button class="btn" onclick="window.initRoom()">➕ Créer un Salon</button>
+        <button class="btn" onclick="initRoom()">➕ Créer un Salon</button>
         <button class="btn outline" onclick="alert('Recherche de salon...')">🔍 Rejoindre (Code)</button>
     </div>
 
@@ -146,7 +146,7 @@
         <div class="chat-container" id="chat-messages"></div>
         <div style="display: flex; gap: 10px;">
             <input type="text" id="chat-input" class="input-field" style="margin:0;" placeholder="Message...">
-            <button class="btn small" onclick="window.sendChatMessage()">Envoyer</button>
+            <button class="btn small" onclick="sendChatMessage()">Envoyer</button>
         </div>
     </div>
 
@@ -177,15 +177,15 @@
         <h4 style="margin-top: 15px;">Ajouter un ami</h4>
         <div style="display: flex; gap: 10px;">
             <input type="text" id="add-friend-input" class="input-field" placeholder="Code Ami (4 chiffres)" maxlength="4">
-            <button class="btn small outline" onclick="window.addFriend()">Ajouter</button>
+            <button class="btn small outline" onclick="addFriend()">Ajouter</button>
         </div>
 
         <h4 style="margin-top: 15px;">Paramètres</h4>
         <div class="card-white" style="display:flex; justify-content:space-between; align-items:center;">
             <span>Mode Nuit</span>
-            <button class="btn small" onclick="window.toggleTheme()" id="btn-theme">Désactivé</button>
+            <button class="btn small" onclick="toggleTheme()" id="btn-theme">Désactivé</button>
         </div>
-        <button class="btn danger outline" onclick="window.logout()">Déconnexion</button>
+        <button class="btn danger outline" onclick="logout()">Déconnexion</button>
     </div>
 
     <!-- ÉCRAN SALON -->
@@ -194,24 +194,24 @@
         <div id="room-players-list" style="margin-bottom: 15px;"></div>
         
         <div style="display: flex; gap: 10px; margin-bottom: 15px;">
-            <button class="btn outline small" style="flex:1;" onclick="window.addBot()">+ Bot</button>
-            <button class="btn small" style="background:var(--border-color); color:var(--text-dark); flex:1;" onclick="window.removeBot()">- Bot</button>
+            <button class="btn outline small" style="flex:1;" onclick="addBot()">+ Bot</button>
+            <button class="btn small" style="background:var(--border-color); color:var(--text-dark); flex:1;" onclick="removeBot()">- Bot</button>
         </div>
 
         <!-- PASTILLE DE CHOIX DES ROLES -->
-        <button class="btn blue" style="display: flex; align-items: center; justify-content: center; gap: 10px;" onclick="window.openRolesSelection()">
+        <button class="btn blue" style="display: flex; align-items: center; justify-content: center; gap: 10px;" onclick="openRolesSelection()">
             <span style="font-size: 1.5rem;">🎭</span> Configurer les Rôles (<span id="role-count">22</span>)
         </button>
         
-        <button class="btn success" style="margin-top: auto; font-size: 1.1rem; padding: 20px; background:#4fd1c5;" onclick="window.startGame()">LANCER LA PARTIE</button>
+        <button class="btn success" style="margin-top: auto; font-size: 1.1rem; padding: 20px; background:#4fd1c5;" onclick="startGame()">LANCER LA PARTIE</button>
     </div>
 
-    <!-- ÉCRAN CONTEUR / JOUEUR / OVERLAY (Idem) -->
+    <!-- ÉCRANS CONTEUR ET JOUEUR -->
     <div id="screen-conteur" class="screen">
         <h2 style="text-align:center;">Mode Conteur</h2>
         <p style="text-align:center;" class="text-muted">Gérez la partie ici.</p>
-        <button class="btn danger" onclick="window.endGame(false)">Terminer (Victoire Mal)</button>
-        <button class="btn success" style="background:#4fd1c5;" onclick="window.endGame(true)">Terminer (Victoire Bien)</button>
+        <button class="btn danger" onclick="endGame(false)">Terminer (Victoire Mal)</button>
+        <button class="btn success" style="background:#4fd1c5;" onclick="endGame(true)">Terminer (Victoire Bien)</button>
     </div>
 
     <div id="screen-player" class="screen">
@@ -228,10 +228,10 @@
 
     <!-- NAVBAR BASSE -->
     <nav id="bottom-nav" style="display: none;">
-        <button class="active" onclick="window.showMainNav('screen-home', this)">🎮</button>
-        <button onclick="window.showMainNav('screen-shop', this)">🛒</button>
-        <button onclick="window.showMainNav('screen-chat', this)">💬</button>
-        <button onclick="window.showMainNav('screen-profile', this)">👤</button>
+        <button class="active" onclick="showMainNav('screen-home', this)">🎮</button>
+        <button onclick="showMainNav('screen-shop', this)">🛒</button>
+        <button onclick="showMainNav('screen-chat', this)">💬</button>
+        <button onclick="showMainNav('screen-profile', this)">👤</button>
     </nav>
     
     <!-- MODALS -->
@@ -240,7 +240,7 @@
         <div class="card-white" style="flex: 1; display: flex; flex-direction: column; overflow: hidden; margin:0; padding:20px;">
             <h2 style="margin-bottom:10px;">Rôles disponibles</h2>
             <div class="role-tile-grid" id="role-tile-container" style="flex: 1; overflow-y: auto;"></div>
-            <button class="btn" onclick="window.closeRolesSelection()">Valider la sélection</button>
+            <button class="btn" onclick="closeRolesSelection()">Valider la sélection</button>
         </div>
     </div>
 
@@ -256,11 +256,11 @@
             <input type="text" id="admin-item-val" class="input-field" placeholder="Emoji (ex: 👻) ou Titre (ex: Boss)">
             <input type="number" id="admin-item-price" class="input-field" placeholder="Prix en 💎 (ex: 300)">
             <input type="text" id="admin-item-color" class="input-field" placeholder="Couleur du titre (ex: #ff0000) - Optionnel">
-            <button class="btn admin" onclick="window.adminAddShopItem()">Ajouter l'article</button>
+            <button class="btn admin" onclick="adminAddShopItem()">Ajouter l'article</button>
             
             <h4 style="margin-top:20px;">Actions Rapides</h4>
-            <button class="btn outline" onclick="window.adminGiveTokens()">Donner 1000 💎 (Moi)</button>
-            <button class="btn danger" onclick="window.adminClearChat()">Vider le Chat Global</button>
+            <button class="btn outline" onclick="adminGiveTokens()">Donner 1000 💎 (Moi)</button>
+            <button class="btn danger" onclick="adminClearChat()">Vider le Chat Global</button>
             
             <button class="btn" style="background:var(--bg-app); color:var(--text-dark);" onclick="document.getElementById('modal-admin').classList.remove('active')">Fermer</button>
         </div>
@@ -268,31 +268,8 @@
 
 </div>
 
-    // INITIALISATION FIREBASE AVEC SÉCURITÉ ANTI-CRASH
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-    import { getAuth } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
-    import { getFirestore } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyDWL02zRvlGp6UxomuOjvwzGWkbVGizNKQ",
-      authDomain: "echappee-des-ombres.firebaseapp.com",
-      projectId: "echappee-des-ombres",
-      storageBucket: "echappee-des-ombres.firebasestorage.app",
-      messagingSenderId: "495681138016",
-      appId: "1:495681138016:web:9c10f0a169f1a807bd0205"
-    };
-
-    let app, auth, db;
-    
-    try {
-        app = initializeApp(firebaseConfig);
-        auth = getAuth(app);
-        db = getFirestore(app);
-    } catch (error) {
-        console.error("Firebase bloqué, mais le jeu continue.");
-    }
-
-
+<!-- SCRIPT 1: LOGIQUE PRINCIPALE DE L'INTERFACE (Toujours fonctionnelle) -->
+<script>
     // --- BASE DE DONNÉES COMPLÈTE (22 Rôles) ---
     const rolesDB = [
         // GENTILS (15)
@@ -337,9 +314,7 @@
         { type: 'title', val: 'L\'Intouchable', price: 150, color: '#4fd1c5' }
     ];
 
-    // --- FONCTIONS GLOBALISEES POUR LE HTML ---
-    
-    window.login = function(type) {
+    function login(type) {
         let email = document.getElementById('login-email').value;
         if (type === 'guest') {
             user.name = "Joueur" + Math.floor(100 + Math.random() * 900);
@@ -372,10 +347,10 @@
         document.getElementById('screen-home').classList.add('active');
         document.getElementById('bottom-nav').style.display = 'flex';
         document.getElementById('main-header').style.display = 'flex';
-    };
+    }
 
     function saveUserData() { localStorage.setItem('user_' + user.name, JSON.stringify(user)); }
-    window.logout = function() { location.reload(); };
+    function logout() { location.reload(); }
 
     function updateUI() {
         document.getElementById('home-username').innerText = user.name;
@@ -389,18 +364,18 @@
     }
 
     // --- NAVIGATION ---
-    window.showMainNav = function(id, btn) {
+    function showMainNav(id, btn) {
         document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
         document.getElementById(id).classList.add('active');
         document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
-    };
-    window.returnToMenu = function() {
+    }
+    function returnToMenu() {
         document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
         document.getElementById('screen-home').classList.add('active');
         document.getElementById('bottom-nav').style.display = 'flex';
         document.querySelector('.back-btn').style.display = 'none';
-    };
+    }
 
     // --- BOUTIQUE ---
     function renderShop() {
@@ -411,14 +386,14 @@
         shopItems.forEach((item, index) => {
             if(item.type === 'avatar') {
                 avatarsDiv.innerHTML += `
-                    <div class="card-white" style="text-align:center; padding:10px; cursor:pointer;" onclick="window.buyItem(${index})">
+                    <div class="card-white" style="text-align:center; padding:10px; cursor:pointer;" onclick="buyItem(${index})">
                         <div class="shop-avatar-circle">${item.val}</div>
                         <strong style="color:var(--text-dark);">${item.price} 💎</strong>
                     </div>`;
             } else {
                 let colorStyle = item.color ? `color:${item.color};` : '';
                 titlesDiv.innerHTML += `
-                    <div class="card-white" style="cursor:pointer;" onclick="window.buyItem(${index})">
+                    <div class="card-white" style="cursor:pointer;" onclick="buyItem(${index})">
                         <strong style="${colorStyle}">${item.val}</strong><br>
                         <span class="text-muted">${item.price} 💎</span>
                     </div>`;
@@ -426,7 +401,7 @@
         });
     }
     
-    window.buyItem = function(index) {
+    function buyItem(index) {
         let item = shopItems[index];
         if(user.tokens >= item.price) {
             if(confirm(`Acheter ${item.val} pour ${item.price} 💎 ?`)) {
@@ -436,53 +411,53 @@
                 saveUserData(); updateUI(); alert('Achat réussi !');
             }
         } else { alert("Fonds insuffisants !"); }
-    };
+    }
 
     // --- CHAT GLOBAL ---
     function loadChat() {
         const c = document.getElementById('chat-messages'); c.innerHTML = '';
         chatMessages.forEach((msg, i) => {
             let isMe = (msg.author === user.name) ? 'me' : '';
-            c.innerHTML += `<div class="chat-msg ${isMe}"><div class="author">${msg.author}</div><div>${msg.text}</div><button class="chat-del-btn" onclick="window.deleteMessage(${i})">X</button></div>`;
+            c.innerHTML += `<div class="chat-msg ${isMe}"><div class="author">${msg.author}</div><div>${msg.text}</div><button class="chat-del-btn" onclick="deleteMessage(${i})">X</button></div>`;
         });
         c.scrollTop = c.scrollHeight;
     }
-    window.sendChatMessage = function() {
+    function sendChatMessage() {
         let input = document.getElementById('chat-input');
         if(input.value.trim() === '') return;
         chatMessages.push({ author: user.name, text: input.value });
         localStorage.setItem('chat', JSON.stringify(chatMessages));
         input.value = ''; loadChat();
-    };
-    window.deleteMessage = function(i) {
+    }
+    function deleteMessage(i) {
         if(user.isAdmin) { chatMessages.splice(i, 1); localStorage.setItem('chat', JSON.stringify(chatMessages)); loadChat(); }
-    };
+    }
 
     // --- SALON & ROLES ---
-    window.initRoom = function() {
+    function initRoom() {
         players = [{ id: 0, name: user.name, isConteur: true }];
         botCount = 0;
         document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
         document.getElementById('screen-room').classList.add('active');
         document.getElementById('bottom-nav').style.display = 'none';
         document.querySelector('.back-btn').style.display = 'block';
-        window.renderRoomList();
-    };
-    window.addBot = function() { botCount++; players.push({ id: players.length, name: `Bot ${botCount}`, isConteur: false }); window.renderRoomList(); };
-    window.removeBot = function() { if(players.length > 1) { players.pop(); botCount--; window.renderRoomList(); } };
-    window.renderRoomList = function() {
+        renderRoomList();
+    }
+    function addBot() { botCount++; players.push({ id: players.length, name: `Bot ${botCount}`, isConteur: false }); renderRoomList(); }
+    function removeBot() { if(players.length > 1) { players.pop(); botCount--; renderRoomList(); } }
+    function renderRoomList() {
         const list = document.getElementById('room-players-list'); list.innerHTML = '';
         players.forEach(p => { list.innerHTML += `<div class="card-white" style="padding:10px;">👤 <strong>${p.name}</strong> ${p.isConteur ? '👑' : ''}</div>`; });
-    };
+    }
 
     // --- PASTILLE RÔLES (MODAL) ---
-    window.openRolesSelection = function() {
+    function openRolesSelection() {
         document.getElementById('modal-role-selection').classList.add('active');
         const container = document.getElementById('role-tile-container'); container.innerHTML = '';
         rolesDB.forEach(r => {
             let isSelected = selectedRoles.includes(r.id) ? 'selected' : '';
             container.innerHTML += `
-                <div class="role-tile ${isSelected}" id="tile-${r.id}" onclick="window.toggleRole('${r.id}')">
+                <div class="role-tile ${isSelected}" id="tile-${r.id}" onclick="toggleRole('${r.id}')">
                     <div class="role-tile-icon">${r.emoji}</div>
                     <div style="flex:1;">
                         <strong style="color:var(--text-dark);">${r.name}</strong> <span style="font-size:0.7rem; color:var(--text-muted);">(Vit: ${r.speed})</span><br>
@@ -490,56 +465,55 @@
                     </div>
                 </div>`;
         });
-    };
-    window.toggleRole = function(id) {
+    }
+    function toggleRole(id) {
         let tile = document.getElementById('tile-' + id);
         if(selectedRoles.includes(id)) { selectedRoles = selectedRoles.filter(r => r !== id); tile.classList.remove('selected'); }
         else { selectedRoles.push(id); tile.classList.add('selected'); }
         document.getElementById('role-count').innerText = selectedRoles.length;
-    };
-    window.closeRolesSelection = function() { document.getElementById('modal-role-selection').classList.remove('active'); };
+    }
+    function closeRolesSelection() { document.getElementById('modal-role-selection').classList.remove('active'); }
 
     // --- LANCEMENT JEU ET ANIMATION ---
-    window.startGame = function() {
+    function startGame() {
         document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
         document.getElementById('screen-player').classList.add('active');
         
-        // Simule les joueurs pour accuser
         const grid = document.getElementById('player-day-grid');
         grid.innerHTML = `
-            <div class="grid-card" onclick="window.triggerVSAnimation('${user.avatar}', '🐺', 'Bot 1')"><div class="avatar-circle" style="margin:auto;">🐺</div><strong>Bot 1</strong></div>
-            <div class="grid-card" onclick="window.triggerVSAnimation('${user.avatar}', '🐻', 'Bot 2')"><div class="avatar-circle" style="margin:auto;">🐻</div><strong>Bot 2</strong></div>
+            <div class="grid-card" onclick="triggerVSAnimation('${user.avatar}', '🐺', 'Bot 1')"><div class="avatar-circle" style="margin:auto;">🐺</div><strong>Bot 1</strong></div>
+            <div class="grid-card" onclick="triggerVSAnimation('${user.avatar}', '🐻', 'Bot 2')"><div class="avatar-circle" style="margin:auto;">🐻</div><strong>Bot 2</strong></div>
         `;
-    };
+    }
 
-    window.triggerVSAnimation = function(myAvatar, enemyAvatar, enemyName) {
+    function triggerVSAnimation(myAvatar, enemyAvatar, enemyName) {
         let overlay = document.getElementById('vs-overlay');
         document.getElementById('vs-accuser').innerText = myAvatar;
         document.getElementById('vs-accused').innerText = enemyAvatar;
         overlay.style.display = 'flex';
         setTimeout(() => { overlay.style.display = 'none'; alert(`Vote contre ${enemyName} lancé !`); }, 2500);
-    };
+    }
 
-    window.endGame = function(victory) {
+    function endGame(victory) {
         let gain = 10; if(victory) gain += 20;
         user.tokens += gain; saveUserData(); updateUI();
-        alert(`Partie terminée ! +${gain} 💎`); window.returnToMenu();
-    };
+        alert(`Partie terminée ! +${gain} 💎`); returnToMenu();
+    }
 
     // --- FONCTIONS ANNEXES ---
-    window.addFriend = function() {
+    function addFriend() {
         let code = document.getElementById('add-friend-input').value;
         if(code.length === 4 && code !== user.friendCode) { user.friends.push(code); saveUserData(); alert(`Ami ${code} ajouté !`); document.getElementById('add-friend-input').value = ''; }
-    };
-    window.toggleTheme = function() {
+    }
+    function toggleTheme() {
         let body = document.body; let isDark = body.getAttribute('data-theme') === 'dark';
         body.setAttribute('data-theme', isDark ? 'light' : 'dark');
         document.getElementById('btn-theme').innerText = isDark ? "Désactivé" : "Activé";
-    };
+    }
 
     // --- PANNEAU ADMIN ---
-    window.openAdminPanel = function() { document.getElementById('modal-admin').classList.add('active'); };
-    window.adminAddShopItem = function() {
+    function openAdminPanel() { document.getElementById('modal-admin').classList.add('active'); }
+    function adminAddShopItem() {
         let type = document.getElementById('admin-item-type').value;
         let val = document.getElementById('admin-item-val').value;
         let price = parseInt(document.getElementById('admin-item-price').value);
@@ -549,10 +523,36 @@
             localStorage.setItem('shop', JSON.stringify(shopItems));
             renderShop(); alert("Article ajouté !");
         }
-    };
-    window.adminGiveTokens = function() { user.tokens += 1000; saveUserData(); updateUI(); alert("1000 💎 ajoutés !"); };
-    window.adminClearChat = function() { chatMessages = []; localStorage.setItem('chat', JSON.stringify(chatMessages)); loadChat(); alert("Chat vidé !"); };
-
+    }
+    function adminGiveTokens() { user.tokens += 1000; saveUserData(); updateUI(); alert("1000 💎 ajoutés !"); }
+    function adminClearChat() { chatMessages = []; localStorage.setItem('chat', JSON.stringify(chatMessages)); loadChat(); alert("Chat vidé !"); }
 </script>
+
+<!-- SCRIPT 2: INITIALISATION FIREBASE (Sécurisée et isolée) -->
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+    import { getAuth } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+    import { getFirestore } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDWL02zRvlGp6UxomuOjvwzGWkbVGizNKQ",
+      authDomain: "echappee-des-ombres.firebaseapp.com",
+      projectId: "echappee-des-ombres",
+      storageBucket: "echappee-des-ombres.firebasestorage.app",
+      messagingSenderId: "495681138016",
+      appId: "1:495681138016:web:9c10f0a169f1a807bd0205"
+    };
+
+    let app, auth, db;
+    try {
+        app = initializeApp(firebaseConfig);
+        auth = getAuth(app);
+        db = getFirestore(app);
+        console.log("Firebase initialisé avec succès !");
+    } catch (error) {
+        console.warn("Firebase n'a pas pu se charger (souvent dû à l'environnement local ou navigation privée strict), mais le jeu continue en mode LocalStorage.", error);
+    }
+</script>
+
 </body>
 </html>
