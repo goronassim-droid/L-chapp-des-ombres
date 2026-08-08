@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>L'Échappée des Ombres</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- VARIABLES THEMES --- */
+        :root {
+            --bg-app: #f4f7fc; --bg-card: #ffffff;
+            --text-dark: #2d3748; --text-muted: #a0aec0;
+            --grad-purple: linear-gradient(135deg, #b794f4, #f687b3);
+            --grad-blue: linear-gradient(135deg, #63b3ed, #4fd1c5);
+            --grad-yellow: linear-gradient(135deg, #fbd38d, #f6e05e);
+            --shadow-soft: 0 10px 25px rgba(0, 0, 0, 0.05);
+            --shadow-hover: 0 15px 35px rgba(183, 148, 244, 0.3);
+            --border-color: #e2e8f0;
+        }
+        body[data-theme="dark"] {
+            --bg-app: #12121c; --bg-card: #1e1e2f;
+            --text-dark: #f5f6fa; --text-muted: #718096;
+            --shadow-soft: 0 10px 25px rgba(0, 0, 0, 0.4);
+            --border-color: #2d3748;
+            --grad-purple: linear-gradient(135deg, #805ad5, #d53f8c);
+        }
+
+        /* --- BASES --- */
+        * { box-sizing: border-box; }
+        body { margin: 0; font-family: 'Poppins', sans-serif; background-color: #cbd5e0; color: var(--text-dark); display: flex; justify-content: center; height: 100vh; overflow: hidden; transition: background 0.3s; }
+        #app-container { width: 100%; max-width: 400px; height: 100%; display: flex; flex-direction: column; background-color: var(--bg-app); box-shadow: 0 0 30px rgba(0,0,0,0.3); position: relative; transition: background 0.3s; }
+        h1, h2, h3, h4, h5 { margin: 0; color: var(--text-dark); }
+        .text-muted { color: var(--text-muted); font-size: 0.85rem; }
+        
+        .screen { display: none; flex: 1; overflow-y: auto; padding: 25px 20px; }
+        .screen.active { display: flex; flex-direction: column; }
+
+        /* --- BOUTONS & INPUTS --- */
+        .btn { background: var(--grad-purple); color: white; border: none; padding: 15px; margin: 10px 0; border-radius: 20px; font-size: 1rem; font-weight: 600; cursor: pointer; text-align: center; width: 100%; box-shadow: var(--shadow-soft); transition: 0.3s; }
+        .btn:active { transform: scale(0.97); }
+        .btn.outline { background: transparent; color: #b794f4; border: 2px solid #b794f4; }
+        .btn.small { padding: 8px 15px; font-size: 0.8rem; width: auto; margin:0; border-radius: 12px; }
+        .btn.danger { background: #fc8181; }
+        .btn.blue { background: var(--grad-blue); }
+        .btn.admin { background: linear-gradient(135deg, #e53e3e, #dd6b20); color: white; }
+
+        .input-field, select { width: 100%; padding: 15px; margin-bottom: 10px; border-radius: 15px; border: 2px solid var(--border-color); background: var(--bg-card); color: var(--text-dark); font-family: inherit; font-size: 0.9rem; outline: none; }
+        .input-field:focus { border-color: #b794f4; }
+
+        /* --- HEADER & NAVBAR --- */
+        header { padding: 20px; display: flex; justify-content: space-between; align-items: center; background: transparent; z-index: 10; }
+        .back-btn { background: var(--bg-card); border: none; padding: 10px 15px; border-radius: 15px; color: var(--text-dark); font-weight: 600; cursor: pointer; box-shadow: var(--shadow-soft); display: none; }
+        nav { display: flex; background: var(--bg-card); padding: 15px 10px; border-radius: 30px 30px 0 0; box-shadow: 0 -10px 25px rgba(0,0,0,0.05); z-index: 10; border-top: 1px solid var(--border-color); }
+        nav button { flex: 1; background: none; border: none; color: var(--text-muted); font-size: 1.5rem; cursor: pointer; transition: 0.3s; }
+        nav button.active { color: #b794f4; transform: translateY(-5px); }
+
+        /* --- CARDS & AVATARS --- */
+        .card-gradient { background: var(--grad-yellow); padding: 25px; border-radius: 25px; color: #2d3748; box-shadow: var(--shadow-soft); margin-bottom: 20px; }
+        .card-white { background: var(--bg-card); padding: 15px; border-radius: 20px; box-shadow: var(--shadow-soft); margin-bottom: 10px; border: 1px solid var(--border-color); }
+        .avatar-circle { width: 45px; height: 45px; border-radius: 50%; background: #edf2f7; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; line-height: 1; }
+
+        /* --- BOUTIQUE FIXS --- */
+        .shop-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 20px; }
+        .shop-avatar-circle { width: 70px; height: 70px; border-radius: 50%; background: #edf2f7; display: flex; align-items: center; justify-content: center; font-size: 3rem; margin: 0 auto 10px auto; line-height: 1; }
+
+        /* --- CHAT GLOBAL --- */
+        .chat-container { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px; }
+        .chat-msg { background: var(--bg-card); padding: 10px 15px; border-radius: 15px; border: 1px solid var(--border-color); width: fit-content; max-width: 85%; position: relative; }
+        .chat-msg.me { background: var(--grad-purple); color: white; align-self: flex-end; }
+        .chat-msg .author { font-size: 0.7rem; font-weight: bold; margin-bottom: 3px; opacity: 0.8; }
+        .admin-mode .chat-del-btn { display: block; position: absolute; top: -5px; right: -5px; background: red; color: white; border-radius: 50%; width: 20px; height: 20px; border: none; cursor: pointer; font-size: 10px; }
+        .chat-del-btn { display: none; }
+
+        /* --- ANIMATION VS --- */
+        #vs-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 200; justify-content: center; align-items: center; flex-direction: row; gap: 20px; backdrop-filter: blur(5px); }
+        .vs-avatar { font-size: 5rem; background: white; border-radius: 50%; width: 120px; height: 120px; display: flex; justify-content: center; align-items: center; box-shadow: 0 0 30px rgba(183,148,244,0.5); }
+        .slide-left { animation: slideInLeft 0.5s ease-out forwards; }
+        .slide-right { animation: slideInRight 0.5s ease-out forwards; }
+        .zoom-vs { font-size: 4rem; font-weight: 900; color: #f6e05e; text-shadow: 0 0 20px red; animation: zoomIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+        @keyframes slideInLeft { from { transform: translateX(-200px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        @keyframes slideInRight { from { transform: translateX(200px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        @keyframes zoomIn { from { transform: scale(0); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+        /* --- SÉLECTION ROLES (TUILES) --- */
+        .role-tile-grid { display: grid; grid-template-columns: 1fr; gap: 10px; margin-top: 10px; }
+        .role-tile { display: flex; align-items: center; background: var(--bg-card); padding: 15px; border-radius: 15px; border: 2px solid var(--border-color); cursor: pointer; transition: 0.2s; }
+        .role-tile.selected { border-color: #b794f4; background: rgba(183, 148, 244, 0.1); }
+        .role-tile-icon { font-size: 2.5rem; margin-right: 15px; width: 50px; text-align: center; }
+
+        /* --- MODALS & OTHERS --- */
+        .modal { display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 100; padding: 30px 20px; flex-direction: column; justify-content: center; }
+        .modal.active { display: flex; }
+        .player-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-top: 15px; }
+        .grid-card { background: var(--bg-card); padding: 20px 10px; border-radius: 20px; text-align: center; box-shadow: var(--shadow-soft); cursor: pointer; border: 2px solid transparent; }
+        
+        /* ADMIN PANEL BUTTON */
+        #admin-panel-btn { display: none; position: absolute; top: 80px; right: 10px; background: linear-gradient(135deg, #e53e3e, #dd6b20); color: white; border-radius: 50%; width: 45px; height: 45px; align-items: center; justify-content: center; font-size: 1.2rem; cursor: pointer; z-index: 50; box-shadow: var(--shadow-hover); }
+        .admin-mode #admin-panel-btn { display: flex; }
+    </style>
+</head>
+<body data-theme="light">
+
+<div id="app-container">
+    
+    <header id="main-header" style="display: none;">
+        <button class="back-btn" onclick="window.returnToMenu()">❮ Quitter</button>
+        <span id="header-turn" style="font-weight:700; font-size:1.1rem; color: #b794f4;"></span>
+        <div style="font-weight: 600; background: rgba(183,148,244,0.2); padding: 5px 10px; border-radius: 10px; color: #b794f4;">💎 <span id="ui-tokens">0</span></div>
+    </header>
+
+    <!-- BOUTON PANNEAU ADMIN FLOTTANT -->
+    <div id="admin-panel-btn" onclick="window.openAdminPanel()">⚙️</div>
+
+    <!-- ÉCRAN LOGIN -->
+    <div id="screen-login" class="screen active" style="justify-content: center;">
+        <div style="text-align: center; margin-bottom: 30px;">
+            <div style="font-size: 4rem; margin-bottom: 10px;">🌙</div>
+            <h1 style="background: var(--grad-purple); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">L'Échappée</h1>
+        </div>
+        
+        <input type="email" id="login-email" class="input-field" placeholder="Email (ex: nassim57132@gmail.com)">
+        <input type="password" id="login-pass" class="input-field" placeholder="Mot de passe">
+        
+        <button class="btn" onclick="window.login('email')">Connexion Email</button>
+        <button class="btn outline" style="color: var(--text-dark); border-color: var(--border-color);" onclick="window.login('google')">🌐 Continuer avec Google</button>
+        
+        <div style="text-align: center; margin: 15px 0; color: var(--text-muted);">OU</div>
+        <button class="btn" style="background: #a0aec0;" onclick="window.login('guest')">Jouer en Invité</button>
+    </div>
+
+    <!-- ÉCRAN ACCUEIL -->
+    <div id="screen-home" class="screen">
+        <div class="card-gradient">
+            <p style="margin: 0; font-size: 0.9rem; opacity: 0.8;" id="welcome-text">Bienvenue,</p>
+            <h2 style="margin: 5px 0 15px 0;" id="home-username">Joueur</h2>
+            <p style="margin:0; font-size:0.8rem; font-weight:600;" id="home-title">Novice</p>
+        </div>
+        <button class="btn" onclick="window.initRoom()">➕ Créer un Salon</button>
+        <button class="btn outline" onclick="alert('Recherche de salon...')">🔍 Rejoindre (Code)</button>
+    </div>
+
+    <!-- ÉCRAN CHAT GLOBAL -->
+    <div id="screen-chat" class="screen">
+        <h2>💬 Messagerie</h2>
+        <div class="chat-container" id="chat-messages"></div>
+        <div style="display: flex; gap: 10px;">
+            <input type="text" id="chat-input" class="input-field" style="margin:0;" placeholder="Message...">
+            <button class="btn small" onclick="window.sendChatMessage()">Envoyer</button>
+        </div>
+    </div>
+
+    <!-- ÉCRAN BOUTIQUE -->
+    <div id="screen-shop" class="screen">
+        <h2 style="text-align: center; color: #f6e05e;">Boutique</h2>
+        <p style="text-align:center;" class="text-muted">Dépensez vos 💎 pour briller.</p>
+        
+        <h4>Avatars</h4>
+        <div class="shop-grid" id="shop-avatars"></div>
+
+        <h4>Titres Honorifiques</h4>
+        <div id="shop-titles"></div>
+    </div>
+
+    <!-- ÉCRAN PROFIL -->
+    <div id="screen-profile" class="screen">
+        <div style="text-align: center; margin-bottom: 20px;">
+            <div class="avatar-circle" id="profile-avatar" style="width: 80px; height: 80px; margin: 0 auto 10px auto; font-size: 3rem;">👤</div>
+            <h2 id="profile-name">Pseudo</h2>
+            <p class="text-muted" id="profile-title" style="font-weight:600;">Titre Actuel</p>
+        </div>
+        
+        <div class="card-white" style="text-align: center;">
+            <p style="margin:0;">Code Ami : <strong style="color: #b794f4; letter-spacing: 2px;" id="profile-friend-code">XXXX</strong></p>
+        </div>
+
+        <h4 style="margin-top: 15px;">Ajouter un ami</h4>
+        <div style="display: flex; gap: 10px;">
+            <input type="text" id="add-friend-input" class="input-field" placeholder="Code Ami (4 chiffres)" maxlength="4">
+            <button class="btn small outline" onclick="window.addFriend()">Ajouter</button>
+        </div>
+
+        <h4 style="margin-top: 15px;">Paramètres</h4>
+        <div class="card-white" style="display:flex; justify-content:space-between; align-items:center;">
+            <span>Mode Nuit</span>
+            <button class="btn small" onclick="window.toggleTheme()" id="btn-theme">Désactivé</button>
+        </div>
+        <button class="btn danger outline" onclick="window.logout()">Déconnexion</button>
+    </div>
+
+    <!-- ÉCRAN SALON -->
+    <div id="screen-room" class="screen">
+        <h2>Préparation</h2>
+        <div id="room-players-list" style="margin-bottom: 15px;"></div>
+        
+        <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+            <button class="btn outline small" style="flex:1;" onclick="window.addBot()">+ Bot</button>
+            <button class="btn small" style="background:var(--border-color); color:var(--text-dark); flex:1;" onclick="window.removeBot()">- Bot</button>
+        </div>
+
+        <!-- PASTILLE DE CHOIX DES ROLES -->
+        <button class="btn blue" style="display: flex; align-items: center; justify-content: center; gap: 10px;" onclick="window.openRolesSelection()">
+            <span style="font-size: 1.5rem;">🎭</span> Configurer les Rôles (<span id="role-count">22</span>)
+        </button>
+        
+        <button class="btn success" style="margin-top: auto; font-size: 1.1rem; padding: 20px; background:#4fd1c5;" onclick="window.startGame()">LANCER LA PARTIE</button>
+    </div>
+
+    <!-- ÉCRAN CONTEUR / JOUEUR / OVERLAY (Idem) -->
+    <div id="screen-conteur" class="screen">
+        <h2 style="text-align:center;">Mode Conteur</h2>
+        <p style="text-align:center;" class="text-muted">Gérez la partie ici.</p>
+        <button class="btn danger" onclick="window.endGame(false)">Terminer (Victoire Mal)</button>
+        <button class="btn success" style="background:#4fd1c5;" onclick="window.endGame(true)">Terminer (Victoire Bien)</button>
+    </div>
+
+    <div id="screen-player" class="screen">
+        <h3 style="text-align: center; color: #b794f4;">Phase de Débat</h3>
+        <p style="text-align:center;">Cliquez sur un joueur pour l'accuser</p>
+        <div id="player-day-grid" class="player-grid"></div>
+    </div>
+
+    <div id="vs-overlay">
+        <div class="vs-avatar slide-left" id="vs-accuser">🦊</div>
+        <div class="zoom-vs">VS</div>
+        <div class="vs-avatar slide-right" id="vs-accused">💀</div>
+    </div>
+
+    <!-- NAVBAR BASSE -->
+    <nav id="bottom-nav" style="display: none;">
+        <button class="active" onclick="window.showMainNav('screen-home', this)">🎮</button>
+        <button onclick="window.showMainNav('screen-shop', this)">🛒</button>
+        <button onclick="window.showMainNav('screen-chat', this)">💬</button>
+        <button onclick="window.showMainNav('screen-profile', this)">👤</button>
+    </nav>
+    
+    <!-- MODALS -->
+    <!-- Modal Selection Rôles -->
+    <div id="modal-role-selection" class="modal">
+        <div class="card-white" style="flex: 1; display: flex; flex-direction: column; overflow: hidden; margin:0; padding:20px;">
+            <h2 style="margin-bottom:10px;">Rôles disponibles</h2>
+            <div class="role-tile-grid" id="role-tile-container" style="flex: 1; overflow-y: auto;"></div>
+            <button class="btn" onclick="window.closeRolesSelection()">Valider la sélection</button>
+        </div>
+    </div>
+
+    <!-- Modal Admin -->
+    <div id="modal-admin" class="modal">
+        <div class="card-white" style="margin:auto; width: 100%;">
+            <h2 style="color: #e53e3e; text-align:center;">⚙️ Panneau Admin</h2>
+            <h4 style="margin-top:20px;">Ajouter à la boutique</h4>
+            <select id="admin-item-type">
+                <option value="avatar">Avatar (Emoji)</option>
+                <option value="title">Titre Honorifique</option>
+            </select>
+            <input type="text" id="admin-item-val" class="input-field" placeholder="Emoji (ex: 👻) ou Titre (ex: Boss)">
+            <input type="number" id="admin-item-price" class="input-field" placeholder="Prix en 💎 (ex: 300)">
+            <input type="text" id="admin-item-color" class="input-field" placeholder="Couleur du titre (ex: #ff0000) - Optionnel">
+            <button class="btn admin" onclick="window.adminAddShopItem()">Ajouter l'article</button>
+            
+            <h4 style="margin-top:20px;">Actions Rapides</h4>
+            <button class="btn outline" onclick="window.adminGiveTokens()">Donner 1000 💎 (Moi)</button>
+            <button class="btn danger" onclick="window.adminClearChat()">Vider le Chat Global</button>
+            
+            <button class="btn" style="background:var(--bg-app); color:var(--text-dark);" onclick="document.getElementById('modal-admin').classList.remove('active')">Fermer</button>
+        </div>
+    </div>
+
+</div>
+
+<!-- INITIALISATION FIREBASE -->
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+    import { getAuth } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+    import { getFirestore } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDWL02zRvlGp6UxomuOjvwzGWkbVGizNKQ",
+      authDomain: "echappee-des-ombres.firebaseapp.com",
+      projectId: "echappee-des-ombres",
+      storageBucket: "echappee-des-ombres.firebasestorage.app",
+      messagingSenderId: "495681138016",
+      appId: "1:495681138016:web:9c10f0a169f1a807bd0205"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    // --- BASE DE DONNÉES COMPLÈTE (22 Rôles) ---
+    const rolesDB = [
+        // GENTILS (15)
+        { id: 'cartographe', name: "Le Cartographe", team: "gentil", emoji: "🗺️", speed: 1, desc: "Sait si le plus avancé est Gentil/Méchant." },
+        { id: 'eclaireur', name: "L'Éclaireur", team: "gentil", emoji: "🔦", speed: 2, desc: "Apprend la distance exacte entre 2 joueurs." },
+        { id: 'guetteur', name: "Le Guetteur", team: "gentil", emoji: "🔭", speed: 1, desc: "Sait si un joueur a été ciblé cette nuit." },
+        { id: 'veilleur', name: "Veilleur de Nuit", team: "gentil", emoji: "🦉", speed: 1, desc: "Sait si le Démon est sur sa case ou devant." },
+        { id: 'passager', name: "Passager Clandestin", team: "gentil", emoji: "🧳", speed: 0, desc: "Copie la vitesse d'un autre joueur." },
+        { id: 'metronome', name: "Le Métronome", team: "gentil", emoji: "⏱️", speed: 1, desc: "Connait le nombre total de cases parcourues." },
+        { id: 'brancardier', name: "Le Brancardier", team: "gentil", emoji: "🚑", speed: 1, desc: "[1x] Fait réutiliser le pouvoir d'un Spectre." },
+        { id: 'nitro', name: "Le Nitro", team: "gentil", emoji: "🚀", speed: 1, desc: "[1x] Gagne +4 cases, Vitesse 0 la nuit d'après." },
+        { id: 'tisseur', name: "Tisseur de Liens", team: "gentil", emoji: "🔗", speed: 2, desc: "[1x] Échange sa vitesse avec un autre." },
+        { id: 'klaxon', name: "Le Klaxon", team: "gentil", emoji: "📢", speed: 2, desc: "[1x Jour] Annonce publiquement sa case." },
+        { id: 'cascadeur', name: "Le Cascadeur", team: "gentil", emoji: "🤸", speed: 3, desc: "[1x Jour] Révèle rôle. Vitesse 1, Démon forcé de cibler." },
+        { id: 'sherif', name: "Le Shérif", team: "gentil", emoji: "🤠", speed: 1, desc: "[1x Jour] Révèle rôle pour annuler l'élimination." },
+       
