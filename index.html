@@ -2,10 +2,8 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <!-- Configuration pour mobile et PC -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>L'Échappée des Ombres</title>
-    <!-- Police moderne -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     
     <style>
@@ -38,52 +36,42 @@
         }
 
         /* =========================================
-           BASE ET LAYOUT RÉACTIF (PC / MOBILE)
+           BASE ET LAYOUT FULL SCREEN (PC/MOBILE)
            ========================================= */
         * { box-sizing: border-box; }
         
         body { 
             margin: 0; 
             font-family: 'Poppins', sans-serif; 
-            background-color: #cbd5e0; 
+            background-color: var(--bg-app); 
             color: var(--text-dark); 
             display: flex; 
             justify-content: center; 
-            align-items: center;
-            min-height: 100vh; 
+            height: 100vh; 
             overflow: hidden; 
             transition: background 0.3s; 
-            background-image: radial-gradient(#a0aec0 1px, transparent 1px);
-            background-size: 20px 20px;
         }
         
-        /* Conteneur principal qui s'adapte à l'écran */
         #app-container { 
             width: 100%; 
-            max-width: 100%; /* Mobile par défaut */
             height: 100vh; 
             display: flex; 
             flex-direction: column; 
             background-color: var(--bg-app); 
-            box-shadow: 0 0 30px rgba(0,0,0,0.3); 
             position: relative; 
-            transition: all 0.3s ease; 
-        }
-
-        /* Si l'écran est grand (PC / Tablette), on donne une allure de Web App */
-        @media (min-width: 768px) {
-            #app-container {
-                max-width: 900px;
-                height: 95vh;
-                border-radius: 20px;
-                overflow: hidden;
-            }
         }
         
         h1, h2, h3, h4, h5 { margin: 0; color: var(--text-dark); }
         p { margin: 0; }
         .text-muted { color: var(--text-muted); font-size: 0.85rem; }
         
+        /* Conteneurs pour centrer le contenu sur grand écran */
+        .content-wrapper {
+            max-width: 800px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
         .screen { display: none; flex: 1; overflow-y: auto; padding: 25px 20px; }
         .screen.active { display: flex; flex-direction: column; }
 
@@ -123,109 +111,86 @@
             align-items: center; background: var(--bg-card); z-index: 10; 
             border-bottom: 1px solid var(--border-color);
         }
-        .back-btn { 
-            background: var(--bg-app); border: none; padding: 10px 15px; 
-            border-radius: 15px; color: var(--text-dark); font-weight: 600; 
-            cursor: pointer; display: none; 
-        }
+        .back-btn { background: var(--bg-app); border: none; padding: 10px 15px; border-radius: 15px; color: var(--text-dark); font-weight: 600; cursor: pointer; display: none; }
         
         nav { 
             display: flex; background: var(--bg-card); padding: 15px 10px; 
-            box-shadow: 0 -10px 25px rgba(0,0,0,0.05); z-index: 10; 
-            border-top: 1px solid var(--border-color); 
+            box-shadow: 0 -10px 25px rgba(0,0,0,0.05); z-index: 10; border-top: 1px solid var(--border-color); 
         }
-        nav button { 
-            flex: 1; background: none; border: none; color: var(--text-muted); 
-            font-size: 1.5rem; cursor: pointer; transition: 0.3s; 
-        }
+        nav button { flex: 1; background: none; border: none; color: var(--text-muted); font-size: 1.5rem; cursor: pointer; transition: 0.3s; }
         nav button:hover { color: #b794f4; }
         nav button.active { color: #b794f4; transform: translateY(-5px); }
 
         /* =========================================
-           CARTES ET AVATARS
+           CARTES ET GRILLES (ADAPTABLES PC)
            ========================================= */
-        .card-gradient { 
-            background: var(--grad-yellow); padding: 25px; border-radius: 25px; 
-            color: #2d3748; box-shadow: var(--shadow-soft); margin-bottom: 20px; 
-        }
-        .card-white { 
-            background: var(--bg-card); padding: 15px; border-radius: 20px; 
-            box-shadow: var(--shadow-soft); margin-bottom: 10px; border: 1px solid var(--border-color); 
-        }
+        .card-gradient { background: var(--grad-yellow); padding: 25px; border-radius: 25px; color: #2d3748; box-shadow: var(--shadow-soft); margin-bottom: 20px; }
+        .card-white { background: var(--bg-card); padding: 15px; border-radius: 20px; box-shadow: var(--shadow-soft); margin-bottom: 10px; border: 1px solid var(--border-color); }
         
-        .avatar-circle { 
-            width: 45px; height: 45px; border-radius: 50%; background: #edf2f7; 
-            display: flex; align-items: center; justify-content: center; 
-            font-size: 1.5rem; line-height: 1; position: relative;
-        }
+        .avatar-circle { width: 45px; height: 45px; border-radius: 50%; background: #edf2f7; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; line-height: 1; position: relative; }
         
-        .status-dot {
-            position: absolute; bottom: 0; right: 0; width: 12px; height: 12px; 
-            border-radius: 50%; border: 2px solid var(--bg-card);
-        }
+        .status-dot { position: absolute; bottom: 0; right: 0; width: 12px; height: 12px; border-radius: 50%; border: 2px solid var(--bg-card); }
         .status-dot.online { background-color: var(--online-color); }
         .status-dot.offline { background-color: var(--offline-color); }
 
-        /* =========================================
-           GRILLES RÉACTIVES (S'ADAPTENT À L'ÉCRAN)
-           ========================================= */
-        /* Utilisation de auto-fit pour faire 2 colonnes sur mobile et 4+ sur PC */
         .shop-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 15px; margin-bottom: 20px; }
         .player-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; margin-top: 15px; }
         .role-tile-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 10px; margin-top: 10px; }
         
-        .shop-avatar-circle { 
-            width: 70px; height: 70px; border-radius: 50%; background: #edf2f7; 
-            display: flex; align-items: center; justify-content: center; 
-            font-size: 3rem; margin: 0 auto 10px auto; line-height: 1; 
-        }
+        .shop-avatar-circle { width: 70px; height: 70px; border-radius: 50%; background: #edf2f7; display: flex; align-items: center; justify-content: center; font-size: 3rem; margin: 0 auto 10px auto; line-height: 1; }
 
         /* =========================================
-           MESSAGERIE
-           ========================================= */
-        .chat-tabs { display: flex; gap: 10px; margin-bottom: 15px; }
-        .chat-tab { 
-            flex: 1; padding: 10px; text-align: center; background: var(--bg-card); 
-            border-radius: 12px; cursor: pointer; font-weight: 600; border: 1px solid var(--border-color); 
-        }
-        .chat-tab.active { background: var(--grad-purple); color: white; border: none; }
-
-        .chat-container { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px; }
-        .chat-msg { background: var(--bg-card); padding: 10px 15px; border-radius: 15px; border: 1px solid var(--border-color); width: fit-content; max-width: 85%; position: relative; }
-        .chat-msg.me { background: var(--grad-purple); color: white; align-self: flex-end; }
-        .chat-msg .author { font-size: 0.7rem; font-weight: bold; margin-bottom: 3px; opacity: 0.8; }
-        
-        .chat-del-btn { display: none; }
-        .admin-mode .chat-del-btn { 
-            display: block; position: absolute; top: -5px; right: -5px; background: red; 
-            color: white; border-radius: 50%; width: 20px; height: 20px; border: none; cursor: pointer; font-size: 10px; 
-        }
-
-        /* =========================================
-           PISTE DE COURSE (CONTEUR)
+           PISTE DE COURSE GEANTE (CONTEUR)
            ========================================= */
         .track-container { 
-            display: flex; overflow-x: auto; padding: 15px 5px; gap: 15px; 
-            scroll-snap-type: x mandatory; margin: 0 -10px; 
+            display: flex; 
+            overflow-x: auto; 
+            padding: 20px; 
+            gap: 20px; 
+            scroll-snap-type: x mandatory; 
+            width: 100%;
+            min-height: 320px; /* Force la piste à rester grande */
+            flex-shrink: 0; /* Empêche l'écrasement de l'écran */
+            background: rgba(0,0,0,0.03);
+            border-bottom: 2px solid var(--border-color);
         }
-        .track-container::-webkit-scrollbar { height: 8px; }
-        .track-container::-webkit-scrollbar-thumb { background: #b794f4; border-radius: 4px; }
+        .track-container::-webkit-scrollbar { height: 12px; }
+        .track-container::-webkit-scrollbar-thumb { background: #b794f4; border-radius: 6px; }
 
         .track-cell { 
-            min-width: 120px; height: 160px; background: var(--bg-card); border-radius: 20px; 
-            display: flex; flex-direction: column; align-items: center; scroll-snap-align: center; 
-            position: relative; padding: 10px; box-shadow: var(--shadow-soft); border: 1px solid var(--border-color);
+            min-width: 180px; /* Plus large sur PC */
+            height: 100%; 
+            background: var(--bg-card); 
+            border-radius: 20px; 
+            display: flex; flex-direction: column; align-items: center; 
+            scroll-snap-align: center; position: relative; padding: 15px; 
+            box-shadow: var(--shadow-soft); border: 2px solid var(--border-color);
         }
-        .cell-number { font-size: 2rem; color: var(--border-color); font-weight: 700; position: absolute; top: 10px; right: 10px; z-index: 0; }
+        .cell-number { font-size: 3rem; color: var(--border-color); font-weight: 700; position: absolute; top: 10px; right: 15px; z-index: 0; opacity: 0.5; }
         
-        .player-pions-group { display: flex; flex-wrap: wrap; justify-content: center; gap: 5px; margin-top: 25px; z-index: 1; width: 100%; max-height: 110px; overflow-y: auto; }
-        .player-pions-group::-webkit-scrollbar { display: none; }
-        
+        .player-pions-group { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 40px; z-index: 1; width: 100%; overflow-y: auto; }
         .pion-container { display: flex; flex-direction: column; align-items: center; cursor: pointer; position: relative; }
-        .pion { width: 40px; height: 40px; border-radius: 50%; background: var(--grad-purple); color: white; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-hover); border: 2px solid white; }
+        .pion { width: 50px; height: 50px; border-radius: 50%; background: var(--grad-purple); color: white; font-size: 1.5rem; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-hover); border: 3px solid white; }
         .pion.spectre { background: #cbd5e0; box-shadow: none; filter: grayscale(100%); opacity: 0.7; }
-        .pion-label { font-size: 0.65rem; font-weight: 600; color: var(--text-dark); margin-top: 2px; max-width: 50px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; }
-        .order-badge { position: absolute; top: -5px; right: -5px; background: #e74c3c; color: white; border-radius: 50%; width: 18px; height: 18px; font-size: 0.6rem; display: flex; align-items: center; justify-content: center; font-weight: bold; border: 2px solid white; z-index: 2; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+        .pion-label { font-size: 0.75rem; font-weight: 600; color: var(--text-dark); margin-top: 4px; max-width: 60px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; }
+        .order-badge { position: absolute; top: -5px; right: -5px; background: #e74c3c; color: white; border-radius: 50%; width: 22px; height: 22px; font-size: 0.7rem; display: flex; align-items: center; justify-content: center; font-weight: bold; border: 2px solid white; z-index: 2; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+
+        /* Ajustements petits (Grille) */
+        .adjust-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .adjust-card {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid var(--border-color);
+        }
 
         /* =========================================
            VUE JOUEUR & AUTRES
@@ -239,12 +204,20 @@
         #secret-position:active { transform: scale(0.98); }
         #secret-data { display: none; font-size: 1.8rem; background: var(--grad-blue); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-top: 10px; font-weight: 700; }
         
-        .timer-display { font-size: 3rem; font-weight: 700; background: var(--grad-purple); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-align: center; margin: 10px 0; }
+        .timer-display { font-size: 4rem; font-weight: 700; background: var(--grad-purple); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-align: center; margin: 10px 0; }
 
-        .role-tile { display: flex; align-items: center; background: var(--bg-card); padding: 15px; border-radius: 15px; border: 2px solid var(--border-color); cursor: pointer; transition: 0.2s; }
-        .role-tile:hover { border-color: #b794f4; }
-        .role-tile.selected { border-color: #b794f4; background: rgba(183, 148, 244, 0.1); }
-        .role-tile-icon { font-size: 2.5rem; margin-right: 15px; width: 50px; text-align: center; }
+        /* =========================================
+           MESSAGERIE
+           ========================================= */
+        .chat-tabs { display: flex; gap: 10px; margin-bottom: 15px; }
+        .chat-tab { flex: 1; padding: 10px; text-align: center; background: var(--bg-card); border-radius: 12px; cursor: pointer; font-weight: 600; border: 1px solid var(--border-color); }
+        .chat-tab.active { background: var(--grad-purple); color: white; border: none; }
+        .chat-container { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px; min-height: 300px; }
+        .chat-msg { background: var(--bg-card); padding: 10px 15px; border-radius: 15px; border: 1px solid var(--border-color); width: fit-content; max-width: 85%; position: relative; }
+        .chat-msg.me { background: var(--grad-purple); color: white; align-self: flex-end; }
+        .chat-msg .author { font-size: 0.7rem; font-weight: bold; margin-bottom: 3px; opacity: 0.8; }
+        .chat-del-btn { display: none; }
+        .admin-mode .chat-del-btn { display: block; position: absolute; top: -5px; right: -5px; background: red; color: white; border-radius: 50%; width: 20px; height: 20px; border: none; cursor: pointer; font-size: 10px; }
 
         /* =========================================
            ANIMATION VS & MODALS
@@ -254,7 +227,6 @@
         .slide-left { animation: slideInLeft 0.5s ease-out forwards; }
         .slide-right { animation: slideInRight 0.5s ease-out forwards; }
         .zoom-vs { font-size: 4rem; font-weight: 900; color: #f6e05e; text-shadow: 0 0 20px red; animation: zoomIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
-        
         @keyframes slideInLeft { from { transform: translateX(-200px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
         @keyframes slideInRight { from { transform: translateX(200px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
         @keyframes zoomIn { from { transform: scale(0); opacity: 0; } to { transform: scale(1); opacity: 1; } }
@@ -274,193 +246,223 @@
 
 <div id="app-container">
     
-    <!-- HEADER COMMUN -->
+    <!-- HEADER -->
     <header id="main-header" style="display: none;">
         <button class="back-btn" onclick="window.returnToMenu()">❮ Quitter</button>
         <span id="header-turn" style="font-weight:700; font-size:1.1rem; color: #b794f4;"></span>
         <div style="font-weight: 600; background: rgba(183,148,244,0.2); padding: 5px 10px; border-radius: 10px; color: #b794f4;">💎 <span id="ui-tokens">0</span></div>
     </header>
 
-    <!-- BOUTON ADMIN -->
     <div id="admin-panel-btn" onclick="window.openAdminPanel()">⚙️</div>
 
-    <!-- ÉCRAN: LOGIN -->
-    <div id="screen-login" class="screen active" style="justify-content: center;">
-        <div style="text-align: center; margin-bottom: 30px;">
-            <div style="font-size: 4rem; margin-bottom: 10px;">🌙</div>
-            <h1 style="background: var(--grad-purple); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">L'Échappée</h1>
-            <p class="text-muted">Des Ombres</p>
+    <!-- NOTIFICATION D'INVITATION -->
+    <div id="invite-notification" class="notification-toast">
+        <h4 style="color: white; margin-bottom: 5px;">Nouvelle Invitation !</h4>
+        <p id="invite-text" style="font-size: 0.9rem; margin-bottom: 10px;">Quelqu'un vous invite à jouer.</p>
+        <div style="display: flex; gap: 10px; justify-content: center;">
+            <button class="btn small" style="background: white; color: #4fd1c5;" onclick="window.acceptInvite()">Accepter</button>
+            <button class="btn small outline" style="border-color: white; color: white;" onclick="window.closeInvite()">Refuser</button>
         </div>
-        
-        <input type="email" id="login-email" class="input-field" placeholder="Email (ex: joueur@gmail.com)">
-        <input type="password" id="login-pass" class="input-field" placeholder="Mot de passe">
-        
-        <button class="btn" onclick="window.login('email')">Connexion Email</button>
-        <button class="btn outline" style="color: var(--text-dark); border-color: var(--border-color);" onclick="window.loginGoogle()">🌐 Continuer avec Google</button>
-        
-        <div style="text-align: center; margin: 15px 0; color: var(--text-muted);">OU</div>
-        
-        <!-- Connexion Invité (Sans vérification de mot de passe) -->
-        <button class="btn" style="background: #a0aec0;" onclick="window.login('guest')">Jouer en Invité</button>
+    </div>
+
+    <!-- ÉCRAN: LOGIN -->
+    <div id="screen-login" class="screen active" style="justify-content: center; align-items: center;">
+        <div class="content-wrapper">
+            <div style="text-align: center; margin-bottom: 30px;">
+                <div style="font-size: 5rem; margin-bottom: 10px;">🌙</div>
+                <h1 style="background: var(--grad-purple); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 2.5rem;">L'Échappée</h1>
+            </div>
+            
+            <div class="card-white" style="padding: 30px;">
+                <input type="email" id="login-email" class="input-field" placeholder="Email (ex: joueur@gmail.com)">
+                <input type="password" id="login-pass" class="input-field" placeholder="Mot de passe">
+                
+                <button class="btn" onclick="window.login('email')">Connexion Email</button>
+                <button class="btn outline" style="color: var(--text-dark); border-color: var(--border-color);" onclick="window.loginGoogle()">🌐 Continuer avec Google</button>
+                
+                <div style="text-align: center; margin: 15px 0; color: var(--text-muted);">OU</div>
+                <button class="btn" style="background: #a0aec0;" onclick="window.login('guest')">Jouer en Invité</button>
+            </div>
+        </div>
     </div>
 
     <!-- ÉCRAN: ACCUEIL -->
     <div id="screen-home" class="screen">
-        <div class="card-gradient">
-            <p style="margin: 0; font-size: 0.9rem; opacity: 0.8;" id="welcome-text">Bienvenue,</p>
-            <h2 style="margin: 5px 0 15px 0;" id="home-username">Joueur</h2>
-            <p style="margin:0; font-size:0.8rem; font-weight:600;" id="home-title">Novice</p>
+        <div class="content-wrapper">
+            <div class="card-gradient">
+                <p style="margin: 0; font-size: 0.9rem; opacity: 0.8;" id="welcome-text">Bienvenue,</p>
+                <h2 style="margin: 5px 0 15px 0; font-size: 2rem;" id="home-username">Joueur</h2>
+                <p style="margin:0; font-size:1rem; font-weight:600;" id="home-title">Novice</p>
+            </div>
+            <button class="btn" onclick="window.initRoom()">➕ Créer un Salon</button>
+            <button class="btn outline" onclick="alert('Recherche de salon...')">🔍 Rejoindre (Code)</button>
         </div>
-        <button class="btn" onclick="window.initRoom()">➕ Créer un Salon</button>
-        <button class="btn outline" onclick="alert('Bientôt disponible !')">🔍 Rejoindre (Code)</button>
     </div>
 
     <!-- ÉCRAN: MESSAGERIE -->
     <div id="screen-chat" class="screen">
-        <h2>💬 Messagerie</h2>
-        
-        <div class="chat-tabs">
-            <div class="chat-tab active" id="tab-chat-global" onclick="window.switchChatMode('global')">Global</div>
-            <div class="chat-tab" id="tab-chat-private" onclick="window.switchChatMode('private')">Privé</div>
-        </div>
+        <div class="content-wrapper" style="display: flex; flex-direction: column; height: 100%;">
+            <h2>💬 Messagerie</h2>
+            
+            <div class="chat-tabs">
+                <div class="chat-tab active" id="tab-chat-global" onclick="window.switchChatMode('global')">Global</div>
+                <div class="chat-tab" id="tab-chat-private" onclick="window.switchChatMode('private')">Privé</div>
+            </div>
 
-        <div id="chat-private-selector" style="display: none; margin-bottom: 10px;">
-            <select id="private-friend-select" onchange="window.loadChat()">
-                <option value="">-- Sélectionnez un ami --</option>
-            </select>
-        </div>
+            <div id="chat-private-selector" style="display: none; margin-bottom: 10px;">
+                <select id="private-friend-select" onchange="window.loadChat()">
+                    <option value="">-- Sélectionnez un ami --</option>
+                </select>
+            </div>
 
-        <div class="chat-container" id="chat-messages"></div>
-        
-        <div style="display: flex; gap: 10px;">
-            <input type="text" id="chat-input" class="input-field" style="margin:0;" placeholder="Message...">
-            <button class="btn small" onclick="window.sendChatMessage()">Envoyer</button>
+            <div class="chat-container" id="chat-messages"></div>
+            
+            <div style="display: flex; gap: 10px; flex-shrink: 0;">
+                <input type="text" id="chat-input" class="input-field" style="margin:0;" placeholder="Message...">
+                <button class="btn small" style="padding: 0 25px;" onclick="window.sendChatMessage()">Envoyer</button>
+            </div>
         </div>
     </div>
 
     <!-- ÉCRAN: BOUTIQUE -->
     <div id="screen-shop" class="screen">
-        <h2 style="text-align: center; color: #f6e05e;">Boutique</h2>
-        <p style="text-align:center; margin-bottom:20px;" class="text-muted">Dépensez vos 💎 pour briller.</p>
-        
-        <h4>Avatars</h4>
-        <div class="shop-grid" id="shop-avatars"></div>
-        
-        <h4>Titres Honorifiques</h4>
-        <div id="shop-titles"></div>
+        <div class="content-wrapper">
+            <h2 style="text-align: center; color: #f6e05e;">Boutique</h2>
+            <p style="text-align:center; margin-bottom:20px;" class="text-muted">Dépensez vos 💎 pour briller.</p>
+            
+            <h4>Avatars</h4>
+            <div class="shop-grid" id="shop-avatars"></div>
+            
+            <h4>Titres Honorifiques</h4>
+            <div id="shop-titles"></div>
+        </div>
     </div>
 
     <!-- ÉCRAN: PROFIL & AMIS -->
     <div id="screen-profile" class="screen">
-        <div style="text-align: center; margin-bottom: 20px;">
-            <div class="avatar-circle" id="profile-avatar" style="width: 80px; height: 80px; margin: 0 auto 10px auto; font-size: 3rem;">👤</div>
-            <h2 id="profile-name">Pseudo</h2>
-            <p class="text-muted" id="profile-title" style="font-weight:600;">Titre Actuel</p>
-        </div>
-        
-        <div class="card-white" style="text-align: center;">
-            <p style="margin:0;">Code Ami : <strong style="color: #b794f4; letter-spacing: 2px;" id="profile-friend-code">XXXX</strong></p>
-        </div>
+        <div class="content-wrapper">
+            <div style="text-align: center; margin-bottom: 20px;">
+                <div class="avatar-circle" id="profile-avatar" style="width: 100px; height: 100px; margin: 0 auto 10px auto; font-size: 4rem;">👤</div>
+                <h2 id="profile-name">Pseudo</h2>
+                <p class="text-muted" id="profile-title" style="font-weight:600;">Titre Actuel</p>
+            </div>
+            
+            <div class="card-white" style="text-align: center;">
+                <p style="margin:0;">Code Ami : <strong style="color: #b794f4; letter-spacing: 2px;" id="profile-friend-code">XXXX</strong></p>
+            </div>
 
-        <h4 style="margin-top: 15px;">Liste d'Amis</h4>
-        <div id="friends-list-container" style="max-height: 150px; overflow-y: auto; margin-bottom: 15px;"></div>
+            <h4 style="margin-top: 15px;">Liste d'Amis</h4>
+            <div id="friends-list-container" style="max-height: 200px; overflow-y: auto; margin-bottom: 15px;"></div>
 
-        <div style="display: flex; gap: 10px;">
-            <input type="text" id="add-friend-input" class="input-field" placeholder="Code (4 chiffres)" maxlength="4" style="margin:0;">
-            <button class="btn small outline" onclick="window.addFriend()">Ajouter</button>
-        </div>
+            <div style="display: flex; gap: 10px;">
+                <input type="text" id="add-friend-input" class="input-field" placeholder="Code (4 chiffres)" maxlength="4" style="margin:0;">
+                <button class="btn small outline" onclick="window.addFriend()">Ajouter</button>
+            </div>
 
-        <h4 style="margin-top: 15px;">Paramètres</h4>
-        <div class="card-white" style="display:flex; justify-content:space-between; align-items:center;">
-            <span>Mode Nuit</span>
-            <button class="btn small" onclick="window.toggleTheme()" id="btn-theme">Désactivé</button>
+            <h4 style="margin-top: 25px;">Paramètres</h4>
+            <div class="card-white" style="display:flex; justify-content:space-between; align-items:center;">
+                <span>Mode Nuit</span>
+                <button class="btn small" onclick="window.toggleTheme()" id="btn-theme">Désactivé</button>
+            </div>
+            <button class="btn danger outline" onclick="window.logout()">Déconnexion</button>
         </div>
-        <button class="btn danger outline" onclick="window.logout()">Déconnexion</button>
     </div>
 
     <!-- ÉCRAN: SALON (ATTENTE) -->
     <div id="screen-room" class="screen">
-        <h2>Préparation</h2>
-        <p class="text-muted">Gérez les joueurs et invitez vos amis.</p>
-        
-        <div id="room-players-list" style="margin-bottom: 15px;"></div>
-        
-        <div style="display: flex; gap: 10px; margin-bottom: 15px;">
-            <button class="btn outline small" style="flex:1;" onclick="window.addBot()">+ Bot</button>
-            <button class="btn small" style="background:var(--border-color); color:var(--text-dark); flex:1;" onclick="window.removeBot()">- Bot</button>
+        <div class="content-wrapper" style="display:flex; flex-direction:column; height:100%;">
+            <h2>Préparation</h2>
+            <p class="text-muted">Gérez les joueurs et invitez vos amis.</p>
+            
+            <div id="room-players-list" style="margin-bottom: 15px; flex:1; overflow-y:auto;"></div>
+            
+            <div style="display: flex; gap: 10px; margin-bottom: 15px; flex-shrink:0;">
+                <button class="btn outline small" style="flex:1;" onclick="window.addBot()">+ Bot</button>
+                <button class="btn small" style="background:var(--border-color); color:var(--text-dark); flex:1;" onclick="window.removeBot()">- Bot</button>
+            </div>
+
+            <button class="btn outline small" style="margin-bottom: 15px; flex-shrink:0;" onclick="window.inviteFriendsToRoom()">📨 Inviter vos Amis</button>
+
+            <button class="btn blue" style="display: flex; align-items: center; justify-content: center; gap: 10px; flex-shrink:0;" onclick="window.openRolesSelection()">
+                <span style="font-size: 1.5rem;">🎭</span> Configurer les Rôles (<span id="role-count">22</span>)
+            </button>
+            
+            <button class="btn success" style="margin-top: 15px; font-size: 1.1rem; padding: 20px; flex-shrink:0;" onclick="window.startGame()">LANCER LA PARTIE</button>
         </div>
-
-        <button class="btn outline small" style="margin-bottom: 15px;" onclick="window.inviteFriendsToRoom()">📨 Inviter vos Amis</button>
-
-        <button class="btn blue" style="display: flex; align-items: center; justify-content: center; gap: 10px;" onclick="window.openRolesSelection()">
-            <span style="font-size: 1.5rem;">🎭</span> Configurer les Rôles (<span id="role-count">22</span>)
-        </button>
-        
-        <button class="btn success" style="margin-top: auto; font-size: 1.1rem; padding: 20px;" onclick="window.startGame()">LANCER LA PARTIE</button>
     </div>
 
     <!-- ÉCRAN: VUE CONTEUR -->
-    <div id="screen-conteur" class="screen">
-        <div class="card-gradient" style="background: var(--grad-blue); text-align: center; padding: 15px;">
-            <h3 id="conteur-phase-title" style="color: white; margin:0;">Mode Conteur</h3>
+    <!-- Pas de content-wrapper ici pour que la piste puisse s'étendre sur toute la page -->
+    <div id="screen-conteur" class="screen" style="padding: 0;">
+        <div style="background: var(--grad-blue); text-align: center; padding: 15px; color: white;">
+            <h3 id="conteur-phase-title" style="margin:0;">Mode Conteur</h3>
         </div>
         
+        <!-- PISTE GEANTE -->
         <div class="track-container" id="conteur-track"></div>
         
-        <div id="conteur-night-tools" style="margin-top: 15px; display:none;">
-            <h4 style="margin-bottom: 10px;">Ajustements (Nuit) :</h4>
-            <div id="conteur-pos-adjust"></div>
-        </div>
+        <!-- Section du bas centré -->
+        <div style="padding: 20px; flex: 1; overflow-y: auto;">
+            <div class="content-wrapper">
+                
+                <!-- Ajustements des positions (Nuit) -->
+                <div id="conteur-night-tools" style="display:none;">
+                    <h4>Ajustements (Nuit) :</h4>
+                    <div id="conteur-pos-adjust" class="adjust-grid"></div>
+                </div>
 
-        <div id="conteur-day-tools" class="card-white" style="display: none; margin-top: 15px; flex-direction: column; align-items: center;">
-            <h4 style="margin-bottom:10px;">Chronomètre</h4>
-            <div style="display: flex; gap: 10px; width: 100%;">
-                <select id="timer-select" style="margin: 0; flex: 1;">
-                    <option value="30">30 Sec</option>
-                    <option value="60" selected>1 Min</option>
-                    <option value="120">2 Min</option>
-                </select>
-                <button class="btn small outline" onclick="window.startTimer(document.getElementById('timer-select').value)">Lancer</button>
+                <!-- Chrono Personnalisé (Jour) -->
+                <div id="conteur-day-tools" class="card-white" style="display: none; flex-direction: column; align-items: center; margin-top: 15px;">
+                    <h4 style="margin-bottom:15px;">Chronomètre du Débat</h4>
+                    <div style="display: flex; gap: 10px; align-items: center; justify-content: center;">
+                        <input type="number" id="timer-min" class="input-field" value="1" min="0" style="width: 80px; margin:0; text-align:center;">
+                        <span style="font-weight:bold; font-size:1.5rem;">:</span>
+                        <input type="number" id="timer-sec" class="input-field" value="0" min="0" max="59" style="width: 80px; margin:0; text-align:center;">
+                        <button class="btn small outline" style="padding: 0 20px;" onclick="window.startCustomTimer()">Lancer</button>
+                    </div>
+                    <div id="conteur-timer" class="timer-display">00:00</div>
+                </div>
+                
+                <div id="conteur-controls-container" style="margin-top: 20px;"></div>
+
+                <div style="display: flex; gap: 10px; margin-top: 20px;">
+                    <button class="btn danger small" style="flex:1;" onclick="window.endGame(false)">Victoire Mal</button>
+                    <button class="btn success small" style="flex:1;" onclick="window.endGame(true)">Victoire Bien</button>
+                </div>
+
             </div>
-            <div id="conteur-timer" class="timer-display" style="font-size:2rem;">00:00</div>
-        </div>
-        
-        <div id="conteur-controls-container" style="margin-top: 10px;"></div>
-
-        <div style="display: flex; gap: 10px; margin-top: 20px;">
-            <button class="btn danger small" style="flex:1;" onclick="window.endGame(false)">Victoire Mal</button>
-            <button class="btn success small" style="flex:1;" onclick="window.endGame(true)">Victoire Bien</button>
         </div>
     </div>
 
     <!-- ÉCRAN: VUE JOUEUR -->
     <div id="screen-player" class="screen">
-        <h3 id="player-phase-title" style="text-align: center; color: #b794f4;">Phase</h3>
-        <p id="player-phase-desc" style="text-align:center; margin-top:5px;"></p>
-        
-        <div id="player-role-display" class="card-gradient" style="background: var(--grad-purple); text-align: center; padding: 20px; display: none; flex-direction: column; align-items: center;">
-            <p style="margin: 0; color: rgba(255,255,255,0.8); font-size:0.9rem;">Votre Rôle Secret</p>
-            <div id="player-role-emoji" style="font-size: 3rem; margin: 5px 0;">❓</div>
-            <h3 id="player-role-name" style="color: white; font-size: 1.2rem; margin-top: 5px;">-</h3>
-            <div style="background: rgba(0,0,0,0.2); padding: 10px; border-radius: 10px; margin-top: 15px; color: white;">
-                <p style="font-weight: bold; margin-bottom: 5px;">Vitesse de base : <span id="player-role-speed">0</span></p>
-                <p style="font-size: 0.85rem;" id="player-role-desc">Description</p>
+        <div class="content-wrapper">
+            <h3 id="player-phase-title" style="text-align: center; color: #b794f4; font-size:1.8rem;">Phase</h3>
+            <p id="player-phase-desc" style="text-align:center; margin-top:5px; margin-bottom:20px;"></p>
+            
+            <div id="player-role-display" class="card-gradient" style="background: var(--grad-purple); text-align: center; padding: 20px; display: none; flex-direction: column; align-items: center;">
+                <p style="margin: 0; color: rgba(255,255,255,0.8); font-size:0.9rem;">Votre Rôle Secret</p>
+                <div id="player-role-emoji" style="font-size: 4rem; margin: 10px 0;">❓</div>
+                <h3 id="player-role-name" style="color: white; font-size: 1.5rem; margin-top: 5px;">-</h3>
+                <div style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 15px; margin-top: 15px; color: white; width:100%;">
+                    <p style="font-weight: bold; margin-bottom: 5px;">Vitesse de base : <span id="player-role-speed" style="color:#f6e05e;">0</span></p>
+                    <p style="font-size: 0.9rem;" id="player-role-desc">Description</p>
+                </div>
             </div>
-        </div>
 
-        <div id="player-day-grid" class="player-grid" style="display:none;"></div>
-        
-        <div id="secret-position" onmousedown="window.revealPosition(true)" onmouseup="window.revealPosition(false)" ontouchstart="window.revealPosition(true)" ontouchend="window.revealPosition(false)">
-            <span style="font-size:2rem; display:block; margin-bottom:10px;">👁️</span>
-            Maintenir pour voir ma case
-            <div id="secret-data">Case 0</div>
+            <div id="player-day-grid" class="player-grid" style="display:none;"></div>
+            
+            <div id="secret-position" style="margin-top: 25px;" onmousedown="window.revealPosition(true)" onmouseup="window.revealPosition(false)" ontouchstart="window.revealPosition(true)" ontouchend="window.revealPosition(false)">
+                <span style="font-size:2.5rem; display:block; margin-bottom:10px;">👁️</span>
+                Maintenir pour voir ma case
+                <div id="secret-data">Case 0</div>
+            </div>
         </div>
     </div>
 
     <!-- =========================================
          OVERLAYS ET MODALS
          ========================================= -->
-    
     <div id="vs-overlay">
         <div class="vs-avatar slide-left" id="vs-accuser">🦊</div>
         <div class="zoom-vs">VS</div>
@@ -468,7 +470,7 @@
     </div>
 
     <div id="modal-vote" class="modal">
-        <div class="card-white" style="text-align: center; margin: auto; padding:30px;">
+        <div class="card-white" style="text-align: center; margin: auto; padding:30px; max-width: 400px;">
             <h2>Phase de Vote</h2>
             <p>Voulez-vous éliminer <strong id="vote-target-name">Joueur</strong> ?</p>
             <div style="display: flex; gap: 15px; margin-top: 20px;">
@@ -479,7 +481,7 @@
     </div>
 
     <div id="modal-role-selection" class="modal">
-        <div class="card-white" style="flex: 1; display: flex; flex-direction: column; overflow: hidden; margin:0; padding:20px;">
+        <div class="card-white" style="flex: 1; display: flex; flex-direction: column; overflow: hidden; margin:auto; max-width:800px; width:100%; height:90%;">
             <h2 style="margin-bottom:10px;">Rôles disponibles</h2>
             <div class="role-tile-grid" id="role-tile-container" style="flex: 1; overflow-y: auto;"></div>
             <button class="btn" style="margin-top:15px;" onclick="window.closeRolesSelection()">Valider</button>
@@ -487,10 +489,10 @@
     </div>
 
     <div id="modal-daily" class="modal">
-        <div class="card-white" style="text-align: center; margin:auto; padding:30px;">
+        <div class="card-white" style="text-align: center; margin:auto; padding:40px; max-width:400px;">
             <h2>🎁 Bonus Quotidien !</h2>
             <p>Jour <span id="daily-day">1</span> de connexion.</p>
-            <h1 style="color: #f6e05e; font-size: 3rem; margin: 15px 0;">+<span id="daily-amount">10</span> 💎</h1>
+            <h1 style="color: #f6e05e; font-size: 4rem; margin: 15px 0;">+<span id="daily-amount">10</span> 💎</h1>
             <button class="btn" onclick="document.getElementById('modal-daily').classList.remove('active')">Récupérer</button>
         </div>
     </div>
@@ -508,7 +510,7 @@
     </div>
 
     <div id="modal-admin" class="modal">
-        <div class="card-white" style="margin:auto; width: 100%; max-width:350px;">
+        <div class="card-white" style="margin:auto; width: 100%; max-width:400px;">
             <h2 style="color: #e53e3e; text-align:center;">⚙️ Panneau Admin</h2>
             <h4 style="margin-top:20px;">Ajouter à la boutique</h4>
             <select id="admin-item-type">
@@ -525,16 +527,6 @@
             <button class="btn danger" onclick="window.adminClearChat()">Vider le Chat Global</button>
             
             <button class="btn" style="background:var(--bg-app); color:var(--text-dark); margin-top:15px;" onclick="document.getElementById('modal-admin').classList.remove('active')">Fermer</button>
-        </div>
-    </div>
-
-    <!-- NOTIFICATION D'INVITATION (Flottante) -->
-    <div id="invite-notification" class="notification-toast">
-        <h4 style="color: white; margin-bottom: 5px;">Nouvelle Invitation !</h4>
-        <p id="invite-text" style="font-size: 0.9rem; margin-bottom: 10px;">Quelqu'un vous invite à jouer.</p>
-        <div style="display: flex; gap: 10px; justify-content: center;">
-            <button class="btn small" style="background: white; color: #4fd1c5;" onclick="window.acceptInvite()">Accepter</button>
-            <button class="btn small outline" style="border-color: white; color: white;" onclick="window.closeInvite()">Refuser</button>
         </div>
     </div>
 
@@ -623,7 +615,7 @@
        CONNEXION ET RÉCOMPENSES
        ========================================= */
     window.loginGoogle = async function() {
-        if (!auth) return alert("Firebase n'est pas initialisé (mode local).");
+        if (!auth) return alert("Firebase n'est pas initialisé (vérifiez votre domaine sur Firebase Console).");
         const provider = new GoogleAuthProvider();
         try {
             const result = await signInWithPopup(auth, provider);
@@ -645,7 +637,6 @@
             let email = document.getElementById('login-email').value;
             let pass = document.getElementById('login-pass').value;
             
-            // VALIDATION : Empêche la connexion si les champs sont vides
             if(!email || email.trim() === '') return alert("Veuillez entrer une adresse email valide.");
             if(!pass || pass.trim() === '') return alert("Veuillez entrer un mot de passe.");
             
@@ -889,17 +880,16 @@
     window.inviteFriendsToRoom = function() {
         if(user.friends.length === 0) return alert("Vous n'avez pas d'amis à inviter !");
         
-        // MOCK : Au lieu d'envoyer, on simule que l'invitation a marché et qu'un ami rejoint
-        alert("Invitations envoyées !");
-        setTimeout(() => {
-            let onlineFriend = user.friends[0];
-            if(onlineFriend) {
-                players.push({ id: players.length, name: onlineFriend.name, isConteur: false, isSpectre: false, role: '', avatar: onlineFriend.avatar, pos: 0 });
-                window.renderRoomList();
-                alert(`${onlineFriend.name} a rejoint le salon !`);
-            }
-        }, 1500);
+        // MOCK : Simule qu'une invitation a été envoyée
+        alert("Invitations envoyées à vos amis !");
     };
+
+    window.acceptInvite = function() {
+        document.getElementById('invite-notification').classList.remove('show');
+        window.initRoom();
+        window.addBot(); // Simule un ami rejoignant
+    };
+    window.closeInvite = function() { document.getElementById('invite-notification').classList.remove('show'); };
 
     /* =========================================
        SÉLECTION DES RÔLES
@@ -1024,8 +1014,16 @@
         window.triggerPhase('nuit');
     };
 
-    window.startTimer = function(secStr) {
-        let sec = parseInt(secStr); clearInterval(gameInterval);
+    /* --- CHRONO PERSONNALISÉ (CONTEUR) --- */
+    window.startCustomTimer = function() {
+        let m = parseInt(document.getElementById('timer-min').value) || 0;
+        let s = parseInt(document.getElementById('timer-sec').value) || 0;
+        let totalSec = (m * 60) + s;
+        if(totalSec > 0) window.startTimer(totalSec);
+    };
+
+    window.startTimer = function(sec) {
+        clearInterval(gameInterval);
         let disp = document.getElementById('conteur-timer');
         gameInterval = setInterval(() => {
             let m = Math.floor(sec/60).toString().padStart(2,'0'); let s = (sec%60).toString().padStart(2,'0');
@@ -1053,7 +1051,7 @@
         const div = document.getElementById('conteur-pos-adjust'); div.innerHTML = '';
         players.filter(p => !p.isConteur).forEach(p => {
             let roleEmoji = rolesDB.find(r => r.name === p.role)?.emoji || '❓';
-            div.innerHTML += `<div class="card-white" style="margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
+            div.innerHTML += `<div class="adjust-card">
                 <span style="font-weight:600; font-size:0.85rem;">${roleEmoji} ${p.name} ${p.isSpectre?'👻':''}</span>
                 <div style="display:flex; align-items:center;">
                     <button class="btn small outline" onclick="window.changePos(${p.id}, -1)">-</button>
@@ -1105,7 +1103,7 @@
         livingPlayers.forEach(p => { if(p.id !== 0 && Math.random() > 0.5) yesCount++; }); // Simulate bots
 
         let required = Math.ceil(livingPlayers.length / 2);
-        alert(`Résultat : ${yesCount} OUI (Minimum : ${required})`);
+        alert(`Résultat : ${yesCount} OUI (Minimum requis : ${required})`);
 
         if (yesCount >= required) {
             if (yesCount > currentExecutionTarget.votes) { currentExecutionTarget = { id: tempAccusedId, votes: yesCount }; alert("Nouveau record ! Sur la sellette 💀."); } 
