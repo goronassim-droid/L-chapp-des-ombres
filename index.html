@@ -7,112 +7,478 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     
     <style>
-        /* VARIABLES THEMES */
+        /* =========================================
+           VARIABLES ET THÈMES
+           ========================================= */
         :root {
-            --bg-app: #f4f7fc; --bg-card: #ffffff;
-            --text-dark: #2d3748; --text-muted: #a0aec0;
+            --bg-app: #f4f7fc;
+            --bg-card: #ffffff;
+            --text-dark: #2d3748;
+            --text-muted: #a0aec0;
             --grad-purple: linear-gradient(135deg, #b794f4, #f687b3);
             --grad-blue: linear-gradient(135deg, #63b3ed, #4fd1c5);
             --grad-yellow: linear-gradient(135deg, #fbd38d, #f6e05e);
             --shadow-soft: 0 10px 25px rgba(0, 0, 0, 0.05);
             --shadow-hover: 0 15px 35px rgba(183, 148, 244, 0.3);
             --border-color: #e2e8f0;
+            --online-color: #48bb78;
+            --offline-color: #f56565;
         }
+
         body[data-theme="dark"] {
-            --bg-app: #12121c; --bg-card: #1e1e2f;
-            --text-dark: #f5f6fa; --text-muted: #718096;
+            --bg-app: #12121c;
+            --bg-card: #1e1e2f;
+            --text-dark: #f5f6fa;
+            --text-muted: #718096;
             --shadow-soft: 0 10px 25px rgba(0, 0, 0, 0.4);
             --border-color: #2d3748;
             --grad-purple: linear-gradient(135deg, #805ad5, #d53f8c);
         }
 
-        /* BASES */
+        /* =========================================
+           BASE ET LAYOUT
+           ========================================= */
         * { box-sizing: border-box; }
-        body { margin: 0; font-family: 'Poppins', sans-serif; background-color: #cbd5e0; color: var(--text-dark); display: flex; justify-content: center; height: 100vh; overflow: hidden; transition: background 0.3s; }
-        #app-container { width: 100%; max-width: 400px; height: 100%; display: flex; flex-direction: column; background-color: var(--bg-app); box-shadow: 0 0 30px rgba(0,0,0,0.3); position: relative; transition: background 0.3s; }
+        
+        body { 
+            margin: 0; 
+            font-family: 'Poppins', sans-serif; 
+            background-color: #cbd5e0; 
+            color: var(--text-dark); 
+            display: flex; 
+            justify-content: center; 
+            height: 100vh; 
+            overflow: hidden; 
+            transition: background 0.3s; 
+        }
+        
+        #app-container { 
+            width: 100%; 
+            max-width: 400px; 
+            height: 100%; 
+            display: flex; 
+            flex-direction: column; 
+            background-color: var(--bg-app); 
+            box-shadow: 0 0 30px rgba(0,0,0,0.3); 
+            position: relative; 
+            transition: background 0.3s; 
+        }
+        
         h1, h2, h3, h4, h5 { margin: 0; color: var(--text-dark); }
+        p { margin: 0; }
         .text-muted { color: var(--text-muted); font-size: 0.85rem; }
         
         .screen { display: none; flex: 1; overflow-y: auto; padding: 25px 20px; }
         .screen.active { display: flex; flex-direction: column; }
 
-        /* BOUTONS & INPUTS */
-        .btn { background: var(--grad-purple); color: white; border: none; padding: 15px; margin: 10px 0; border-radius: 20px; font-size: 1rem; font-weight: 600; cursor: pointer; text-align: center; width: 100%; box-shadow: var(--shadow-soft); transition: 0.3s; }
+        /* =========================================
+           BOUTONS ET INPUTS
+           ========================================= */
+        .btn { 
+            background: var(--grad-purple); 
+            color: white; 
+            border: none; 
+            padding: 15px; 
+            margin: 10px 0; 
+            border-radius: 20px; 
+            font-size: 1rem; 
+            font-weight: 600; 
+            cursor: pointer; 
+            text-align: center; 
+            width: 100%; 
+            box-shadow: var(--shadow-soft); 
+            transition: 0.3s; 
+        }
         .btn:active { transform: scale(0.97); }
         .btn.outline { background: transparent; color: #b794f4; border: 2px solid #b794f4; }
         .btn.small { padding: 8px 15px; font-size: 0.8rem; width: auto; margin:0; border-radius: 12px; }
         .btn.danger { background: #fc8181; }
         .btn.blue { background: var(--grad-blue); }
         .btn.admin { background: linear-gradient(135deg, #e53e3e, #dd6b20); color: white; }
+        .btn.success { background: var(--online-color); }
 
-        .input-field, select { width: 100%; padding: 15px; margin-bottom: 10px; border-radius: 15px; border: 2px solid var(--border-color); background: var(--bg-card); color: var(--text-dark); font-family: inherit; font-size: 0.9rem; outline: none; }
-        .input-field:focus { border-color: #b794f4; }
+        .input-field, select { 
+            width: 100%; 
+            padding: 15px; 
+            margin-bottom: 10px; 
+            border-radius: 15px; 
+            border: 2px solid var(--border-color); 
+            background: var(--bg-card); 
+            color: var(--text-dark); 
+            font-family: inherit; 
+            font-size: 0.9rem; 
+            outline: none; 
+        }
+        .input-field:focus, select:focus { border-color: #b794f4; }
 
-        /* HEADER & NAVBAR */
-        header { padding: 20px; display: flex; justify-content: space-between; align-items: center; background: transparent; z-index: 10; }
-        .back-btn { background: var(--bg-card); border: none; padding: 10px 15px; border-radius: 15px; color: var(--text-dark); font-weight: 600; cursor: pointer; box-shadow: var(--shadow-soft); display: none; }
-        nav { display: flex; background: var(--bg-card); padding: 15px 10px; border-radius: 30px 30px 0 0; box-shadow: 0 -10px 25px rgba(0,0,0,0.05); z-index: 10; border-top: 1px solid var(--border-color); }
-        nav button { flex: 1; background: none; border: none; color: var(--text-muted); font-size: 1.5rem; cursor: pointer; transition: 0.3s; }
+        /* =========================================
+           HEADER ET NAVIGATION
+           ========================================= */
+        header { 
+            padding: 20px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            background: transparent; 
+            z-index: 10; 
+        }
+        .back-btn { 
+            background: var(--bg-card); 
+            border: none; 
+            padding: 10px 15px; 
+            border-radius: 15px; 
+            color: var(--text-dark); 
+            font-weight: 600; 
+            cursor: pointer; 
+            box-shadow: var(--shadow-soft); 
+            display: none; 
+        }
+        
+        nav { 
+            display: flex; 
+            background: var(--bg-card); 
+            padding: 15px 10px; 
+            border-radius: 30px 30px 0 0; 
+            box-shadow: 0 -10px 25px rgba(0,0,0,0.05); 
+            z-index: 10; 
+            border-top: 1px solid var(--border-color); 
+        }
+        nav button { 
+            flex: 1; 
+            background: none; 
+            border: none; 
+            color: var(--text-muted); 
+            font-size: 1.5rem; 
+            cursor: pointer; 
+            transition: 0.3s; 
+        }
         nav button.active { color: #b794f4; transform: translateY(-5px); }
 
-        /* CARDS & AVATARS */
-        .card-gradient { background: var(--grad-yellow); padding: 25px; border-radius: 25px; color: #2d3748; box-shadow: var(--shadow-soft); margin-bottom: 20px; }
-        .card-white { background: var(--bg-card); padding: 15px; border-radius: 20px; box-shadow: var(--shadow-soft); margin-bottom: 10px; border: 1px solid var(--border-color); }
-        .avatar-circle { width: 45px; height: 45px; border-radius: 50%; background: #edf2f7; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; line-height: 1; }
+        /* =========================================
+           CARTES ET AVATARS
+           ========================================= */
+        .card-gradient { 
+            background: var(--grad-yellow); 
+            padding: 25px; 
+            border-radius: 25px; 
+            color: #2d3748; 
+            box-shadow: var(--shadow-soft); 
+            margin-bottom: 20px; 
+        }
+        .card-white { 
+            background: var(--bg-card); 
+            padding: 15px; 
+            border-radius: 20px; 
+            box-shadow: var(--shadow-soft); 
+            margin-bottom: 10px; 
+            border: 1px solid var(--border-color); 
+        }
+        
+        .avatar-circle { 
+            width: 45px; 
+            height: 45px; 
+            border-radius: 50%; 
+            background: #edf2f7; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-size: 1.5rem; 
+            line-height: 1; 
+            position: relative;
+        }
+        
+        .status-dot {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            border: 2px solid var(--bg-card);
+        }
+        .status-dot.online { background-color: var(--online-color); }
+        .status-dot.offline { background-color: var(--offline-color); }
 
-        /* BOUTIQUE */
-        .shop-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 20px; }
-        .shop-avatar-circle { width: 70px; height: 70px; border-radius: 50%; background: #edf2f7; display: flex; align-items: center; justify-content: center; font-size: 3rem; margin: 0 auto 10px auto; line-height: 1; }
+        /* =========================================
+           BOUTIQUE
+           ========================================= */
+        .shop-grid { 
+            display: grid; 
+            grid-template-columns: repeat(2, 1fr); 
+            gap: 15px; 
+            margin-bottom: 20px; 
+        }
+        .shop-avatar-circle { 
+            width: 70px; 
+            height: 70px; 
+            border-radius: 50%; 
+            background: #edf2f7; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-size: 3rem; 
+            margin: 0 auto 10px auto; 
+            line-height: 1; 
+        }
 
-        /* CHAT GLOBAL */
-        .chat-container { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px; }
-        .chat-msg { background: var(--bg-card); padding: 10px 15px; border-radius: 15px; border: 1px solid var(--border-color); width: fit-content; max-width: 85%; position: relative; }
-        .chat-msg.me { background: var(--grad-purple); color: white; align-self: flex-end; }
+        /* =========================================
+           MESSAGERIE (GLOBALE ET PRIVÉE)
+           ========================================= */
+        .chat-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .chat-tab {
+            flex: 1;
+            padding: 10px;
+            text-align: center;
+            background: var(--bg-card);
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            border: 1px solid var(--border-color);
+        }
+        .chat-tab.active {
+            background: var(--grad-purple);
+            color: white;
+            border: none;
+        }
+
+        .chat-container { 
+            flex: 1; 
+            overflow-y: auto; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 10px; 
+            margin-bottom: 15px; 
+        }
+        .chat-msg { 
+            background: var(--bg-card); 
+            padding: 10px 15px; 
+            border-radius: 15px; 
+            border: 1px solid var(--border-color); 
+            width: fit-content; 
+            max-width: 85%; 
+            position: relative; 
+        }
+        .chat-msg.me { 
+            background: var(--grad-purple); 
+            color: white; 
+            align-self: flex-end; 
+        }
         .chat-msg .author { font-size: 0.7rem; font-weight: bold; margin-bottom: 3px; opacity: 0.8; }
-        .admin-mode .chat-del-btn { display: block; position: absolute; top: -5px; right: -5px; background: red; color: white; border-radius: 50%; width: 20px; height: 20px; border: none; cursor: pointer; font-size: 10px; }
+        
         .chat-del-btn { display: none; }
+        .admin-mode .chat-del-btn { 
+            display: block; 
+            position: absolute; 
+            top: -5px; 
+            right: -5px; 
+            background: red; 
+            color: white; 
+            border-radius: 50%; 
+            width: 20px; 
+            height: 20px; 
+            border: none; 
+            cursor: pointer; 
+            font-size: 10px; 
+        }
 
-        /* ANIMATION VS */
-        #vs-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 200; justify-content: center; align-items: center; flex-direction: row; gap: 20px; backdrop-filter: blur(5px); }
+        /* =========================================
+           PISTE DE COURSE (CONTEUR)
+           ========================================= */
+        .track-container { 
+            display: flex; 
+            overflow-x: auto; 
+            padding: 15px 5px; 
+            gap: 15px; 
+            scroll-snap-type: x mandatory; 
+            margin: 0 -10px; 
+        }
+        .track-cell { 
+            min-width: 110px; 
+            height: 160px; 
+            background: var(--bg-card); 
+            border-radius: 20px; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            scroll-snap-align: center; 
+            position: relative; 
+            padding: 10px; 
+            box-shadow: var(--shadow-soft); 
+        }
+        .cell-number { 
+            font-size: 2rem; 
+            color: var(--border-color); 
+            font-weight: 700; 
+            position: absolute; 
+            top: 10px; 
+            right: 10px; 
+            z-index: 0; 
+        }
+        .player-pions-group { 
+            display: flex; 
+            flex-wrap: wrap; 
+            justify-content: center; 
+            gap: 5px; 
+            margin-top: 25px; 
+            z-index: 1; 
+            width: 100%; 
+            max-height: 110px; 
+            overflow-y: auto; 
+            padding-bottom: 10px; 
+        }
+        .player-pions-group::-webkit-scrollbar { display: none; }
+        
+        .pion-container { display: flex; flex-direction: column; align-items: center; cursor: pointer; position: relative; }
+        .pion { 
+            width: 40px; 
+            height: 40px; 
+            border-radius: 50%; 
+            background: var(--grad-purple); 
+            color: white; 
+            font-size: 1.2rem; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            box-shadow: var(--shadow-hover); 
+            border: 2px solid white; 
+        }
+        .pion.spectre { background: #cbd5e0; box-shadow: none; filter: grayscale(100%); opacity: 0.7; }
+        .pion-label { font-size: 0.65rem; font-weight: 600; color: var(--text-dark); margin-top: 2px; max-width: 50px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; }
+        .order-badge { 
+            position: absolute; top: -5px; right: -5px; background: #e74c3c; color: white; border-radius: 50%; 
+            width: 18px; height: 18px; font-size: 0.6rem; display: flex; align-items: center; justify-content: center; 
+            font-weight: bold; border: 2px solid white; z-index: 2; box-shadow: 0 2px 4px rgba(0,0,0,0.2); 
+        }
+
+        /* =========================================
+           VUE JOUEUR & GRILLE
+           ========================================= */
+        .player-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-top: 15px; }
+        .grid-card { 
+            position: relative; 
+            background: var(--bg-card); 
+            padding: 20px 10px; 
+            border-radius: 20px; 
+            text-align: center; 
+            box-shadow: var(--shadow-soft); 
+            cursor: pointer; 
+            border: 2px solid transparent; 
+        }
+        .skull-badge { position: absolute; top: -5px; right: -5px; font-size: 1.5rem; background: white; border-radius: 50%; box-shadow: 0 0 10px rgba(0,0,0,0.5); }
+        .spectre { opacity: 0.5; filter: grayscale(100%); }
+
+        #secret-position { 
+            background: var(--bg-card); 
+            padding: 25px; 
+            text-align: center; 
+            border-radius: 25px; 
+            margin-top: auto; 
+            user-select: none; 
+            box-shadow: var(--shadow-soft); 
+            font-weight: 600; 
+            color: var(--text-dark); 
+            border: 2px solid var(--border-color); 
+        }
+        #secret-data { display: none; font-size: 1.8rem; background: var(--grad-blue); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-top: 10px; font-weight: 700; }
+        .timer-display { font-size: 3rem; font-weight: 700; background: var(--grad-purple); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-align: center; margin: 10px 0; }
+
+        /* =========================================
+           TUILES DE RÔLES
+           ========================================= */
+        .role-tile-grid { display: grid; grid-template-columns: 1fr; gap: 10px; margin-top: 10px; }
+        .role-tile { 
+            display: flex; align-items: center; background: var(--bg-card); padding: 15px; 
+            border-radius: 15px; border: 2px solid var(--border-color); cursor: pointer; transition: 0.2s; 
+        }
+        .role-tile.selected { border-color: #b794f4; background: rgba(183, 148, 244, 0.1); }
+        .role-tile-icon { font-size: 2.5rem; margin-right: 15px; width: 50px; text-align: center; }
+
+        /* =========================================
+           ANIMATION VS & MODALS
+           ========================================= */
+        #vs-overlay { 
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(0,0,0,0.85); z-index: 200; justify-content: center; align-items: center; 
+            flex-direction: row; gap: 20px; backdrop-filter: blur(5px); 
+        }
         .vs-avatar { font-size: 5rem; background: white; border-radius: 50%; width: 120px; height: 120px; display: flex; justify-content: center; align-items: center; box-shadow: 0 0 30px rgba(183,148,244,0.5); }
         .slide-left { animation: slideInLeft 0.5s ease-out forwards; }
         .slide-right { animation: slideInRight 0.5s ease-out forwards; }
         .zoom-vs { font-size: 4rem; font-weight: 900; color: #f6e05e; text-shadow: 0 0 20px red; animation: zoomIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+        
         @keyframes slideInLeft { from { transform: translateX(-200px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
         @keyframes slideInRight { from { transform: translateX(200px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
         @keyframes zoomIn { from { transform: scale(0); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 
-        /* SÉLECTION ROLES (TUILES) */
-        .role-tile-grid { display: grid; grid-template-columns: 1fr; gap: 10px; margin-top: 10px; }
-        .role-tile { display: flex; align-items: center; background: var(--bg-card); padding: 15px; border-radius: 15px; border: 2px solid var(--border-color); cursor: pointer; transition: 0.2s; }
-        .role-tile.selected { border-color: #b794f4; background: rgba(183, 148, 244, 0.1); }
-        .role-tile-icon { font-size: 2.5rem; margin-right: 15px; width: 50px; text-align: center; }
-
-        /* MODALS & OTHERS */
-        .modal { display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 100; padding: 30px 20px; flex-direction: column; justify-content: center; }
+        .modal { 
+            display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(0,0,0,0.8); z-index: 100; padding: 30px 20px; 
+            flex-direction: column; justify-content: center; 
+        }
         .modal.active { display: flex; }
-        .player-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-top: 15px; }
-        .grid-card { background: var(--bg-card); padding: 20px 10px; border-radius: 20px; text-align: center; box-shadow: var(--shadow-soft); cursor: pointer; border: 2px solid transparent; }
         
-        /* ADMIN PANEL BUTTON */
-        #admin-panel-btn { display: none; position: absolute; top: 80px; right: 10px; background: linear-gradient(135deg, #e53e3e, #dd6b20); color: white; border-radius: 50%; width: 45px; height: 45px; align-items: center; justify-content: center; font-size: 1.2rem; cursor: pointer; z-index: 50; box-shadow: var(--shadow-hover); }
+        #admin-panel-btn { 
+            display: none; position: absolute; top: 80px; right: 10px; 
+            background: linear-gradient(135deg, #e53e3e, #dd6b20); color: white; border-radius: 50%; 
+            width: 45px; height: 45px; align-items: center; justify-content: center; 
+            font-size: 1.2rem; cursor: pointer; z-index: 50; box-shadow: var(--shadow-hover); 
+        }
         .admin-mode #admin-panel-btn { display: flex; }
+        
+        /* Modal Notification / Invitation */
+        .notification-toast {
+            position: absolute;
+            top: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--grad-blue);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 20px;
+            box-shadow: var(--shadow-hover);
+            z-index: 300;
+            transition: top 0.4s ease;
+            text-align: center;
+            width: 90%;
+        }
+        .notification-toast.show {
+            top: 20px;
+        }
+
     </style>
 </head>
 <body data-theme="light">
 
 <div id="app-container">
     
+    <!-- =========================================
+         HEADER COMMUN
+         ========================================= -->
     <header id="main-header" style="display: none;">
         <button class="back-btn" onclick="window.returnToMenu()">❮ Quitter</button>
         <span id="header-turn" style="font-weight:700; font-size:1.1rem; color: #b794f4;"></span>
         <div style="font-weight: 600; background: rgba(183,148,244,0.2); padding: 5px 10px; border-radius: 10px; color: #b794f4;">💎 <span id="ui-tokens">0</span></div>
     </header>
 
-    <!-- BOUTON PANNEAU ADMIN FLOTTANT -->
     <div id="admin-panel-btn" onclick="window.openAdminPanel()">⚙️</div>
 
-    <!-- ÉCRAN LOGIN -->
+    <!-- NOTIFICATION D'INVITATION -->
+    <div id="invite-notification" class="notification-toast">
+        <h4 style="color: white; margin-bottom: 5px;">Nouvelle Invitation !</h4>
+        <p id="invite-text" style="font-size: 0.9rem; margin-bottom: 10px;">Quelqu'un vous invite à jouer.</p>
+        <div style="display: flex; gap: 10px;">
+            <button class="btn small" style="background: white; color: #4fd1c5;" onclick="window.acceptInvite()">Accepter</button>
+            <button class="btn small outline" style="border-color: white; color: white;" onclick="window.closeInvite()">Refuser</button>
+        </div>
+    </div>
+
+    <!-- =========================================
+         ÉCRAN: LOGIN
+         ========================================= -->
     <div id="screen-login" class="screen active" style="justify-content: center;">
         <div style="text-align: center; margin-bottom: 30px;">
             <div style="font-size: 4rem; margin-bottom: 10px;">🌙</div>
@@ -120,15 +486,19 @@
         </div>
         
         <input type="email" id="login-email" class="input-field" placeholder="Email (ex: nassim57132@gmail.com)">
+        <input type="password" id="login-pass" class="input-field" placeholder="Mot de passe">
         
-        <button class="btn" onclick="window.login('email')">Connexion Rapide</button>
-        <button class="btn outline" style="color: var(--text-dark); border-color: var(--border-color);" onclick="window.loginGoogle()">🌐 Continuer avec Google</button>
-        
+        <button class="btn" onclick="window.login('email')">Connexion Email</button>
         <div style="text-align: center; margin: 15px 0; color: var(--text-muted);">OU</div>
         <button class="btn" style="background: #a0aec0;" onclick="window.login('guest')">Jouer en Invité</button>
+        
+        <!-- Bouton masqué pour simuler la réception d'une invitation -->
+        <button class="btn outline small" style="margin-top: 30px;" onclick="window.simulateReceivingInvite()">Simuler réception invitation (Test)</button>
     </div>
 
-    <!-- ÉCRAN ACCUEIL -->
+    <!-- =========================================
+         ÉCRAN: ACCUEIL
+         ========================================= -->
     <div id="screen-home" class="screen">
         <div class="card-gradient">
             <p style="margin: 0; font-size: 0.9rem; opacity: 0.8;" id="welcome-text">Bienvenue,</p>
@@ -139,29 +509,48 @@
         <button class="btn outline" onclick="alert('Recherche de salon...')">🔍 Rejoindre (Code)</button>
     </div>
 
-    <!-- ÉCRAN CHAT GLOBAL -->
+    <!-- =========================================
+         ÉCRAN: MESSAGERIE
+         ========================================= -->
     <div id="screen-chat" class="screen">
         <h2>💬 Messagerie</h2>
+        
+        <div class="chat-tabs">
+            <div class="chat-tab active" id="tab-chat-global" onclick="window.switchChatMode('global')">Global</div>
+            <div class="chat-tab" id="tab-chat-private" onclick="window.switchChatMode('private')">Privé</div>
+        </div>
+
+        <!-- Section Privée: Choix de l'ami -->
+        <div id="chat-private-selector" style="display: none; margin-bottom: 10px;">
+            <select id="private-friend-select" onchange="window.loadChat()">
+                <option value="">-- Sélectionnez un ami --</option>
+                <!-- Rempli par JS -->
+            </select>
+        </div>
+
         <div class="chat-container" id="chat-messages"></div>
+        
         <div style="display: flex; gap: 10px;">
             <input type="text" id="chat-input" class="input-field" style="margin:0;" placeholder="Message...">
             <button class="btn small" onclick="window.sendChatMessage()">Envoyer</button>
         </div>
     </div>
 
-    <!-- ÉCRAN BOUTIQUE -->
+    <!-- =========================================
+         ÉCRAN: BOUTIQUE
+         ========================================= -->
     <div id="screen-shop" class="screen">
         <h2 style="text-align: center; color: #f6e05e;">Boutique</h2>
         <p style="text-align:center;" class="text-muted">Dépensez vos 💎 pour briller.</p>
-        
         <h4>Avatars</h4>
         <div class="shop-grid" id="shop-avatars"></div>
-
         <h4>Titres Honorifiques</h4>
         <div id="shop-titles"></div>
     </div>
 
-    <!-- ÉCRAN PROFIL -->
+    <!-- =========================================
+         ÉCRAN: PROFIL & AMIS
+         ========================================= -->
     <div id="screen-profile" class="screen">
         <div style="text-align: center; margin-bottom: 20px;">
             <div class="avatar-circle" id="profile-avatar" style="width: 80px; height: 80px; margin: 0 auto 10px auto; font-size: 3rem;">👤</div>
@@ -173,9 +562,13 @@
             <p style="margin:0;">Code Ami : <strong style="color: #b794f4; letter-spacing: 2px;" id="profile-friend-code">XXXX</strong></p>
         </div>
 
-        <h4 style="margin-top: 15px;">Ajouter un ami</h4>
+        <h4 style="margin-top: 15px;">Liste d'Amis</h4>
+        <div id="friends-list-container" style="max-height: 150px; overflow-y: auto; margin-bottom: 15px;">
+            <!-- Rempli par JS -->
+        </div>
+
         <div style="display: flex; gap: 10px;">
-            <input type="text" id="add-friend-input" class="input-field" placeholder="Code Ami (4 chiffres)" maxlength="4">
+            <input type="text" id="add-friend-input" class="input-field" placeholder="Ajouter code (4 chiffres)" maxlength="4" style="margin:0;">
             <button class="btn small outline" onclick="window.addFriend()">Ajouter</button>
         </div>
 
@@ -187,9 +580,13 @@
         <button class="btn danger outline" onclick="window.logout()">Déconnexion</button>
     </div>
 
-    <!-- ÉCRAN SALON -->
+    <!-- =========================================
+         ÉCRAN: SALON D'ATTENTE (CRÉATION JEU)
+         ========================================= -->
     <div id="screen-room" class="screen">
         <h2>Préparation</h2>
+        <p class="text-muted">Gérez les joueurs et invitez vos amis.</p>
+        
         <div id="room-players-list" style="margin-bottom: 15px;"></div>
         
         <div style="display: flex; gap: 10px; margin-bottom: 15px;">
@@ -197,59 +594,155 @@
             <button class="btn small" style="background:var(--border-color); color:var(--text-dark); flex:1;" onclick="window.removeBot()">- Bot</button>
         </div>
 
+        <button class="btn outline small" style="margin-bottom: 15px;" onclick="window.inviteFriendsToRoom()">📨 Inviter des Amis</button>
+
         <button class="btn blue" style="display: flex; align-items: center; justify-content: center; gap: 10px;" onclick="window.openRolesSelection()">
             <span style="font-size: 1.5rem;">🎭</span> Configurer les Rôles (<span id="role-count">22</span>)
         </button>
         
-        <button class="btn success" style="margin-top: auto; font-size: 1.1rem; padding: 20px; background:#4fd1c5;" onclick="window.startGame()">LANCER LA PARTIE</button>
+        <button class="btn success" style="margin-top: auto; font-size: 1.1rem; padding: 20px;" onclick="window.startGame()">LANCER LA PARTIE</button>
     </div>
 
-    <!-- ÉCRANS CONTEUR ET JOUEUR -->
+    <!-- =========================================
+         ÉCRAN: JEU - VUE CONTEUR
+         ========================================= -->
     <div id="screen-conteur" class="screen">
-        <h2 style="text-align:center;">Mode Conteur</h2>
-        <p style="text-align:center;" class="text-muted">Gérez la partie ici.</p>
-        <button class="btn danger" onclick="window.endGame(false)">Terminer (Victoire Mal)</button>
-        <button class="btn success" style="background:#4fd1c5;" onclick="window.endGame(true)">Terminer (Victoire Bien)</button>
+        <div class="card-gradient" style="background: var(--grad-blue); text-align: center; padding: 15px;">
+            <h3 id="conteur-phase-title" style="color: white; margin:0;">Mode Conteur</h3>
+        </div>
+        
+        <!-- Piste de Course -->
+        <div class="track-container" id="conteur-track"></div>
+        
+        <!-- Ajustements des positions (Nuit) -->
+        <div id="conteur-night-tools" style="margin-top: 15px; display:none;">
+            <h4 style="margin-bottom: 10px;">Ajustements (Nuit) :</h4>
+            <div id="conteur-pos-adjust"></div>
+        </div>
+
+        <!-- Chrono (Jour) -->
+        <div id="conteur-day-tools" class="card-white" style="display: none; margin-top: 15px; flex-direction: column; align-items: center;">
+            <h4 style="margin-bottom:10px;">Chronomètre du Débat</h4>
+            <div style="display: flex; gap: 10px; width: 100%;">
+                <select id="timer-select" style="margin: 0; flex: 1;">
+                    <option value="30">30 Secondes</option>
+                    <option value="60" selected>1 Minute</option>
+                    <option value="120">2 Minutes</option>
+                    <option value="180">3 Minutes</option>
+                </select>
+                <button class="btn small outline" onclick="window.startTimer(document.getElementById('timer-select').value)">Lancer</button>
+            </div>
+        </div>
+        
+        <!-- Boutons de Phase Globaux -->
+        <div id="conteur-controls-container" style="margin-top: 10px;"></div>
+
+        <div style="display: flex; gap: 10px; margin-top: 20px;">
+            <button class="btn danger small" style="flex:1;" onclick="window.endGame(false)">Victoire Mal</button>
+            <button class="btn success small" style="flex:1;" onclick="window.endGame(true)">Victoire Bien</button>
+        </div>
     </div>
 
+    <!-- =========================================
+         ÉCRAN: JEU - VUE JOUEUR
+         ========================================= -->
     <div id="screen-player" class="screen">
-        <h3 style="text-align: center; color: #b794f4;">Phase de Débat</h3>
-        <p style="text-align:center;">Cliquez sur un joueur pour l'accuser</p>
-        <div id="player-day-grid" class="player-grid"></div>
+        <h3 id="player-phase-title" style="text-align: center; color: #b794f4;">Phase</h3>
+        <p id="player-phase-desc" style="text-align:center; margin-top:5px;"></p>
+        
+        <!-- Affichage du rôle (Avec description ET vitesse) -->
+        <div id="player-role-display" class="card-gradient" style="background: var(--grad-purple); text-align: center; padding: 20px; display: none; flex-direction: column; align-items: center;">
+            <p style="margin: 0; color: rgba(255,255,255,0.8); font-size:0.9rem;">Votre Rôle Secret</p>
+            <div id="player-role-emoji" style="font-size: 3rem; margin: 5px 0;">❓</div>
+            <h3 id="player-role-name" style="color: white; font-size: 1.2rem; margin-top: 5px;">-</h3>
+            <div style="background: rgba(0,0,0,0.2); padding: 10px; border-radius: 10px; margin-top: 15px; color: white;">
+                <p style="font-weight: bold; margin-bottom: 5px;">Vitesse de base : <span id="player-role-speed">0</span></p>
+                <p style="font-size: 0.85rem;" id="player-role-desc">Description</p>
+            </div>
+        </div>
+
+        <div id="player-timer" class="timer-display" style="display:none;">00:00</div>
+        
+        <div id="player-day-grid" class="player-grid" style="display:none;"></div>
+        
+        <div id="secret-position" onmousedown="window.revealPosition(true)" onmouseup="window.revealPosition(false)" ontouchstart="window.revealPosition(true)" ontouchend="window.revealPosition(false)">
+            <span style="font-size:2rem; display:block; margin-bottom:10px;">👁️</span>
+            Maintenir pour voir ma position
+            <div id="secret-data">Case 0</div>
+        </div>
     </div>
 
+    <!-- =========================================
+         OVERLAYS ET MODALS DE JEU
+         ========================================= -->
+    
+    <!-- ANIMATION VS OVERLAY -->
     <div id="vs-overlay">
         <div class="vs-avatar slide-left" id="vs-accuser">🦊</div>
         <div class="zoom-vs">VS</div>
         <div class="vs-avatar slide-right" id="vs-accused">💀</div>
     </div>
 
-    <!-- NAVBAR BASSE -->
-    <nav id="bottom-nav" style="display: none;">
-        <button class="active" onclick="window.showMainNav('screen-home', this)">🎮</button>
-        <button onclick="window.showMainNav('screen-shop', this)">🛒</button>
-        <button onclick="window.showMainNav('screen-chat', this)">💬</button>
-        <button onclick="window.showMainNav('screen-profile', this)">👤</button>
-    </nav>
-    
-    <!-- MODALS -->
+    <!-- MODAL VOTE (OUI / NON) -->
+    <div id="modal-vote" class="modal">
+        <div class="card-white" style="text-align: center; margin: auto;">
+            <h2>Phase de Vote</h2>
+            <p>Voulez-vous éliminer <strong id="vote-target-name">Joueur</strong> ?</p>
+            <div style="display: flex; gap: 15px; margin-top: 20px;">
+                <button class="btn danger" style="font-size:2rem; padding: 20px;" onclick="window.castVote(true)">👎 OUI</button>
+                <button class="btn outline" style="font-size:2rem; padding: 20px;" onclick="window.castVote(false)">✊ NON</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL SÉLECTION RÔLES -->
     <div id="modal-role-selection" class="modal">
         <div class="card-white" style="flex: 1; display: flex; flex-direction: column; overflow: hidden; margin:0; padding:20px;">
             <h2 style="margin-bottom:10px;">Rôles disponibles</h2>
             <div class="role-tile-grid" id="role-tile-container" style="flex: 1; overflow-y: auto;"></div>
-            <button class="btn" onclick="window.closeRolesSelection()">Valider la sélection</button>
+            <button class="btn" onclick="window.closeRolesSelection()">Valider</button>
         </div>
     </div>
 
+    <!-- =========================================
+         AUTRES MODALS (RECOMPENSES, PROFILS)
+         ========================================= -->
+         
+    <!-- MODAL RÉCOMPENSE QUOTIDIENNE -->
+    <div id="modal-daily" class="modal">
+        <div class="card-white" style="text-align: center; margin:auto;">
+            <h2>🎁 Bonus Quotidien !</h2>
+            <p>Jour <span id="daily-day">1</span> de connexion.</p>
+            <h1 style="color: #f6e05e; font-size: 3rem; margin: 15px 0;">+<span id="daily-amount">10</span> 💎</h1>
+            <button class="btn" onclick="document.getElementById('modal-daily').classList.remove('active')">Récupérer</button>
+        </div>
+    </div>
+
+    <!-- MODAL PROFIL AMI -->
+    <div id="modal-friend-profile" class="modal">
+        <div class="card-white" style="text-align: center; margin:auto; width: 100%;">
+            <div class="avatar-circle" id="mfp-avatar" style="width: 80px; height: 80px; margin: 0 auto 10px auto; font-size: 3rem;">👤</div>
+            <h2 id="mfp-name">Ami</h2>
+            <p class="text-muted" id="mfp-title">Titre</p>
+            
+            <div style="margin-top: 20px; display: flex; flex-direction: column; gap: 10px;">
+                <button class="btn blue" onclick="window.messageFriend()">Envoyer un Message Privé</button>
+                <button class="btn outline" onclick="document.getElementById('modal-friend-profile').classList.remove('active')">Fermer</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL ADMIN -->
     <div id="modal-admin" class="modal">
         <div class="card-white" style="margin:auto; width: 100%;">
             <h2 style="color: #e53e3e; text-align:center;">⚙️ Panneau Admin</h2>
+            
             <h4 style="margin-top:20px;">Ajouter à la boutique</h4>
             <select id="admin-item-type">
                 <option value="avatar">Avatar (Emoji)</option>
                 <option value="title">Titre Honorifique</option>
             </select>
-            <input type="text" id="admin-item-val" class="input-field" placeholder="Emoji (ex: 👻) ou Titre (ex: Boss)">
+            <input type="text" id="admin-item-val" class="input-field" placeholder="Emoji (ex: 👻) ou Titre">
             <input type="number" id="admin-item-price" class="input-field" placeholder="Prix en 💎 (ex: 300)">
             <input type="text" id="admin-item-color" class="input-field" placeholder="Couleur du titre (Optionnel)">
             <button class="btn admin" onclick="window.adminAddShopItem()">Ajouter l'article</button>
@@ -262,16 +755,27 @@
         </div>
     </div>
 
+    <!-- =========================================
+         NAVBAR BASSE
+         ========================================= -->
+    <nav id="bottom-nav" style="display: none;">
+        <button class="active" onclick="window.showMainNav('screen-home', this)">🎮</button>
+        <button onclick="window.showMainNav('screen-shop', this)">🛒</button>
+        <button onclick="window.showMainNav('screen-chat', this)">💬</button>
+        <button onclick="window.showMainNav('screen-profile', this)">👤</button>
+    </nav>
+    
 </div>
 
-<!-- TOUTE LA LOGIQUE ET FIREBASE DANS UN SEUL BLOC SECURISE -->
+<!-- =========================================
+     JAVASCRIPT: LOGIQUE DU JEU ET UI
+     ========================================= -->
 <script type="module">
-    /* IMPORTATION FIREBASE */
+    /* --- INITIALISATION FIREBASE (Try/Catch) --- */
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-    import { getAuth, signInWithPopup, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+    import { getAuth } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
     import { getFirestore } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
-    /* CONFIGURATION FIREBASE */
     const firebaseConfig = {
       apiKey: "AIzaSyDWL02zRvlGp6UxomuOjvwzGWkbVGizNKQ",
       authDomain: "echappee-des-ombres.firebaseapp.com",
@@ -287,42 +791,54 @@
         auth = getAuth(app);
         db = getFirestore(app);
     } catch (error) {
-        console.warn("Erreur Firebase", error);
+        console.warn("Mode hors-ligne / LocalStorage activé.", error);
     }
 
-    /* BASE DE DONNÉES ROLES */
+    /* --- BASE DE DONNÉES COMPLÈTE (22 Rôles) --- */
     const rolesDB = [
-        { id: 'cartographe', name: "Le Cartographe", team: "gentil", emoji: "🗺️", speed: 1, desc: "Sait si le plus avancé est Gentil/Méchant." },
-        { id: 'eclaireur', name: "L'Éclaireur", team: "gentil", emoji: "🔦", speed: 2, desc: "Apprend la distance exacte entre 2 joueurs." },
-        { id: 'guetteur', name: "Le Guetteur", team: "gentil", emoji: "🔭", speed: 1, desc: "Sait si un joueur a été ciblé cette nuit." },
-        { id: 'veilleur', name: "Veilleur de Nuit", team: "gentil", emoji: "🦉", speed: 1, desc: "Sait si le Démon est sur sa case ou devant." },
-        { id: 'passager', name: "Passager Clandestin", team: "gentil", emoji: "🧳", speed: 0, desc: "Copie la vitesse d'un autre joueur." },
-        { id: 'metronome', name: "Le Métronome", team: "gentil", emoji: "⏱️", speed: 1, desc: "Connait le nombre total de cases parcourues." },
-        { id: 'brancardier', name: "Le Brancardier", team: "gentil", emoji: "🚑", speed: 1, desc: "[1x] Fait réutiliser le pouvoir d'un Spectre." },
-        { id: 'nitro', name: "Le Nitro", team: "gentil", emoji: "🚀", speed: 1, desc: "[1x] Gagne +4 cases, Vitesse 0 la nuit d'après." },
-        { id: 'tisseur', name: "Tisseur de Liens", team: "gentil", emoji: "🔗", speed: 2, desc: "[1x] Échange sa vitesse avec un autre." },
-        { id: 'klaxon', name: "Le Klaxon", team: "gentil", emoji: "📢", speed: 2, desc: "[1x Jour] Annonce publiquement sa case." },
-        { id: 'cascadeur', name: "Le Cascadeur", team: "gentil", emoji: "🤸", speed: 3, desc: "[1x Jour] Révèle rôle. Vitesse 1, Démon forcé de cibler." },
-        { id: 'sherif', name: "Le Shérif", team: "gentil", emoji: "🤠", speed: 1, desc: "[1x Jour] Révèle rôle pour annuler l'élimination." },
-        { id: 'espion', name: "Espion de Voie", team: "gentil", emoji: "🕵️", speed: 1, desc: "[1x Jour] Demande si un joueur est devant/derrière." },
-        { id: 'sprinteur', name: "Le Sprinteur", team: "gentil", emoji: "⚡", speed: 3, desc: "Vitesse naturelle la plus rapide." },
-        { id: 'coureur', name: "Coureur de Fond", team: "gentil", emoji: "🏃", speed: 2, desc: "Immunisé contre le Démon (Tours 1 et 2)." },
-        { id: 'somnambule', name: "Le Somnambule", team: "outsider", emoji: "🛌", speed: '?', desc: "Vitesse 1 ou 3 aléatoire chaque nuit." },
-        { id: 'peureux', name: "Le Peureux", team: "outsider", emoji: "😨", speed: 2, desc: "Recule de 1 case si on le dépasse." },
-        { id: 'ancre', name: "L'Ancre", team: "outsider", emoji: "⚓", speed: 0, desc: "Bloque la vitesse max de TOUS à 2 cases." },
-        { id: 'grappin', name: "Le Grappin", team: "sbire", emoji: "🪝", speed: 1, desc: "Immobilise un joueur (Vitesse 0) chaque nuit." },
-        { id: 'brouilleur', name: "Le Brouilleur", team: "sbire", emoji: "📻", speed: 1, desc: "Fausse les informations visant un joueur." },
-        { id: 'falsificateur', name: "Falsificateur", team: "sbire", emoji: "🎭", speed: 2, desc: "[1x Jour] Donne une fausse case aux enquêteurs." },
-        { id: 'cauchemar', name: "Le Cauchemar", team: "demon", emoji: "👹", speed: 2, desc: "Élimine 1/nuit. +3 cases si cible est devant lui." }
+        { id: 'cartographe', name: "Le Cartographe", team: "gentil", emoji: "🗺️", speed: 1, order: 5, desc: "Sait si le plus avancé est Gentil/Méchant." },
+        { id: 'eclaireur', name: "L'Éclaireur", team: "gentil", emoji: "🔦", speed: 2, order: 6, desc: "Apprend la distance exacte entre 2 joueurs." },
+        { id: 'guetteur', name: "Le Guetteur", team: "gentil", emoji: "🔭", speed: 1, order: 9, desc: "Sait si un joueur a été ciblé cette nuit." },
+        { id: 'veilleur', name: "Veilleur de Nuit", team: "gentil", emoji: "🦉", speed: 1, order: 8, desc: "Sait si le Démon est sur sa case ou devant." },
+        { id: 'passager', name: "Passager Clandestin", team: "gentil", emoji: "🧳", speed: 0, order: 3, desc: "Copie la vitesse d'un autre joueur." },
+        { id: 'metronome', name: "Le Métronome", team: "gentil", emoji: "⏱️", speed: 1, order: 10, desc: "Connait le nombre total de cases parcourues." },
+        { id: 'brancardier', name: "Le Brancardier", team: "gentil", emoji: "🚑", speed: 1, order: 1, desc: "[1x] Fait réutiliser le pouvoir d'un Spectre." },
+        { id: 'nitro', name: "Le Nitro", team: "gentil", emoji: "🚀", speed: 1, order: 4, desc: "[1x] Gagne +4 cases, Vitesse 0 la nuit d'après." },
+        { id: 'tisseur', name: "Tisseur de Liens", team: "gentil", emoji: "🔗", speed: 2, order: 2, desc: "[1x] Échange sa vitesse avec un autre." },
+        { id: 'klaxon', name: "Le Klaxon", team: "gentil", emoji: "📢", speed: 2, order: 99, desc: "[1x Jour] Annonce publiquement sa case." },
+        { id: 'cascadeur', name: "Le Cascadeur", team: "gentil", emoji: "🤸", speed: 3, order: 99, desc: "[1x Jour] Révèle rôle. Vitesse 1, Démon forcé de cibler." },
+        { id: 'sherif', name: "Le Shérif", team: "gentil", emoji: "🤠", speed: 1, order: 99, desc: "[1x Jour] Révèle rôle pour annuler l'élimination." },
+        { id: 'espion', name: "Espion de Voie", team: "gentil", emoji: "🕵️", speed: 1, order: 99, desc: "[1x Jour] Demande si un joueur est devant/derrière." },
+        { id: 'sprinteur', name: "Le Sprinteur", team: "gentil", emoji: "⚡", speed: 3, order: 99, desc: "Vitesse naturelle la plus rapide." },
+        { id: 'coureur', name: "Coureur de Fond", team: "gentil", emoji: "🏃", speed: 2, order: 99, desc: "Immunisé contre le Démon (Tours 1 et 2)." },
+        { id: 'somnambule', name: "Le Somnambule", team: "outsider", emoji: "🛌", speed: '?', order: 99, desc: "Vitesse 1 ou 3 aléatoire chaque nuit." },
+        { id: 'peureux', name: "Le Peureux", team: "outsider", emoji: "😨", speed: 2, order: 99, desc: "Recule de 1 case si on le dépasse." },
+        { id: 'ancre', name: "L'Ancre", team: "outsider", emoji: "⚓", speed: 0, order: 99, desc: "Bloque la vitesse max de TOUS à 2 cases." },
+        { id: 'grappin', name: "Le Grappin", team: "sbire", emoji: "🪝", speed: 1, order: 7, desc: "Immobilise un joueur (Vitesse 0) chaque nuit." },
+        { id: 'brouilleur', name: "Le Brouilleur", team: "sbire", emoji: "📻", speed: 1, order: 7, desc: "Fausse les informations visant un joueur." },
+        { id: 'falsificateur', name: "Falsificateur", team: "sbire", emoji: "🎭", speed: 2, order: 99, desc: "[1x Jour] Donne une fausse case aux enquêteurs." },
+        { id: 'cauchemar', name: "Le Cauchemar", team: "demon", emoji: "👹", speed: 2, order: 11, desc: "Élimine 1/nuit. +3 cases si cible est devant." }
     ];
 
-    /* VARIABLES GLOBALES */
-    let user = { name: '', email: '', avatar: '👤', tokens: 0, title: 'Novice', friendCode: '', friends: [], isAdmin: false };
-    let chatMessages = JSON.parse(localStorage.getItem('chat')) || [];
-    let selectedRoles = rolesDB.map(r => r.id);
-    let players = []; 
-    let botCount = 0;
+    /* --- VARIABLES GLOBALES --- */
+    let user = { 
+        name: '', 
+        email: '', 
+        avatar: '👤', 
+        tokens: 0, 
+        title: 'Novice', 
+        friendCode: '', 
+        friends: [], // [{code: "1234", name: "Ami", avatar: "🐰", title: "Pro"}]
+        isAdmin: false,
+        lastLogin: '',
+        streak: 0
+    };
     
+    // Structure chat: { author, target: 'global'|'friendCode', text }
+    let chatMessages = JSON.parse(localStorage.getItem('chat')) || [];
+    let currentChatMode = 'global'; // 'global' ou 'private'
+    let currentChatTarget = '';
+
     let shopItems = JSON.parse(localStorage.getItem('shop')) || [
         { type: 'avatar', val: '🐉', price: 200 },
         { type: 'avatar', val: '👽', price: 200 },
@@ -330,35 +846,28 @@
         { type: 'title', val: 'L\'Intouchable', price: 150, color: '#4fd1c5' }
     ];
 
-    /* SYSTEME DE CONNEXION GOOGLE & NORMAL */
-    window.loginGoogle = async function() {
-        if (!auth) {
-            alert("Firebase n'est pas bien initialisé.");
-            return;
-        }
-        const provider = new GoogleAuthProvider();
-        try {
-            const result = await signInWithPopup(auth, provider);
-            const fbUser = result.user;
-            user.name = fbUser.displayName || "Joueur";
-            user.email = fbUser.email;
-            user.avatar = '👤';
-            
-            if(user.email.toLowerCase() === "nassim57132@gmail.com") {
-                user.isAdmin = true;
-                user.name = "👑 Admin Nassim";
-                document.body.classList.add('admin-mode');
-            }
-            finalizeLogin();
-        } catch (error) {
-            alert("Erreur Google: " + error.message);
-        }
-    };
+    // Variables de Salon & Jeu
+    let players = []; 
+    let botCount = 0;
+    let selectedRoles = rolesDB.map(r => r.id);
+    let meIsConteur = true;
+    let turnCount = 1;
+    let gamePhase = 'attente';
+    let gameInterval; // Chrono
+    
+    // Variables Vote
+    let hasAccusedToday = [];
+    let hasBeenAccusedToday = [];
+    let currentExecutionTarget = { id: null, votes: 0 };
+    let tempAccusedId = null; 
 
+    /* =========================================
+       CONNEXION ET RÉCOMPENSES
+       ========================================= */
     window.login = function(type) {
         let email = document.getElementById('login-email').value;
         if (type === 'guest') {
-            user.name = "Joueur" + Math.floor(100 + Math.random() * 900);
+            user.name = "Joueur" + Math.floor(100+Math.random()*900);
             user.avatar = ['🦊', '🦉', '🐰', '🐺'][Math.floor(Math.random() * 4)];
             user.isAdmin = false;
         } else {
@@ -370,36 +879,41 @@
                 document.body.classList.add('admin-mode');
             }
         }
-        finalizeLogin();
-    };
 
-    function finalizeLogin() {
         let savedData = JSON.parse(localStorage.getItem('user_' + user.name));
         if(savedData) {
             user.tokens = savedData.tokens || 0;
             user.title = savedData.title || 'Novice';
             user.avatar = savedData.avatar || user.avatar;
             user.friendCode = savedData.friendCode || Math.floor(1000 + Math.random() * 9000).toString();
+            user.friends = savedData.friends || [];
+            user.lastLogin = savedData.lastLogin || '';
+            user.streak = savedData.streak || 0;
         } else {
             user.tokens = 0; 
             user.friendCode = Math.floor(1000 + Math.random() * 9000).toString();
         }
         
-        saveUserData(); 
-        updateUI(); 
-        renderShop(); 
-        loadChat();
+        window.saveUserData(); 
+        window.updateUI(); 
+        window.renderShop(); 
+        window.renderFriendsList();
         
         document.getElementById('screen-login').classList.remove('active');
         document.getElementById('screen-home').classList.add('active');
         document.getElementById('bottom-nav').style.display = 'flex';
         document.getElementById('main-header').style.display = 'flex';
-    }
 
-    function saveUserData() { localStorage.setItem('user_' + user.name, JSON.stringify(user)); }
+        window.checkDailyLogin();
+    };
+
+    window.saveUserData = function() { 
+        localStorage.setItem('user_' + user.name, JSON.stringify(user)); 
+    };
+    
     window.logout = function() { location.reload(); };
 
-    function updateUI() {
+    window.updateUI = function() {
         document.getElementById('home-username').innerText = user.name;
         document.getElementById('home-title').innerText = user.title;
         document.getElementById('ui-tokens').innerText = user.tokens;
@@ -408,87 +922,243 @@
         document.getElementById('profile-avatar').innerText = user.avatar;
         document.getElementById('profile-friend-code').innerText = user.friendCode;
         if(user.isAdmin) document.getElementById('welcome-text').innerText = "Bienvenue, Administrateur";
-    }
+    };
 
-    /* NAVIGATION */
+    window.checkDailyLogin = function() {
+        const todayStr = new Date().toDateString();
+        if (user.lastLogin !== todayStr) {
+            let lastDate = new Date(user.lastLogin);
+            let yesterday = new Date();
+            yesterday.setDate(yesterday.getDate() - 1);
+            
+            if (lastDate.toDateString() === yesterday.toDateString()) {
+                user.streak++;
+            } else {
+                user.streak = 1;
+            }
+            if (user.streak > 7) user.streak = 1;
+
+            let reward = (user.streak === 1) ? 10 : 15;
+            user.tokens += reward;
+            user.lastLogin = todayStr;
+            window.saveUserData();
+            window.updateUI();
+
+            document.getElementById('daily-day').innerText = user.streak;
+            document.getElementById('daily-amount').innerText = reward;
+            document.getElementById('modal-daily').classList.add('active');
+        }
+    };
+
+    /* =========================================
+       NAVIGATION ET THEME
+       ========================================= */
     window.showMainNav = function(id, btn) {
         document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
         document.getElementById(id).classList.add('active');
         document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
+        
+        if(id === 'screen-chat') window.loadChat();
     };
     
     window.returnToMenu = function() {
+        clearInterval(gameInterval); // Stop chrono si existant
         document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
         document.getElementById('screen-home').classList.add('active');
         document.getElementById('bottom-nav').style.display = 'flex';
         document.querySelector('.back-btn').style.display = 'none';
+        document.getElementById('header-turn').innerText = "";
     };
 
-    /* BOUTIQUE */
-    function renderShop() {
-        const avatarsDiv = document.getElementById('shop-avatars');
-        const titlesDiv = document.getElementById('shop-titles');
-        avatarsDiv.innerHTML = ''; 
-        titlesDiv.innerHTML = '';
-        
-        shopItems.forEach((item, index) => {
-            if(item.type === 'avatar') {
-                avatarsDiv.innerHTML += '<div class="card-white" style="text-align:center; padding:10px; cursor:pointer;" onclick="window.buyItem(' + index + ')"><div class="shop-avatar-circle">' + item.val + '</div><strong style="color:var(--text-dark);">' + item.price + ' 💎</strong></div>';
-            } else {
-                let colorStyle = item.color ? 'color:' + item.color + ';' : '';
-                titlesDiv.innerHTML += '<div class="card-white" style="cursor:pointer;" onclick="window.buyItem(' + index + ')"><strong style="' + colorStyle + '">' + item.val + '</strong><br><span class="text-muted">' + item.price + ' 💎</span></div>';
-            }
-        });
-    }
-    
-    window.buyItem = function(index) {
-        let item = shopItems[index];
-        if(user.tokens >= item.price) {
-            if(confirm("Acheter " + item.val + " pour " + item.price + " 💎 ?")) {
-                user.tokens -= item.price;
-                if(item.type === 'avatar') user.avatar = item.val;
-                if(item.type === 'title') user.title = item.val;
-                saveUserData(); 
-                updateUI(); 
-                alert("Achat réussi !");
-            }
-        } else { 
-            alert("Fonds insuffisants !"); 
+    window.toggleTheme = function() {
+        let body = document.body; 
+        let isDark = body.getAttribute('data-theme') === 'dark';
+        body.setAttribute('data-theme', isDark ? 'light' : 'dark');
+        document.getElementById('btn-theme').innerText = isDark ? "Désactivé" : "Activé";
+    };
+
+    /* =========================================
+       AMIS ET PROFILS
+       ========================================= */
+    window.addFriend = function() {
+        let code = document.getElementById('add-friend-input').value;
+        if(code.length === 4 && code !== user.friendCode && !user.friends.find(f=>f.code === code)) { 
+            // Mock friend data
+            let mockFriend = { code: code, name: "Ami_" + code, avatar: "🐼", title: "Novice" };
+            user.friends.push(mockFriend); 
+            window.saveUserData(); 
+            window.renderFriendsList();
+            alert(`Ami ${code} ajouté !`); 
+            document.getElementById('add-friend-input').value = ''; 
         }
     };
 
-    /* CHAT GLOBAL */
-    function loadChat() {
+    window.renderFriendsList = function() {
+        const container = document.getElementById('friends-list-container');
+        const selector = document.getElementById('private-friend-select');
+        container.innerHTML = '';
+        
+        // Reset private chat selector
+        selector.innerHTML = '<option value="">-- Sélectionnez un ami --</option>';
+
+        if(user.friends.length === 0) {
+            container.innerHTML = '<p class="text-muted">Aucun ami pour le moment.</p>';
+            return;
+        }
+
+        user.friends.forEach(f => {
+            // Mock online status
+            let isOnline = Math.random() > 0.5;
+            let statusClass = isOnline ? 'online' : 'offline';
+            
+            container.innerHTML += `
+                <div class="card-white" style="padding: 10px; display: flex; align-items: center; cursor: pointer;" onclick="window.openFriendProfile('${f.code}')">
+                    <div class="avatar-circle" style="width: 35px; height: 35px; font-size: 1rem; margin-right: 10px;">
+                        ${f.avatar}
+                        <div class="status-dot ${statusClass}"></div>
+                    </div>
+                    <strong style="flex: 1; font-size: 0.9rem;">${f.name}</strong>
+                    <span class="text-muted" style="font-size: 0.7rem;">Code: ${f.code}</span>
+                </div>
+            `;
+            
+            selector.innerHTML += `<option value="${f.code}">${f.name}</option>`;
+        });
+    };
+
+    window.openFriendProfile = function(code) {
+        let f = user.friends.find(x => x.code === code);
+        if(f) {
+            document.getElementById('mfp-avatar').innerText = f.avatar;
+            document.getElementById('mfp-name').innerText = f.name;
+            document.getElementById('mfp-title').innerText = f.title;
+            // Stocker temporairement la cible pour la messagerie
+            currentChatTarget = f.code;
+            document.getElementById('modal-friend-profile').classList.add('active');
+        }
+    };
+
+    window.messageFriend = function() {
+        document.getElementById('modal-friend-profile').classList.remove('active');
+        // Ouvrir chat
+        window.showMainNav('screen-chat', document.querySelectorAll('nav button')[2]);
+        window.switchChatMode('private');
+        document.getElementById('private-friend-select').value = currentChatTarget;
+        window.loadChat();
+    };
+
+    /* =========================================
+       MESSAGERIE (GLOBAL ET PRIVÉ)
+       ========================================= */
+    window.switchChatMode = function(mode) {
+        currentChatMode = mode;
+        document.getElementById('tab-chat-global').classList.remove('active');
+        document.getElementById('tab-chat-private').classList.remove('active');
+        document.getElementById('tab-chat-' + mode).classList.add('active');
+        
+        if (mode === 'private') {
+            document.getElementById('chat-private-selector').style.display = 'block';
+        } else {
+            document.getElementById('chat-private-selector').style.display = 'none';
+        }
+        window.loadChat();
+    };
+
+    window.loadChat = function() {
         const c = document.getElementById('chat-messages'); 
         c.innerHTML = '';
-        chatMessages.forEach((msg, i) => {
+        
+        let filteredMessages = [];
+        if (currentChatMode === 'global') {
+            filteredMessages = chatMessages.filter(m => m.target === 'global');
+        } else {
+            let targetCode = document.getElementById('private-friend-select').value;
+            if(!targetCode) {
+                c.innerHTML = '<p class="text-muted text-center" style="margin-top:20px;">Sélectionnez un ami pour voir vos messages.</p>';
+                return;
+            }
+            // Affiche les messages envoyés à cet ami, ou reçus de cet ami
+            filteredMessages = chatMessages.filter(m => 
+                (m.target === targetCode && m.author === user.name) || 
+                (m.target === user.name && m.author === "Ami_" + targetCode) // Mock
+            );
+        }
+
+        filteredMessages.forEach((msg, i) => {
             let isMe = (msg.author === user.name) ? 'me' : '';
-            c.innerHTML += '<div class="chat-msg ' + isMe + '"><div class="author">' + msg.author + '</div><div>' + msg.text + '</div><button class="chat-del-btn" onclick="window.deleteMessage(' + i + ')">X</button></div>';
+            c.innerHTML += `<div class="chat-msg ${isMe}">
+                <div class="author">${msg.author}</div>
+                <div>${msg.text}</div>
+                <button class="chat-del-btn" onclick="window.deleteMessage(${i})">X</button>
+            </div>`;
         });
         c.scrollTop = c.scrollHeight;
-    }
+    };
     
     window.sendChatMessage = function() {
         let input = document.getElementById('chat-input');
         if(input.value.trim() === '') return;
-        chatMessages.push({ author: user.name, text: input.value });
+        
+        let target = 'global';
+        if(currentChatMode === 'private') {
+            target = document.getElementById('private-friend-select').value;
+            if(!target) return alert("Sélectionnez un ami !");
+        }
+
+        chatMessages.push({ author: user.name, target: target, text: input.value });
         localStorage.setItem('chat', JSON.stringify(chatMessages));
         input.value = ''; 
-        loadChat();
+        window.loadChat();
     };
     
     window.deleteMessage = function(i) {
         if(user.isAdmin) { 
             chatMessages.splice(i, 1); 
             localStorage.setItem('chat', JSON.stringify(chatMessages)); 
-            loadChat(); 
+            window.loadChat(); 
         }
     };
 
-    /* SALON & ROLES */
+    /* =========================================
+       BOUTIQUE
+       ========================================= */
+    window.renderShop = function() {
+        const avatarsDiv = document.getElementById('shop-avatars'); 
+        const titlesDiv = document.getElementById('shop-titles');
+        avatarsDiv.innerHTML = ''; titlesDiv.innerHTML = '';
+        
+        shopItems.forEach((item, index) => {
+            if(item.type === 'avatar') {
+                avatarsDiv.innerHTML += `<div class="card-white" style="text-align:center; padding:10px; cursor:pointer;" onclick="window.buyItem(${index})">
+                    <div class="shop-avatar-circle">${item.val}</div><strong style="color:var(--text-dark);">${item.price} 💎</strong>
+                </div>`;
+            } else {
+                let colorStyle = item.color ? `color:${item.color};` : '';
+                titlesDiv.innerHTML += `<div class="card-white" style="cursor:pointer;" onclick="window.buyItem(${index})">
+                    <strong style="${colorStyle}">${item.val}</strong><br><span class="text-muted">${item.price} 💎</span>
+                </div>`;
+            }
+        });
+    };
+    
+    window.buyItem = function(index) {
+        let item = shopItems[index];
+        if(user.tokens >= item.price) {
+            if(confirm(`Acheter ${item.val} pour ${item.price} 💎 ?`)) {
+                user.tokens -= item.price;
+                if(item.type === 'avatar') user.avatar = item.val;
+                if(item.type === 'title') user.title = item.val;
+                window.saveUserData(); window.updateUI(); alert('Achat réussi !');
+            }
+        } else { alert("Fonds insuffisants ! Jouez pour en gagner."); }
+    };
+
+    /* =========================================
+       SALON ET INVITATIONS
+       ========================================= */
     window.initRoom = function() {
-        players = [{ id: 0, name: user.name, isConteur: true }];
+        players = [{ id: 0, name: user.name, isConteur: true, isSpectre: false, role: '', avatar: user.avatar, pos: 0 }];
         botCount = 0;
         document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
         document.getElementById('screen-room').classList.add('active');
@@ -499,131 +1169,372 @@
     
     window.addBot = function() { 
         botCount++; 
-        players.push({ id: players.length, name: "Bot " + botCount, isConteur: false }); 
+        let avatars = ['🐻','🐼','🐯','🦁','🐸'];
+        players.push({ id: players.length, name: "Bot " + botCount, isConteur: false, isSpectre: false, role: '', avatar: avatars[botCount%avatars.length], pos: 0 }); 
         window.renderRoomList(); 
     };
+    window.removeBot = function() { if(players.length > 1) { players.pop(); botCount--; window.renderRoomList(); } };
     
-    window.removeBot = function() { 
-        if(players.length > 1) { 
-            players.pop(); 
-            botCount--; 
-            window.renderRoomList(); 
-        } 
+    window.setConteur = function(id) {
+        players.forEach(p => p.isConteur = false);
+        players.find(p => p.id === id).isConteur = true;
+        activeConteurId = id; meIsConteur = (id === 0);
+        window.renderRoomList();
     };
     
     window.renderRoomList = function() {
-        const list = document.getElementById('room-players-list'); 
-        list.innerHTML = '';
+        const list = document.getElementById('room-players-list'); list.innerHTML = '';
         players.forEach(p => { 
-            list.innerHTML += '<div class="card-white" style="padding:10px;">👤 <strong>' + p.name + '</strong> ' + (p.isConteur ? '👑' : '') + '</div>'; 
+            let badge = p.isConteur ? '<span style="color:#b794f4;">👑 Conteur</span>' : '';
+            let btn = (!p.isConteur) ? `<button class="btn small outline" onclick="window.setConteur(${p.id})">Donner 👑</button>` : '';
+            list.innerHTML += `<div class="card-white" style="padding:10px; display:flex; justify-content:space-between; align-items:center;">
+                <div>${p.avatar} <strong>${p.name}</strong> ${badge}</div> ${btn}
+            </div>`; 
         });
     };
 
-    /* PASTILLE RÔLES (MODAL) */
+    window.inviteFriendsToRoom = function() {
+        if(user.friends.length === 0) return alert("Vous n'avez pas d'amis à inviter !");
+        // Mock invitation
+        alert("Invitations envoyées à tous vos amis en ligne !");
+    };
+
+    // --- MOCK NOTIFICATION INVITATION ---
+    window.simulateReceivingInvite = function() {
+        document.getElementById('invite-text').innerText = "Ami_1234 vous invite dans le salon 'Château Noir'.";
+        document.getElementById('invite-notification').classList.add('show');
+    };
+    window.acceptInvite = function() {
+        document.getElementById('invite-notification').classList.remove('show');
+        window.initRoom(); // Simule rejoindre le salon
+        window.addBot(); // Ajoute l'ami virtuel
+    };
+    window.closeInvite = function() {
+        document.getElementById('invite-notification').classList.remove('show');
+    };
+
+    /* =========================================
+       SÉLECTION DES RÔLES
+       ========================================= */
     window.openRolesSelection = function() {
         document.getElementById('modal-role-selection').classList.add('active');
-        const container = document.getElementById('role-tile-container'); 
-        container.innerHTML = '';
+        const container = document.getElementById('role-tile-container'); container.innerHTML = '';
         rolesDB.forEach(r => {
             let isSelected = selectedRoles.includes(r.id) ? 'selected' : '';
-            container.innerHTML += '<div class="role-tile ' + isSelected + '" id="tile-' + r.id + '" onclick="window.toggleRole(\'' + r.id + '\')"><div class="role-tile-icon">' + r.emoji + '</div><div style="flex:1;"><strong style="color:var(--text-dark);">' + r.name + '</strong> <span style="font-size:0.7rem; color:var(--text-muted);">(Vit: ' + r.speed + ')</span><br><span style="font-size:0.75rem; color:var(--text-muted);">' + r.desc + '</span></div></div>';
+            container.innerHTML += `<div class="role-tile ${isSelected}" id="tile-${r.id}" onclick="window.toggleRole('${r.id}')">
+                <div class="role-tile-icon">${r.emoji}</div>
+                <div style="flex:1;">
+                    <strong style="color:var(--text-dark);">${r.name}</strong> <span style="font-size:0.7rem; color:var(--text-muted);">(Vit: ${r.speed})</span><br>
+                    <span style="font-size:0.75rem; color:var(--text-muted);">${r.desc}</span>
+                </div>
+            </div>`;
+        });
+    };
+    window.toggleRole = function(id) {
+        let tile = document.getElementById('tile-' + id);
+        if(selectedRoles.includes(id)) { selectedRoles = selectedRoles.filter(r => r !== id); tile.classList.remove('selected'); }
+        else { selectedRoles.push(id); tile.classList.add('selected'); }
+        document.getElementById('role-count').innerText = selectedRoles.length;
+    };
+    window.closeRolesSelection = function() { document.getElementById('modal-role-selection').classList.remove('active'); };
+
+    /* =========================================
+       MOTEUR DE JEU
+       ========================================= */
+    window.startGame = function() {
+        let nonConteurs = players.filter(p => !p.isConteur);
+        if(nonConteurs.length < 2) return alert("Ajoutez au moins 2 joueurs/bots !");
+        
+        let availableRoles = rolesDB.filter(r => selectedRoles.includes(r.id));
+        if(availableRoles.length === 0) return alert("Sélectionnez au moins un rôle !");
+
+        turnCount = 1;
+        // Distribution & Reset positions
+        nonConteurs.forEach((p, i) => { 
+            p.role = availableRoles[i % availableRoles.length].name; 
+            p.pos = 0; 
+            p.isSpectre = false;
+        });
+
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        
+        if (meIsConteur) {
+            document.getElementById('screen-conteur').classList.add('active');
+            window.triggerPhase('nuit');
+        } else {
+            let me = players.find(p => p.id === 0);
+            let myRoleObj = rolesDB.find(r => r.name === me.role) || {emoji:'❓', speed:'?', desc:''};
+            
+            document.getElementById('player-role-name').innerText = me.role;
+            document.getElementById('player-role-emoji').innerText = myRoleObj.emoji;
+            document.getElementById('player-role-speed').innerText = myRoleObj.speed;
+            document.getElementById('player-role-desc').innerText = myRoleObj.desc;
+            
+            document.getElementById('screen-player').classList.add('active');
+            window.triggerPhase('revelation');
+        }
+    };
+
+    window.triggerPhase = function(newPhase) {
+        gamePhase = newPhase;
+        clearInterval(gameInterval); // Reset timer a chaque changement de phase
+        
+        // INTERFACE CONTEUR
+        if (meIsConteur) {
+            const cTitle = document.getElementById('conteur-phase-title');
+            const cControls = document.getElementById('conteur-controls-container');
+            const cNightTools = document.getElementById('conteur-night-tools');
+            const cDayTools = document.getElementById('conteur-day-tools');
+            
+            window.renderTrack();
+            
+            if (newPhase === 'nuit') {
+                cTitle.innerText = `Tour ${turnCount} - La Nuit`;
+                cNightTools.style.display = 'block';
+                cDayTools.style.display = 'none';
+                window.renderConteurAdjusters();
+                cControls.innerHTML = `<button class="btn success" onclick="window.triggerPhase('jour')">☀️ Le jour se lève</button>`;
+            } 
+            else if (newPhase === 'jour') {
+                cTitle.innerText = `Tour ${turnCount} - Débats`;
+                cNightTools.style.display = 'none';
+                cDayTools.style.display = 'flex'; // Affiche le chrono
+                document.getElementById('conteur-timer').innerText = "00:00";
+                cControls.innerHTML = `<button class="btn blue" onclick="window.triggerPhase('accusation')">⚖️ Ouvrir les Accusations</button>`;
+            }
+            else if (newPhase === 'accusation') {
+                cTitle.innerText = `Tour ${turnCount} - Votes en cours`;
+                cNightTools.style.display = 'none';
+                cDayTools.style.display = 'none';
+                cControls.innerHTML = `<p class="text-muted" style="text-align:center;">Les joueurs s'accusent...</p><button class="btn outline" onclick="window.triggerPhase('aube')">🌅 Clore les votes & Résolution</button>`;
+            }
+            else if (newPhase === 'aube') {
+                cTitle.innerText = `Tour ${turnCount} - L'Aube`;
+                cNightTools.style.display = 'none';
+                cDayTools.style.display = 'none';
+                cControls.innerHTML = `<button class="btn" style="background:#2d3748;" onclick="window.nextTurn()">🌙 Passer à la Nuit suivante</button>`;
+            }
+        } 
+        
+        // INTERFACE JOUEUR
+        else {
+            const pTitle = document.getElementById('player-phase-title');
+            const pDesc = document.getElementById('player-phase-desc');
+            const pRole = document.getElementById('player-role-display');
+            const pGrid = document.getElementById('player-day-grid');
+            
+            pRole.style.display = 'none'; pGrid.style.display = 'none';
+
+            if (newPhase === 'revelation') {
+                pTitle.innerText = "Début de Partie"; pDesc.innerText = "Prenez connaissance de votre rôle."; 
+                pRole.style.display = 'flex';
+                // Simulation bot conteur
+                if(players.find(p=>p.isConteur).id !== 0) setTimeout(() => { window.triggerPhase('nuit'); }, 4000);
+            }
+            else if (newPhase === 'nuit') {
+                pTitle.innerText = "🌙 La Nuit tombe"; pDesc.innerText = "Fermez les yeux. Le Conteur appelle les rôles.";
+                if(players.find(p=>p.isConteur).id !== 0) setTimeout(() => { window.triggerPhase('jour'); }, 4000);
+            }
+            else if (newPhase === 'jour') {
+                pTitle.innerText = "☀️ Le Jour (Débats)"; pDesc.innerText = "Discutez. Aucune accusation possible pour le moment."; 
+                pGrid.style.display = 'grid';
+                window.renderPlayerGrid();
+                if(players.find(p=>p.isConteur).id !== 0) setTimeout(() => { window.triggerPhase('accusation'); }, 4000);
+            }
+            else if (newPhase === 'accusation') {
+                pTitle.innerText = "⚖️ Phase d'Accusation"; pDesc.innerText = "Cliquez sur un joueur pour l'accuser !"; 
+                pGrid.style.display = 'grid';
+                window.renderPlayerGrid();
+                if(players.find(p=>p.isConteur).id !== 0) setTimeout(() => { window.triggerPhase('aube'); }, 15000);
+            }
+            else if (newPhase === 'aube') {
+                pTitle.innerText = "🌅 L'Aube & Révélations"; pDesc.innerText = "Bilan des votes. Découvrez votre nouvelle case."; 
+                pGrid.style.display = 'grid';
+                window.resolveExecutions(); window.renderPlayerGrid();
+                if(players.find(p=>p.isConteur).id !== 0) setTimeout(() => { window.nextTurn(); }, 5000);
+            }
+        }
+    };
+
+    window.nextTurn = function() {
+        turnCount++;
+        hasAccusedToday = []; hasBeenAccusedToday = [];
+        currentExecutionTarget = { id: null, votes: 0 };
+        window.triggerPhase('nuit');
+    };
+
+    /* --- CHRONO (CONTEUR) --- */
+    window.startTimer = function(secStr) {
+        let sec = parseInt(secStr);
+        clearInterval(gameInterval);
+        let disp = document.getElementById('conteur-timer');
+        
+        gameInterval = setInterval(() => {
+            let m = Math.floor(sec/60).toString().padStart(2,'0');
+            let s = (sec%60).toString().padStart(2,'0');
+            disp.innerText = `${m}:${s}`;
+            if(sec <= 0) { 
+                clearInterval(gameInterval); 
+                disp.innerText = "FIN !"; 
+                alert("Le temps de débat est écoulé !");
+            }
+            sec--;
+        }, 1000);
+    };
+
+    /* --- PISTE DU CONTEUR --- */
+    window.renderTrack = function() {
+        const track = document.getElementById('conteur-track'); track.innerHTML = '';
+        for(let i=0; i<=12; i++) {
+            let pionsHtml = '';
+            players.filter(p => !p.isConteur && p.pos === i).forEach(p => {
+                let roleObj = rolesDB.find(r => r.name === p.role) || { emoji: '❓', order: 99 };
+                let orderBadge = (roleObj.order < 99) ? `<div class="order-badge">${roleObj.order}</div>` : '';
+                pionsHtml += `<div class="pion-container" onclick="alert('${p.name} est : ${roleObj.emoji} ${p.role}')">
+                    ${orderBadge}<div class="pion ${p.isSpectre?'spectre':''}">${roleObj.emoji}</div><div class="pion-label">${p.name}</div>
+                </div>`;
+            });
+            track.innerHTML += `<div class="track-cell"><div class="cell-number">${i}</div><div class="player-pions-group">${pionsHtml}</div></div>`;
+        }
+    };
+
+    window.renderConteurAdjusters = function() {
+        const div = document.getElementById('conteur-pos-adjust'); div.innerHTML = '';
+        players.filter(p => !p.isConteur).forEach(p => {
+            let roleEmoji = rolesDB.find(r => r.name === p.role)?.emoji || '❓';
+            div.innerHTML += `<div class="card-white" style="margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
+                <span style="font-weight:600; font-size:0.85rem;">${roleEmoji} ${p.name} ${p.isSpectre?'👻':''}</span>
+                <div style="display:flex; align-items:center;">
+                    <button class="btn small outline" onclick="window.changePos(${p.id}, -1)">-</button>
+                    <span style="width:30px;text-align:center;font-weight:700;">${p.pos}</span>
+                    <button class="btn small" onclick="window.changePos(${p.id}, 1)">+</button>
+                </div>
+            </div>`;
         });
     };
     
-    window.toggleRole = function(id) {
-        let tile = document.getElementById('tile-' + id);
-        if(selectedRoles.includes(id)) { 
-            selectedRoles = selectedRoles.filter(r => r !== id); 
-            tile.classList.remove('selected'); 
-        } else { 
-            selectedRoles.push(id); 
-            tile.classList.add('selected'); 
-        }
-        document.getElementById('role-count').innerText = selectedRoles.length;
-    };
-    
-    window.closeRolesSelection = function() { 
-        document.getElementById('modal-role-selection').classList.remove('active'); 
+    window.changePos = function(id, amount) { 
+        let p = players.find(x => x.id === id); 
+        if(!p.isSpectre) { 
+            p.pos = Math.max(0, Math.min(12, p.pos + amount)); 
+            window.renderTrack(); 
+            window.renderConteurAdjusters(); 
+        } 
     };
 
-    /* LANCEMENT JEU ET ANIMATION */
-    window.startGame = function() {
-        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-        document.getElementById('screen-player').classList.add('active');
+    /* --- ACCUSATION ET VOTE --- */
+    window.renderPlayerGrid = function() {
+        const grid = document.getElementById('player-day-grid'); grid.innerHTML = '';
+        players.filter(p => !p.isConteur && p.id !== 0).forEach(p => {
+            let skull = (currentExecutionTarget.id === p.id) ? '<div class="skull-badge">💀</div>' : '';
+            let clickAction = (gamePhase === 'accusation' && !p.isSpectre) ? `onclick="window.tryAccuse(${p.id})"` : '';
+            grid.innerHTML += `<div class="grid-card ${p.isSpectre?'spectre':''}" ${clickAction}>
+                ${skull}
+                <div class="avatar-circle" style="margin: 0 auto 10px auto; font-size:2rem; background:transparent;">${p.avatar}</div>
+                <div style="font-weight:600; font-size:0.85rem;">${p.name} ${p.isSpectre?'👻':''}</div>
+            </div>`;
+        });
+    };
+
+    window.tryAccuse = function(targetId) {
+        if (hasAccusedToday.includes(0)) return alert("Vous avez déjà accusé aujourd'hui !");
+        if (hasBeenAccusedToday.includes(targetId)) return alert("Ce joueur a déjà été accusé aujourd'hui !");
+
+        let target = players.find(p => p.id === targetId);
+        hasAccusedToday.push(0); hasBeenAccusedToday.push(targetId);
         
-        const grid = document.getElementById('player-day-grid');
-        grid.innerHTML = '<div class="grid-card" onclick="window.triggerVSAnimation(\'' + user.avatar + '\', \'🐺\', \'Bot 1\')"><div class="avatar-circle" style="margin:auto;">🐺</div><strong>Bot 1</strong></div><div class="grid-card" onclick="window.triggerVSAnimation(\'' + user.avatar + '\', \'🐻\', \'Bot 2\')"><div class="avatar-circle" style="margin:auto;">🐻</div><strong>Bot 2</strong></div>';
-    };
-
-    window.triggerVSAnimation = function(myAvatar, enemyAvatar, enemyName) {
         let overlay = document.getElementById('vs-overlay');
-        document.getElementById('vs-accuser').innerText = myAvatar;
-        document.getElementById('vs-accused').innerText = enemyAvatar;
+        document.getElementById('vs-accuser').innerText = user.avatar;
+        document.getElementById('vs-accused').innerText = target.avatar;
         overlay.style.display = 'flex';
+        
         setTimeout(() => { 
             overlay.style.display = 'none'; 
-            alert("Vote contre " + enemyName + " lancé !"); 
+            tempAccusedId = targetId;
+            document.getElementById('vote-target-name').innerText = target.name;
+            document.getElementById('modal-vote').classList.add('active');
         }, 2500);
     };
 
+    window.castVote = function(voteYes) {
+        document.getElementById('modal-vote').classList.remove('active');
+        
+        let yesCount = voteYes ? 1 : 0;
+        let livingPlayers = players.filter(p => !p.isSpectre && !p.isConteur);
+        
+        // Simule les votes des bots
+        livingPlayers.forEach(p => { if(p.id !== 0 && Math.random() > 0.5) yesCount++; });
+
+        let required = Math.ceil(livingPlayers.length / 2);
+        alert(`Résultat : ${yesCount} OUI (Minimum : ${required})`);
+
+        if (yesCount >= required) {
+            if (yesCount > currentExecutionTarget.votes) { 
+                currentExecutionTarget = { id: tempAccusedId, votes: yesCount }; 
+                alert("Nouveau record ! Sur la sellette 💀."); 
+            } 
+            else if (yesCount === currentExecutionTarget.votes) { 
+                currentExecutionTarget = { id: null, votes: 0 }; 
+                alert("Égalité ! Exécution annulée."); 
+            } 
+            else { alert(`Insuffisant pour battre le record (${currentExecutionTarget.votes}).`); }
+        } else { alert("Accusation rejetée (Pas de majorité)."); }
+        window.renderPlayerGrid();
+    };
+
+    window.resolveExecutions = function() {
+        if (currentExecutionTarget.id !== null) {
+            let p = players.find(x => x.id === currentExecutionTarget.id);
+            if (p) { p.isSpectre = true; alert(`⚖️ DÉCISION : ${p.name} exécuté !`); }
+        } else { alert("⚖️ DÉCISION : Personne n'a été exécuté."); }
+    };
+
+    window.revealPosition = function(show) {
+        const d = document.getElementById('secret-data');
+        if (show) {
+            if (turnCount === 1) { 
+                d.innerText = "Inconnue (Tour 1)"; d.style.background = "#a0aec0"; 
+            } else { 
+                d.innerText = `Case ${players.find(p=>p.id===0).pos}`; d.style.background = "var(--grad-blue)"; 
+            }
+            d.style.display = 'block';
+        } else { d.style.display = 'none'; }
+    };
+
     window.endGame = function(victory) {
+        // Gain de tokens (10 = joué, +20 = victoire)
         let gain = 10; 
-        if(victory) gain += 20;
+        if (victory !== undefined && victory === true) gain += 20; 
+        
         user.tokens += gain; 
-        saveUserData(); 
-        updateUI();
-        alert("Partie terminée ! +" + gain + " 💎"); 
+        window.saveUserData(); 
+        window.updateUI();
+        
+        alert(`Partie terminée ! +${gain} 💎 ajoutés à votre compte.`); 
         window.returnToMenu();
     };
 
-    /* FONCTIONS ANNEXES */
-    window.addFriend = function() {
-        let code = document.getElementById('add-friend-input').value;
-        if(code.length === 4 && code !== user.friendCode) { 
-            user.friends.push(code); 
-            saveUserData(); 
-            alert("Ami " + code + " ajouté !"); 
-            document.getElementById('add-friend-input').value = ''; 
-        }
-    };
-    
-    window.toggleTheme = function() {
-        let body = document.body; 
-        let isDark = body.getAttribute('data-theme') === 'dark';
-        body.setAttribute('data-theme', isDark ? 'light' : 'dark');
-        document.getElementById('btn-theme').innerText = isDark ? "Désactivé" : "Activé";
-    };
-
-    /* PANNEAU ADMIN */
+    /* --- PANNEAU ADMIN --- */
     window.openAdminPanel = function() { document.getElementById('modal-admin').classList.add('active'); };
-    
     window.adminAddShopItem = function() {
-        let type = document.getElementById('admin-item-type').value;
+        let type = document.getElementById('admin-item-type').value; 
         let val = document.getElementById('admin-item-val').value;
-        let price = parseInt(document.getElementById('admin-item-price').value);
+        let price = parseInt(document.getElementById('admin-item-price').value); 
         let color = document.getElementById('admin-item-color').value;
-        if(val && price) {
-            shopItems.push({ type: type, val: val, price: price, color: color });
-            localStorage.setItem('shop', JSON.stringify(shopItems));
-            renderShop(); 
-            alert("Article ajouté !");
+        if(val && price) { 
+            shopItems.push({ type, val, price, color }); 
+            localStorage.setItem('shop', JSON.stringify(shopItems)); 
+            window.renderShop(); 
+            alert("Article ajouté !"); 
         }
     };
-    
     window.adminGiveTokens = function() { 
-        user.tokens += 1000; 
-        saveUserData(); 
-        updateUI(); 
-        alert("1000 💎 ajoutés !"); 
+        user.tokens += 1000; window.saveUserData(); window.updateUI(); alert("1000 💎 ajoutés !"); 
     };
-    
     window.adminClearChat = function() { 
-        chatMessages = []; 
-        localStorage.setItem('chat', JSON.stringify(chatMessages)); 
-        loadChat(); 
-        alert("Chat vidé !"); 
+        chatMessages = []; localStorage.setItem('chat', JSON.stringify(chatMessages)); window.loadChat(); alert("Chat vidé !"); 
     };
-</script>
 
+</script>
 </body>
 </html>
