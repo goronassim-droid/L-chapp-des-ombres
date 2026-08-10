@@ -11,25 +11,20 @@
            VARIABLES ET THÈMES
            ========================================= */
         :root {
-            --bg-app: #f4f7fc;
-            --bg-card: #ffffff;
-            --text-dark: #2d3748;
-            --text-muted: #a0aec0;
+            --bg-app: #f4f7fc; --bg-card: #ffffff;
+            --text-dark: #2d3748; --text-muted: #a0aec0;
             --grad-purple: linear-gradient(135deg, #b794f4, #f687b3);
             --grad-blue: linear-gradient(135deg, #63b3ed, #4fd1c5);
             --grad-yellow: linear-gradient(135deg, #fbd38d, #f6e05e);
             --shadow-soft: 0 4px 15px rgba(0, 0, 0, 0.05);
             --shadow-hover: 0 8px 25px rgba(183, 148, 244, 0.3);
             --border-color: #e2e8f0;
-            --online-color: #48bb78;
-            --offline-color: #f56565;
+            --online-color: #48bb78; --offline-color: #f56565;
         }
 
         body[data-theme="dark"] {
-            --bg-app: #12121c;
-            --bg-card: #1e1e2f;
-            --text-dark: #f5f6fa;
-            --text-muted: #718096;
+            --bg-app: #12121c; --bg-card: #1e1e2f;
+            --text-dark: #f5f6fa; --text-muted: #718096;
             --border-color: #2d3748;
             --grad-purple: linear-gradient(135deg, #805ad5, #d53f8c);
         }
@@ -40,27 +35,14 @@
         * { box-sizing: border-box; }
         
         body { 
-            margin: 0; 
-            font-family: 'Poppins', sans-serif; 
-            background-color: var(--bg-app); 
-            color: var(--text-dark); 
-            display: flex; 
-            justify-content: center; 
-            align-items: center;
-            height: 100vh; 
-            width: 100vw;
-            overflow: hidden; 
-            transition: background 0.3s; 
+            margin: 0; font-family: 'Poppins', sans-serif; background-color: var(--bg-app); 
+            color: var(--text-dark); display: flex; justify-content: center; align-items: center;
+            height: 100vh; width: 100vw; overflow: hidden; transition: background 0.3s; 
         }
         
         #app-container { 
-            width: 100%; 
-            height: 100%; 
-            display: flex; 
-            flex-direction: column; 
-            background-color: var(--bg-app); 
-            position: relative; 
-            overflow: hidden;
+            width: 100%; height: 100%; display: flex; flex-direction: column; 
+            background-color: var(--bg-app); position: relative; overflow: hidden;
         }
         
         h1, h2, h3, h4, h5 { margin: 0; color: var(--text-dark); }
@@ -68,17 +50,12 @@
         .text-muted { color: var(--text-muted); font-size: 0.85rem; }
         
         .content-wrapper {
-            max-width: 1200px;
-            width: 100%;
-            margin: 0 auto;
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-            padding: 0 15px;
+            max-width: 1200px; width: 100%; margin: 0 auto; display: flex;
+            flex-direction: column; min-height: 100%; padding: 0 15px; overflow: visible !important;
         }
 
         .scrollable-area { flex: 1; overflow-y: auto; min-height: 0; padding: 10px 0; }
-        .screen { display: none; flex: 1; overflow: hidden; padding: 15px 0; }
+        .screen { display: none; flex: 1; overflow-y: auto; overflow-x: hidden; padding: 15px 0; }
         .screen.active { display: flex; flex-direction: column; }
 
         /* =========================================
@@ -87,8 +64,7 @@
         .btn { 
             background: var(--grad-purple); color: white; border: none; padding: 12px 20px; 
             margin: 5px 0; border-radius: 15px; font-size: 1rem; font-weight: 600; 
-            cursor: pointer; text-align: center; width: 100%; box-shadow: var(--shadow-soft); 
-            transition: 0.2s; flex-shrink: 0;
+            cursor: pointer; text-align: center; width: 100%; box-shadow: var(--shadow-soft); transition: 0.2s; flex-shrink: 0;
         }
         .btn:hover { transform: translateY(-2px); box-shadow: var(--shadow-hover); }
         .btn:active { transform: scale(0.98); }
@@ -103,8 +79,7 @@
         .input-field, select { 
             width: 100%; padding: 12px; margin-bottom: 10px; border-radius: 12px; 
             border: 2px solid var(--border-color); background: var(--bg-card); 
-            color: var(--text-dark); font-family: inherit; font-size: 0.95rem; outline: none; 
-            transition: border 0.3s;
+            color: var(--text-dark); font-family: inherit; font-size: 0.95rem; outline: none; transition: border 0.3s;
         }
         .input-field:focus, select:focus { border-color: #b794f4; }
 
@@ -113,21 +88,20 @@
            ========================================= */
         header { 
             padding: 15px 20px; display: flex; justify-content: space-between; 
-            align-items: center; background: var(--bg-card); z-index: 10; 
-            border-bottom: 1px solid var(--border-color); flex-shrink: 0;
+            align-items: center; background: var(--bg-card); z-index: 10; border-bottom: 1px solid var(--border-color); flex-shrink: 0;
         }
         .back-btn { background: var(--bg-app); border: none; padding: 10px 15px; border-radius: 10px; color: var(--text-dark); font-weight: 600; cursor: pointer; display: none; }
         
         nav { 
-            display: flex; background: var(--bg-card); padding: 10px; 
-            box-shadow: 0 -5px 15px rgba(0,0,0,0.05); z-index: 10; border-top: 1px solid var(--border-color); flex-shrink: 0;
+            display: flex; background: var(--bg-card); padding: 10px; box-shadow: 0 -5px 15px rgba(0,0,0,0.05); 
+            z-index: 10; border-top: 1px solid var(--border-color); flex-shrink: 0;
         }
         nav button { flex: 1; background: none; border: none; color: var(--text-muted); font-size: 1.5rem; cursor: pointer; transition: 0.2s; }
         nav button:hover { color: #b794f4; }
         nav button.active { color: #b794f4; transform: translateY(-3px); }
 
         /* =========================================
-           CARTES ET GRILLES (PC MULTI-COLONNES)
+           CARTES ET GRILLES
            ========================================= */
         .card-gradient { background: var(--grad-yellow); padding: 25px; border-radius: 20px; color: #2d3748; margin-bottom: 15px; flex-shrink: 0; }
         .card-white { background: var(--bg-card); padding: 15px; border-radius: 15px; box-shadow: var(--shadow-soft); margin-bottom: 10px; border: 1px solid var(--border-color); }
@@ -141,12 +115,24 @@
         .player-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; margin-top: 15px; }
         .role-tile-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; margin-top: 10px; }
         .room-players-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; }
-        .assignment-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 10px; margin-top: 10px; }
+        .assignment-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 10px; margin-top: 10px; }
 
         .shop-avatar-circle { width: 70px; height: 70px; border-radius: 50%; background: #edf2f7; display: flex; align-items: center; justify-content: center; font-size: 3rem; margin: 0 auto 10px auto; }
+        
+        /* DESIGN ROLES GENTILS / MECHANTS */
         .role-tile { display: flex; align-items: center; background: var(--bg-card); padding: 12px; border-radius: 12px; border: 2px solid var(--border-color); cursor: pointer; transition: 0.2s; }
-        .role-tile:hover { border-color: #b794f4; transform: translateY(-2px); }
-        .role-tile.selected { border-color: #b794f4; background: rgba(183, 148, 244, 0.1); }
+        .role-tile:hover { transform: translateY(-2px); }
+        .role-tile.selected { border-width: 3px; }
+        
+        .role-gentil { border-color: #cbd5e0; background: rgba(49, 130, 206, 0.05); }
+        .role-gentil.selected { border-color: #3182ce; }
+        .role-outsider { border-color: #cbd5e0; background: rgba(99, 179, 237, 0.05); }
+        .role-outsider.selected { border-color: #63b3ed; }
+        .role-sbire { border-color: #cbd5e0; background: rgba(252, 129, 129, 0.05); }
+        .role-sbire.selected { border-color: #fc8181; }
+        .role-demon { border-color: #cbd5e0; background: rgba(229, 62, 62, 0.05); }
+        .role-demon.selected { border-color: #e53e3e; }
+        
         .role-tile-icon { font-size: 2.2rem; margin-right: 15px; }
 
         /* =========================================
@@ -167,7 +153,7 @@
         
         .player-pions-group { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-top: 40px; z-index: 1; width: 100%; overflow-y: auto; }
         .pion-container { display: flex; flex-direction: column; align-items: center; cursor: pointer; position: relative; }
-        .pion { width: 45px; height: 45px; border-radius: 50%; background: var(--grad-purple); color: white; font-size: 1.5rem; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-soft); border: 2px solid white; }
+        .pion { width: 45px; height: 45px; border-radius: 50%; color: white; font-size: 1.5rem; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-soft); border: 2px solid white; }
         .pion.spectre { background: #cbd5e0 !important; box-shadow: none; filter: grayscale(100%); opacity: 0.7; }
         .pion-label { font-size: 0.7rem; font-weight: 600; margin-top: 4px; max-width: 60px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; }
         
@@ -177,9 +163,8 @@
             font-weight: bold; border: 2px solid white; z-index: 2; 
         }
 
-        /* Classes de Couleurs Conteur */
-        .bg-good { background: linear-gradient(135deg, #4fd1c5, #3182ce) !important; border-color: white !important; }
-        .bg-evil { background: linear-gradient(135deg, #fc8181, #e53e3e) !important; border-color: white !important; }
+        .bg-good { background: #3182ce !important; }
+        .bg-evil { background: #e53e3e !important; }
 
         .adjust-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; margin-top: 10px; }
 
@@ -230,11 +215,7 @@
         .modal { display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 100; padding: 20px; flex-direction: column; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
         .modal.active { display: flex; }
         
-        .fab-scenario {
-            position: absolute; bottom: 80px; right: 20px; background: var(--bg-card); color: var(--text-dark);
-            border: 2px solid var(--border-color); padding: 10px 20px; border-radius: 30px; font-weight: bold;
-            box-shadow: var(--shadow-hover); cursor: pointer; z-index: 50; display: none;
-        }
+        .fab-scenario { position: absolute; bottom: 80px; right: 20px; background: var(--bg-card); color: var(--text-dark); border: 2px solid var(--border-color); padding: 10px 20px; border-radius: 30px; font-weight: bold; box-shadow: var(--shadow-hover); cursor: pointer; z-index: 50; display: none; }
         .fab-scenario:hover { border-color: #b794f4; color: #b794f4; }
         
         .notification-toast { position: absolute; top: -100px; left: 50%; transform: translateX(-50%); background: var(--grad-blue); color: white; padding: 15px 20px; border-radius: 20px; box-shadow: var(--shadow-hover); z-index: 300; transition: top 0.4s ease; text-align: center; width: 90%; max-width: 400px; }
@@ -245,12 +226,21 @@
 
 <div id="app-container">
     
-    <!-- HEADER -->
     <header id="main-header" style="display: none;">
         <button class="back-btn" onclick="window.returnToMenu()">❮ Quitter</button>
         <span id="header-turn" style="font-weight:700; font-size:1.2rem; color: #b794f4;"></span>
         <div style="font-weight: 600; background: rgba(183,148,244,0.2); padding: 8px 15px; border-radius: 12px; color: #b794f4;">💎 <span id="ui-tokens">0</span></div>
     </header>
+
+    <!-- NOTIFICATION CONTEUR ACCUSATION -->
+    <div id="conteur-accuse-notif" class="notification-toast" style="background:#e53e3e;">
+        <h4 style="color: white; margin-bottom: 5px;">⚠️ Demande d'Accusation</h4>
+        <p id="conteur-accuse-text" style="font-size: 0.95rem; margin-bottom: 10px;">Joueur 1 souhaite accuser Joueur 2.</p>
+        <div style="display: flex; gap: 10px; justify-content: center;">
+            <button class="btn small" style="background: white; color: #e53e3e;" onclick="window.conteurAcceptAccusation()">Autoriser</button>
+            <button class="btn small outline" style="border-color: white; color: white;" onclick="window.conteurRejectAccusation()">Refuser</button>
+        </div>
+    </div>
 
     <!-- ÉCRAN: LOGIN -->
     <div id="screen-login" class="screen active" style="justify-content: center; align-items: center;">
@@ -281,7 +271,7 @@
             </div>
             <div style="display: flex; gap: 15px; margin-top: 10px;">
                 <button class="btn" style="flex:1; padding:20px; font-size:1.2rem;" onclick="window.initRoom()">➕ Créer un Salon</button>
-                <button class="btn outline" style="flex:1; padding:20px; font-size:1.2rem;" onclick="alert('Recherche de salon...')">🔍 Rejoindre</button>
+                <button class="btn outline" style="flex:1; padding:20px; font-size:1.2rem;" onclick="window.joinRoomCode()">🔍 Rejoindre</button>
             </div>
         </div>
     </div>
@@ -290,20 +280,16 @@
     <div id="screen-chat" class="screen">
         <div class="content-wrapper">
             <h2 style="flex-shrink:0; margin-bottom:15px;">💬 Messagerie</h2>
-            
             <div class="chat-tabs">
                 <div class="chat-tab active" id="tab-chat-global" onclick="window.switchChatMode('global')">Chat Global</div>
                 <div class="chat-tab" id="tab-chat-private" onclick="window.switchChatMode('private')">Messages Privés</div>
             </div>
-            
             <div id="chat-private-selector" style="display: none; margin-bottom: 10px; flex-shrink:0;">
                 <select id="private-friend-select" onchange="window.loadChat()">
                     <option value="">-- Sélectionnez un ami pour discuter --</option>
                 </select>
             </div>
-            
             <div class="chat-container" id="chat-messages"></div>
-            
             <div style="display: flex; gap: 10px; flex-shrink: 0;">
                 <input type="text" id="chat-input" class="input-field" style="margin:0;" placeholder="Écrivez un message...">
                 <button class="btn small" style="padding: 0 25px;" onclick="window.sendChatMessage()">Envoyer</button>
@@ -316,10 +302,8 @@
         <div class="content-wrapper">
             <h2 style="text-align: center; color: #f6e05e;">Boutique</h2>
             <p style="text-align:center; margin-bottom:25px;" class="text-muted">Dépensez vos 💎 pour personnaliser votre profil.</p>
-            
             <h4>Avatars</h4>
             <div class="shop-grid" id="shop-avatars"></div>
-            
             <h4 style="margin-top: 10px;">Titres Honorifiques</h4>
             <div class="shop-grid" id="shop-titles" style="grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));"></div>
         </div>
@@ -371,12 +355,11 @@
         <div class="content-wrapper">
             <h2 style="flex-shrink:0;">Préparation du Salon</h2>
             
-            <!-- CODE DU SALON -->
             <div class="card-white" style="text-align: center; flex-shrink:0; margin: 15px 0;">
                 <p style="margin:0; font-size:1.1rem;">Code du Salon : <strong style="color: #b794f4; letter-spacing: 3px;" id="room-code-display">XXXXXX</strong></p>
             </div>
 
-            <p class="text-muted" style="margin-bottom:10px; flex-shrink:0;">Gérez les joueurs, donnez la 👑 au Conteur.</p>
+            <p class="text-muted" style="margin-bottom:10px; flex-shrink:0;">Gérez les joueurs (Minimum 5 Joueurs + 1 Conteur).</p>
             
             <div id="room-players-list" class="room-players-grid scrollable-area"></div>
             
@@ -398,12 +381,16 @@
     <div id="screen-role-assignment" class="screen">
         <div class="content-wrapper">
             <h2 style="flex-shrink:0; color:#b794f4;">Attribution des Rôles</h2>
-            <p class="text-muted" style="margin-bottom:15px; flex-shrink:0;">Le Conteur distribue les rôles avant le début de la partie.</p>
+            
+            <div class="card-white" style="text-align:center; flex-shrink:0; margin-bottom:10px;">
+                <strong style="color:var(--text-dark); font-size:1.1rem;">Répartition Obligatoire (<span id="ra-player-count">0</span> joueurs)</strong><br>
+                <span id="ra-distribution" style="color:var(--text-muted);">Villageois: 0 | Marginaux: 0 | Sbires: 0 | Démon: 1</span>
+            </div>
             
             <div id="assignment-list" class="assignment-grid scrollable-area"></div>
             
             <div style="flex-shrink:0; margin-top:15px; padding-top:15px; border-top: 1px solid var(--border-color);">
-                <button class="btn outline" style="margin-bottom:10px;" onclick="window.randomizeRoles()">🎲 Tout distribuer au hasard (Sél. Officielle)</button>
+                <button class="btn outline" style="margin-bottom:10px;" onclick="window.randomizeRoles()">🎲 Tout distribuer au hasard</button>
                 <button class="btn success" style="font-size:1.2rem; padding:20px;" onclick="window.confirmAndStart()">✅ LANCER LA PARTIE</button>
             </div>
         </div>
@@ -415,7 +402,6 @@
             <h3 id="conteur-phase-title" style="margin:0; font-size:1.5rem;">Mode Conteur</h3>
         </div>
         
-        <!-- PISTE -->
         <div class="track-container" id="conteur-track"></div>
         
         <div class="content-wrapper scrollable-area" style="padding: 20px;">
@@ -501,8 +487,9 @@
     </div>
 
     <div id="modal-role-selection" class="modal">
-        <div class="card-white" style="flex: 1; display: flex; flex-direction: column; overflow: hidden; width:100%; max-width:900px; height:90vh; padding:25px;">
-            <h2 style="margin-bottom:15px; flex-shrink: 0;">Configuration des Rôles</h2>
+        <div class="card-white" style="flex: 1; display: flex; flex-direction: column; overflow: hidden; width:100%; max-width:1000px; height:90vh; padding:25px;">
+            <h2 style="margin-bottom:15px; flex-shrink: 0;">Urne du Scénario</h2>
+            <p class="text-muted" style="margin-bottom: 10px;">Cochez les rôles qui pourront être distribués.</p>
             <div class="role-tile-grid scrollable-area" id="role-tile-container"></div>
             <button class="btn" style="margin-top:20px; flex-shrink: 0; padding:15px; font-size:1.2rem;" onclick="document.getElementById('modal-role-selection').classList.remove('active')">Valider le Scénario</button>
         </div>
@@ -511,14 +498,11 @@
     <div id="modal-scenario" class="modal">
         <div class="card-white" style="flex: 1; display: flex; flex-direction: column; overflow: hidden; width:100%; max-width:800px; height:85vh; padding:25px;">
             <h2 style="margin-bottom:15px; flex-shrink: 0; color:#b794f4; text-align:center;">📖 Scénario & Ordre</h2>
-            
             <div class="chat-tabs" style="flex-shrink:0;">
                 <div class="chat-tab active" id="tab-scenario-roles" onclick="window.switchScenarioTab('roles')">Rôles en Jeu</div>
                 <div class="chat-tab" id="tab-scenario-order" onclick="window.switchScenarioTab('order')">Ordre Nuit</div>
             </div>
-
             <div class="scrollable-area" id="scenario-content" style="padding: 10px;"></div>
-            
             <button class="btn outline" style="margin-top:20px; flex-shrink: 0; padding:15px;" onclick="document.getElementById('modal-scenario').classList.remove('active')">Fermer</button>
         </div>
     </div>
@@ -587,28 +571,20 @@
     let chatMessages = JSON.parse(localStorage.getItem('chat')) || [];
     let currentChatMode = 'global'; let currentChatTarget = '';
     
+    // Jeu
     let players = []; let botCount = 0; let selectedRoles = rolesDB.map(r => r.id);
     let meIsConteur = true; let turnCount = 1; let gamePhase = 'attente'; 
-    let playerNotes = {}; 
-    let currentRoomCode = "000000";
+    let playerNotes = {}; let currentRoomCode = "000000";
     
-    // GESTION DES TIMEOUTS
+    // GESTION ABSOLUE DES TIMEOUTS
     let gameInterval;
     window.activeTimeouts = [];
-    
-    window.safeTimeout = function(fn, delay) {
-        let t = setTimeout(() => { if(gamePhase !== 'attente') fn(); }, delay);
-        window.activeTimeouts.push(t);
-    };
-
-    window.clearAllTimeouts = function() {
-        window.activeTimeouts.forEach(t => clearTimeout(t));
-        window.activeTimeouts = [];
-        clearInterval(gameInterval);
-    };
+    window.safeTimeout = function(fn, delay) { let t = setTimeout(() => { if(gamePhase !== 'attente') fn(); }, delay); window.activeTimeouts.push(t); };
+    window.clearAllTimeouts = function() { window.activeTimeouts.forEach(t => clearTimeout(t)); window.activeTimeouts = []; clearInterval(gameInterval); };
 
     let hasAccusedToday = []; let hasBeenAccusedToday = [];
-    let currentExecutionTarget = { id: null, votes: 0 }; let tempAccusedId = null; 
+    let currentExecutionTarget = { id: null, votes: 0 }; 
+    let tempAccusedId = null; let tempAccuseRequest = null;
 
     /* === CONNEXION & STATS === */
     window.loginGoogle = function() { alert("Firebase local manquant. Utilisez Email ou Invité."); window.login('guest'); };
@@ -643,11 +619,17 @@
         document.getElementById('main-header').style.display = 'flex';
         window.checkDailyLogin();
         
+        // Remplir Modale de Configuration des rôles (Catégories)
         const container = document.getElementById('role-tile-container'); container.innerHTML = '';
-        rolesDB.forEach(r => {
-            container.innerHTML += `<div class="role-tile selected" id="tile-${r.id}" onclick="window.toggleRole('${r.id}')">
-                <div class="role-tile-icon">${r.emoji}</div><div style="flex:1;"><strong style="color:var(--text-dark);">${r.name}</strong> <span style="font-size:0.75rem; color:var(--text-muted);">(Vit: ${r.speed})</span><br><span style="font-size:0.8rem; color:var(--text-muted);">${r.desc}</span></div></div>`;
-        });
+        const cats = { 'gentil': 'Villageois', 'outsider': 'Marginaux', 'sbire': 'Sbires', 'demon': 'Démons' };
+        for (let team in cats) {
+            container.innerHTML += `<h4 style="margin:15px 0 5px 0; grid-column: 1 / -1;">${cats[team]}</h4>`;
+            rolesDB.filter(r=>r.team===team).forEach(r => {
+                let teamClass = `role-${r.team}`;
+                container.innerHTML += `<div class="role-tile ${teamClass} selected" id="tile-${r.id}" onclick="window.toggleRole('${r.id}')">
+                    <div class="role-tile-icon">${r.emoji}</div><div style="flex:1;"><strong style="color:var(--text-dark);">${r.name}</strong> <span style="font-size:0.75rem; color:var(--text-muted);">(Vit: ${r.speed})</span><br><span style="font-size:0.8rem; color:var(--text-muted);">${r.desc}</span></div></div>`;
+            });
+        }
     };
 
     window.saveUserData = function() { localStorage.setItem('user_' + user.name, JSON.stringify(user)); };
@@ -688,6 +670,7 @@
     window.returnToMenu = function() {
         gamePhase = 'attente'; window.clearAllTimeouts(); 
         document.getElementById('btn-scenario').style.display = 'none';
+        document.getElementById('conteur-accuse-notif').classList.remove('show');
         document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
         document.getElementById('screen-home').classList.add('active');
         document.getElementById('bottom-nav').style.display = 'flex';
@@ -783,17 +766,34 @@
     };
 
     /* === SALON ET ATTRIBUTION ROLES === */
+    window.joinRoomCode = function() {
+        let code = prompt("Entrez le code du salon à 6 chiffres :");
+        if(code && code.length === 6) {
+            user.isAdmin = false;
+            players = [
+                { id: 0, name: "Admin", isConteur: true, isSpectre: false, role: '', avatar: "👑", pos: 0 },
+                { id: 1, name: user.name, isConteur: false, isSpectre: false, role: '', avatar: user.avatar, pos: 0 }
+            ];
+            botCount = 0; currentRoomCode = code;
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById('screen-room').classList.add('active');
+            document.getElementById('bottom-nav').style.display = 'none';
+            document.querySelector('.back-btn').style.display = 'block';
+            document.getElementById('room-code-display').innerText = currentRoomCode;
+            window.renderRoomList();
+        }
+    };
+
     window.initRoom = function() {
         players = [{ id: 0, name: user.name, isConteur: true, isSpectre: false, role: '', avatar: user.avatar, pos: 0 }];
         botCount = 0; playerNotes = {}; gamePhase = 'attente'; window.clearAllTimeouts();
-        
         currentRoomCode = Math.floor(100000 + Math.random() * 900000).toString();
-        document.getElementById('room-code-display').innerText = currentRoomCode;
-
+        
         document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
         document.getElementById('screen-room').classList.add('active');
         document.getElementById('bottom-nav').style.display = 'none';
         document.querySelector('.back-btn').style.display = 'block';
+        document.getElementById('room-code-display').innerText = currentRoomCode;
         window.renderRoomList();
     };
     
@@ -825,14 +825,38 @@
         document.getElementById('role-count').innerText = selectedRoles.length;
     };
 
+    // ALGORITHME DE DISTRIBUTION OFFICIEL
+    function getRequiredDistribution(n) {
+        if (n < 5) return null;
+        let d = { gentil: 0, outsider: 0, sbire: 0, demon: 1 };
+        if (n===5) { d.gentil=3; d.outsider=0; d.sbire=1; }
+        else if (n===6) { d.gentil=3; d.outsider=1; d.sbire=1; }
+        else if (n===7) { d.gentil=5; d.outsider=0; d.sbire=1; }
+        else if (n===8) { d.gentil=5; d.outsider=1; d.sbire=1; }
+        else if (n===9) { d.gentil=5; d.outsider=2; d.sbire=1; }
+        else if (n===10) { d.gentil=7; d.outsider=0; d.sbire=2; }
+        else if (n===11) { d.gentil=7; d.outsider=1; d.sbire=2; }
+        else if (n===12) { d.gentil=7; d.outsider=2; d.sbire=2; }
+        else if (n===13) { d.gentil=9; d.outsider=0; d.sbire=3; }
+        else if (n===14) { d.gentil=9; d.outsider=1; d.sbire=3; }
+        else if (n>=15) { d.gentil=9; d.outsider=2; d.sbire=3; }
+        return d;
+    }
+
     window.startRoleAssignment = function() {
         let nonConteurs = players.filter(p => !p.isConteur);
-        if(nonConteurs.length < 5) return alert("Il faut au moins 5 joueurs et 1 Conteur (6 personnes minimum) !");
+        let n = nonConteurs.length;
+        if(n < 5) return alert("Il faut au moins 5 joueurs et 1 Conteur (6 personnes minimum) pour jouer à ce jeu !");
         
         let availableRoles = rolesDB.filter(r => selectedRoles.includes(r.id));
-        if(availableRoles.length === 0) return alert("Sélectionnez au moins un rôle dans le scénario !");
+        let demons = availableRoles.filter(r => r.team === 'demon');
+        if(demons.length === 0) return alert("Vous devez sélectionner au moins 1 Démon dans l'urne !");
 
-        window.randomizeRoles(); // Première distribution logicielle basée sur la règle officielle
+        let dist = getRequiredDistribution(n);
+        document.getElementById('ra-player-count').innerText = n;
+        document.getElementById('ra-distribution').innerText = `Villageois: ${dist.gentil} | Marginaux: ${dist.outsider} | Sbires: ${dist.sbire} | Démon: ${dist.demon}`;
+
+        window.randomizeRoles(true);
 
         document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
         if(meIsConteur) {
@@ -848,41 +872,10 @@
         }
     };
 
-    window.renderRoleAssignment = function() {
-        let html = '';
-        let availableRoles = rolesDB.filter(r => selectedRoles.includes(r.id));
-        let options = availableRoles.map(r => `<option value="${r.name}">${r.emoji} ${r.name}</option>`).join('');
-
-        players.filter(p => !p.isConteur).forEach(p => {
-            html += `<div class="card-white" style="display:flex; justify-content:space-between; align-items:center;">
-                <span>${p.avatar} <strong>${p.name}</strong></span>
-                <select class="input-field" style="width:auto; margin:0; padding:8px; font-weight:bold;" onchange="window.updatePlayerRole(${p.id}, this.value)">
-                    ${options.replace(`value="${p.role}"`, `value="${p.role}" selected`)}
-                </select>
-            </div>`;
-        });
-        document.getElementById('assignment-list').innerHTML = html;
-    };
-
-    window.updatePlayerRole = function(id, roleName) { let p = players.find(x => x.id === id); if(p) p.role = roleName; };
-
-    // ALGORITHME DE DISTRIBUTION OFFICIEL
-    window.randomizeRoles = function() {
+    window.randomizeRoles = function(isInitial = false) {
         let nonConteurs = players.filter(p => !p.isConteur);
         let n = nonConteurs.length;
-        
-        let dist = { gentil: 0, outsider: 0, sbire: 0, demon: 1 };
-        if (n === 5) { dist.gentil = 3; dist.outsider = 0; dist.sbire = 1; }
-        else if (n === 6) { dist.gentil = 3; dist.outsider = 1; dist.sbire = 1; }
-        else if (n === 7) { dist.gentil = 5; dist.outsider = 0; dist.sbire = 1; }
-        else if (n === 8) { dist.gentil = 5; dist.outsider = 1; dist.sbire = 1; }
-        else if (n === 9) { dist.gentil = 5; dist.outsider = 2; dist.sbire = 1; }
-        else if (n === 10) { dist.gentil = 7; dist.outsider = 0; dist.sbire = 2; }
-        else if (n === 11) { dist.gentil = 7; dist.outsider = 1; dist.sbire = 2; }
-        else if (n === 12) { dist.gentil = 7; dist.outsider = 2; dist.sbire = 2; }
-        else if (n === 13) { dist.gentil = 9; dist.outsider = 0; dist.sbire = 3; }
-        else if (n === 14) { dist.gentil = 9; dist.outsider = 1; dist.sbire = 3; }
-        else if (n >= 15) { dist.gentil = 9; dist.outsider = 2; dist.sbire = 3; }
+        let dist = getRequiredDistribution(n);
 
         let availableRoles = rolesDB.filter(r => selectedRoles.includes(r.id));
         let poolGentils = availableRoles.filter(r => r.team === 'gentil').sort(() => 0.5 - Math.random());
@@ -894,7 +887,7 @@
         const pickRoles = (pool, count, fallback) => {
             for(let i=0; i<count; i++) {
                 if(pool.length > 0) finalDeck.push(pool.pop());
-                else finalDeck.push(rolesDB.find(r => r.team === fallback));
+                else finalDeck.push(rolesDB.find(r => r.team === fallback)); // Fallback si pas assez de roles sélectionnés
             }
         };
 
@@ -909,7 +902,49 @@
         if(meIsConteur) window.renderRoleAssignment();
     };
 
+    window.renderRoleAssignment = function() {
+        let html = '';
+        let availableRoles = rolesDB.filter(r => selectedRoles.includes(r.id));
+        let options = availableRoles.map(r => `<option value="${r.name}">${r.emoji} ${r.name}</option>`).join('');
+
+        players.filter(p => !p.isConteur).forEach(p => {
+            html += `<div class="card-white" style="display:flex; justify-content:space-between; align-items:center;">
+                <span>${p.avatar} <strong>${p.name}</strong></span>
+                <div style="display:flex; align-items:center; gap:5px;">
+                    <button class="btn outline small" style="padding:5px 8px; border-radius:50%;" onclick="window.showRoleInfo('${p.role}')">ℹ️</button>
+                    <select class="input-field" style="width:auto; margin:0; padding:8px; font-weight:bold;" onchange="window.updatePlayerRole(${p.id}, this.value)">
+                        ${options.replace(`value="${p.role}"`, `value="${p.role}" selected`)}
+                    </select>
+                </div>
+            </div>`;
+        });
+        document.getElementById('assignment-list').innerHTML = html;
+    };
+
+    window.updatePlayerRole = function(id, roleName) { 
+        let p = players.find(x => x.id === id); if(p) { p.role = roleName; window.renderRoleAssignment(); }
+    };
+
+    window.showRoleInfo = function(roleName) {
+        let r = rolesDB.find(x => x.name === roleName);
+        if(r) alert(`${r.emoji} ${r.name}\n\nÉquipe : ${r.team.toUpperCase()}\nVitesse : ${r.speed}\n\nPouvoir : ${r.desc}`);
+    };
+
     window.confirmAndStart = function() {
+        // Verification Finale de la repartition
+        let nonConteurs = players.filter(p => !p.isConteur);
+        let dist = getRequiredDistribution(nonConteurs.length);
+        let currentDist = { gentil: 0, outsider: 0, sbire: 0, demon: 0 };
+        
+        nonConteurs.forEach(p => {
+            let r = rolesDB.find(x => x.name === p.role);
+            if(r) currentDist[r.team]++;
+        });
+
+        if(currentDist.gentil !== dist.gentil || currentDist.outsider !== dist.outsider || currentDist.sbire !== dist.sbire || currentDist.demon !== dist.demon) {
+            return alert(`Erreur de répartition !\n\nVous avez mis :\nVill: ${currentDist.gentil}, Marg: ${currentDist.outsider}, Sbires: ${currentDist.sbire}, Démon: ${currentDist.demon}\n\nIl faut OBLIGATOIREMENT :\nVill: ${dist.gentil}, Marg: ${dist.outsider}, Sbires: ${dist.sbire}, Démon: ${dist.demon}`);
+        }
+
         document.getElementById('screen-role-assignment').classList.remove('active');
         document.getElementById('btn-scenario').style.display = 'block';
         document.getElementById('screen-conteur').classList.add('active');
@@ -930,14 +965,19 @@
         if (tab === 'roles') {
             let availableRoles = rolesDB.filter(r => selectedRoles.includes(r.id));
             let html = '<div class="role-tile-grid">';
-            availableRoles.forEach(r => { html += `<div class="role-tile"><div class="role-tile-icon">${r.emoji}</div><div style="flex:1;"><strong style="color:var(--text-dark);">${r.name}</strong> <span style="font-size:0.75rem; color:var(--text-muted);">(Vit: ${r.speed})</span><br><span style="font-size:0.8rem; color:var(--text-muted);">${r.desc}</span></div></div>`; });
+            availableRoles.forEach(r => { 
+                let tClass = `role-${r.team}`;
+                html += `<div class="role-tile ${tClass}"><div class="role-tile-icon">${r.emoji}</div><div style="flex:1;"><strong style="color:var(--text-dark);">${r.name}</strong> <span style="font-size:0.75rem; color:var(--text-muted);">(Vit: ${r.speed})</span><br><span style="font-size:0.8rem; color:var(--text-muted);">${r.desc}</span></div></div>`; 
+            });
             html += '</div>'; content.innerHTML = html;
         } else {
             let rolesToShow = [];
             if(meIsConteur) {
+                // Seulement les rôles attribués
                 let activeRoles = players.filter(p => !p.isConteur).map(p => p.role);
                 rolesToShow = rolesDB.filter(r => activeRoles.includes(r.name) && r.order < 99);
             } else {
+                // Tous les rôles possibles
                 rolesToShow = rolesDB.filter(r => selectedRoles.includes(r.id) && r.order < 99);
             }
             rolesToShow.sort((a,b) => a.order - b.order);
@@ -970,46 +1010,46 @@
                 cTitle.innerText = `Tour ${turnCount} - Débats`;
                 cNightTools.style.display = 'none'; cDayTools.style.display = 'flex';
                 document.getElementById('conteur-timer').innerText = "00:00";
-                cControls.innerHTML = `<button class="btn blue" style="padding:20px; font-size:1.2rem;" onclick="window.triggerPhase('accusation')">⚖️ Ouvrir les Accusations</button>`;
+                cControls.innerHTML = `<p class="text-muted" style="margin-bottom:10px;">Attendez les demandes d'accusation des joueurs.</p>`;
             }
             else if (newPhase === 'accusation') {
                 cTitle.innerText = `Tour ${turnCount} - Votes en cours`;
                 cNightTools.style.display = 'none'; cDayTools.style.display = 'none';
-                cControls.innerHTML = `<p class="text-muted" style="text-align:center; font-size:1.1rem; margin-bottom:15px;">Les joueurs s'accusent...</p><button class="btn outline" style="padding:20px; font-size:1.2rem;" onclick="window.triggerPhase('aube')">🌅 Clore les votes & Résolution</button>`;
+                cControls.innerHTML = `<p class="text-muted" style="text-align:center; font-size:1.1rem; margin-bottom:15px;">Les joueurs votent pour éliminer : <strong>${players.find(p=>p.id===tempAccusedId)?.name}</strong></p><button class="btn outline" style="padding:20px; font-size:1.2rem;" onclick="window.triggerPhase('aube')">🌅 Clore les votes & Résolution</button>`;
             }
             else if (newPhase === 'aube') {
                 cTitle.innerText = `Tour ${turnCount} - L'Aube`;
                 cNightTools.style.display = 'none'; cDayTools.style.display = 'none';
                 cControls.innerHTML = `<button class="btn" style="background:#2d3748; padding:20px; font-size:1.2rem;" onclick="window.nextTurn()">🌙 Passer à la Nuit suivante</button>`;
             }
-        } 
-        else {
+        } else {
             const pTitle = document.getElementById('player-phase-title'); const pDesc = document.getElementById('player-phase-desc');
             const pRole = document.getElementById('player-role-display'); const pGrid = document.getElementById('player-day-grid');
             pRole.style.display = 'none'; pGrid.style.display = 'none';
 
             if (newPhase === 'revelation') {
                 pTitle.innerText = "Début de Partie"; pDesc.innerText = "Prenez connaissance de votre rôle."; pRole.style.display = 'flex';
-                if(players.find(p=>p.isConteur).id !== 0) window.safeTimeout(() => { window.triggerPhase('nuit'); }, 4000);
+                if(players.find(p=>p.isConteur).id !== 0) window.safeTimeout(() => { window.triggerPhase('nuit'); }, 6000);
             }
             else if (newPhase === 'nuit') {
                 pTitle.innerText = "🌙 La Nuit tombe"; pDesc.innerText = "Fermez les yeux. Le Conteur appelle les rôles.";
-                if(players.find(p=>p.isConteur).id !== 0) window.safeTimeout(() => { window.triggerPhase('jour'); }, 4000);
+                if(players.find(p=>p.isConteur).id !== 0) window.safeTimeout(() => { window.triggerPhase('jour'); }, 6000);
             }
             else if (newPhase === 'jour') {
-                pTitle.innerText = "☀️ Le Jour (Débats)"; pDesc.innerText = "Discutez. Aucune accusation possible pour le moment."; pGrid.style.display = 'grid';
+                pTitle.innerText = "☀️ Le Jour (Débats)"; pDesc.innerText = "Discutez. Vous pouvez demander à accuser un joueur."; pGrid.style.display = 'grid';
                 window.renderPlayerGrid();
-                if(players.find(p=>p.isConteur).id !== 0) window.safeTimeout(() => { window.triggerPhase('accusation'); }, 4000);
             }
             else if (newPhase === 'accusation') {
-                pTitle.innerText = "⚖️ Phase d'Accusation"; pDesc.innerText = "Cliquez sur un joueur pour l'accuser !"; pGrid.style.display = 'grid';
+                pTitle.innerText = "⚖️ Phase de Vote"; pDesc.innerText = "Le Conteur a validé !"; pGrid.style.display = 'grid';
                 window.renderPlayerGrid();
+                
+                // Si on a un Conteur Bot, il passe à l'aube auto
                 if(players.find(p=>p.isConteur).id !== 0) window.safeTimeout(() => { window.triggerPhase('aube'); }, 15000);
             }
             else if (newPhase === 'aube') {
                 pTitle.innerText = "🌅 L'Aube & Révélations"; pDesc.innerText = "Bilan des votes. Découvrez votre case en bas."; pGrid.style.display = 'grid';
                 window.resolveExecutions(); window.renderPlayerGrid();
-                if(players.find(p=>p.isConteur).id !== 0) window.safeTimeout(() => { window.nextTurn(); }, 5000);
+                if(players.find(p=>p.isConteur).id !== 0) window.safeTimeout(() => { window.nextTurn(); }, 6000);
             }
         }
     };
@@ -1034,7 +1074,7 @@
         }, 1000);
     };
 
-    /* === PISTE CONTEUR (COULEURS EQUIPES) === */
+    /* === PISTE CONTEUR === */
     window.renderTrack = function() {
         const track = document.getElementById('conteur-track'); track.innerHTML = '';
         for(let i=0; i<=12; i++) {
@@ -1042,10 +1082,9 @@
             players.filter(p => !p.isConteur && p.pos === i).forEach(p => {
                 let roleObj = rolesDB.find(r => r.name === p.role) || { emoji: '❓', order: 99, team: 'gentil' };
                 let orderBadge = (roleObj.order < 99) ? `<div class="order-badge">${roleObj.order}</div>` : '';
-                
                 let teamClass = (roleObj.team === 'gentil' || roleObj.team === 'outsider') ? 'bg-good' : 'bg-evil';
                 
-                pionsHtml += `<div class="pion-container" onclick="alert('${p.name} est : ${roleObj.emoji} ${p.role}')">
+                pionsHtml += `<div class="pion-container" onclick="window.showRoleInfo('${p.role}')">
                     ${orderBadge}<div class="pion ${p.isSpectre?'spectre':''} ${teamClass}">${roleObj.emoji}</div><div class="pion-label">${p.name}</div></div>`;
             });
             track.innerHTML += `<div class="track-cell"><div class="cell-number">${i}</div><div class="player-pions-group">${pionsHtml}</div></div>`;
@@ -1059,13 +1098,13 @@
             let borderColor = (roleObj.team === 'gentil' || roleObj.team === 'outsider') ? '#3182ce' : '#e53e3e';
             
             div.innerHTML += `<div class="card-white" style="margin-bottom:0; display:flex; justify-content:space-between; align-items:center; padding:10px; background:${cardBg}; border-color:${borderColor};">
-                <span style="font-weight:600; font-size:1rem; color:${borderColor};">${roleObj.emoji} ${p.name}</span>
+                <span style="font-weight:600; font-size:1rem; color:${borderColor}; cursor:pointer;" onclick="window.showRoleInfo('${p.role}')">${roleObj.emoji} ${p.name}</span>
                 <div style="display:flex; align-items:center;"><button class="btn small outline" onclick="window.changePos(${p.id}, -1)">-</button><span style="width:40px;text-align:center;font-weight:700;font-size:1.2rem;">${p.pos}</span><button class="btn small" onclick="window.changePos(${p.id}, 1)">+</button></div></div>`;
         });
     };
     window.changePos = function(id, amount) { let p = players.find(x => x.id === id); if(!p.isSpectre) { p.pos = Math.max(0, Math.min(12, p.pos + amount)); window.renderTrack(); window.renderConteurAdjusters(); } };
 
-    /* === VUE JOUEUR (NOTES & VOTES) === */
+    /* === GRILLES JOUEUR, NOTES ET ACCUSATIONS === */
     window.renderPlayerGrid = function() {
         const grid = document.getElementById('player-day-grid'); grid.innerHTML = '';
         let availableRoles = rolesDB.filter(r => selectedRoles.includes(r.id));
@@ -1073,7 +1112,7 @@
 
         players.filter(p => !p.isConteur && p.id !== 0).forEach(p => {
             let skull = (currentExecutionTarget.id === p.id) ? '<div class="skull-badge">💀</div>' : '';
-            let clickAction = (gamePhase === 'accusation' && !p.isSpectre) ? `onclick="window.tryAccuse(${p.id})"` : '';
+            let clickAction = (gamePhase === 'jour' && !p.isSpectre) ? `onclick="window.requestAccuse(${p.id})"` : '';
             let noteVal = playerNotes[p.id] || '';
             
             grid.innerHTML += `
@@ -1092,22 +1131,54 @@
 
     window.updatePlayerNote = function(id, val) { playerNotes[id] = val; };
 
-    window.tryAccuse = function(targetId) {
-        if (hasAccusedToday.includes(0)) return alert("Vous avez déjà accusé aujourd'hui !");
+    // SYSTEME D'APPROBATION CONTEUR
+    window.requestAccuse = function(targetId) {
+        if (hasAccusedToday.includes(0)) return alert("Vous avez déjà demandé une accusation aujourd'hui !");
         if (hasBeenAccusedToday.includes(targetId)) return alert("Ce joueur a déjà été accusé aujourd'hui !");
 
-        let target = players.find(p => p.id === targetId);
-        hasAccusedToday.push(0); hasBeenAccusedToday.push(targetId);
+        tempAccuseRequest = { accuser: 0, target: targetId };
+        alert("Demande envoyée au Conteur. En attente de validation...");
+
+        // Simulation : Si le conteur est un bot, il accepte après 2s.
+        if (players.find(p=>p.isConteur).id !== 0) {
+            window.safeTimeout(() => { window.conteurAcceptAccusation(tempAccuseRequest); }, 2000);
+        } else {
+            // Si Firebase était actif, ça enverrait la requête au vrai Conteur.
+        }
+    };
+
+    // Appelé par le Conteur (ou le Bot)
+    window.conteurAcceptAccusation = function(req = tempAccuseRequest) {
+        document.getElementById('conteur-accuse-notif').classList.remove('show');
+        if(!req) return;
         
+        hasAccusedToday.push(req.accuser); hasBeenAccusedToday.push(req.target);
+        tempAccusedId = req.target;
+        
+        // Tout le monde passe en phase d'accusation
+        window.triggerPhase('accusation');
+        
+        let accuserP = players.find(p => p.id === req.accuser);
+        let targetP = players.find(p => p.id === req.target);
+
         let overlay = document.getElementById('vs-overlay');
-        document.getElementById('vs-accuser').innerText = user.avatar; document.getElementById('vs-accused').innerText = target.avatar;
+        document.getElementById('vs-accuser').innerText = accuserP ? accuserP.avatar : '👤'; 
+        document.getElementById('vs-accused').innerText = targetP ? targetP.avatar : '👤';
         overlay.style.display = 'flex';
         
         window.safeTimeout(() => { 
-            overlay.style.display = 'none'; tempAccusedId = targetId;
-            document.getElementById('vote-target-name').innerText = target.name;
-            document.getElementById('modal-vote').classList.add('active');
+            overlay.style.display = 'none';
+            // Le modal de vote s'ouvre uniquement pour les joueurs (pas le conteur)
+            if(!meIsConteur) {
+                document.getElementById('vote-target-name').innerText = targetP ? targetP.name : 'Inconnu';
+                document.getElementById('modal-vote').classList.add('active');
+            }
         }, 2500);
+    };
+
+    window.conteurRejectAccusation = function() {
+        document.getElementById('conteur-accuse-notif').classList.remove('show');
+        tempAccuseRequest = null;
     };
 
     window.castVote = function(voteYes) {
@@ -1147,10 +1218,12 @@
 
     window.endGame = function(victory) {
         gamePhase = 'attente'; window.clearAllTimeouts();
+        document.getElementById('btn-scenario').style.display = 'none';
+        
         let gain = 10; user.gamesPlayed++;
         if (victory !== undefined && victory === true) { gain += 20; user.gamesWon++; }
         user.tokens += gain; window.saveUserData(); window.updateUI();
-        document.getElementById('btn-scenario').style.display = 'none';
+        
         alert(`Partie terminée ! +${gain} 💎 ajoutés à votre compte.`); window.returnToMenu();
     };
 
