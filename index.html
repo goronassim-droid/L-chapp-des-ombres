@@ -65,7 +65,7 @@
         
         @media (min-width: 768px) {
             #app-container {
-                max-width: 450px; /* Retour à une vue app centrée pour sublimer ce design UI Mobile */
+                max-width: 450px;
                 height: 95vh; border-radius: 30px; box-shadow: 0 20px 50px rgba(0,0,0,0.15);
                 border: 8px solid #ffffff;
             }
@@ -80,7 +80,7 @@
         }
 
         .scrollable-area { flex: 1; overflow-y: auto; min-height: 0; padding: 10px 0; }
-        .scrollable-area::-webkit-scrollbar { display: none; } /* Cache la scrollbar pour faire plus "App" */
+        .scrollable-area::-webkit-scrollbar { display: none; }
         
         .screen { display: none; flex: 1; overflow-y: auto; overflow-x: hidden; padding: 0; }
         .screen.active { display: flex; flex-direction: column; }
@@ -137,7 +137,7 @@
         nav button.active span.icon { transform: translateY(-3px); }
 
         /* =========================================
-           UI COMPOSANTS (Inspirés des images)
+           UI COMPOSANTS
            ========================================= */
         .curved-header {
             background: var(--grad-main);
@@ -150,7 +150,7 @@
             box-shadow: var(--shadow-soft);
         }
 
-        .avatar-circle { width: 90px; height: 90px; border-radius: 50%; background: var(--bg-card); display: flex; align-items: center; justify-content: center; font-size: 3.5rem; position: relative; margin: 0 auto; box-shadow: 0 10px 20px rgba(0,0,0,0.1); border: 4px solid white; }
+        .avatar-circle { width: 90px; height: 90px; border-radius: 50%; background: var(--bg-card); display: flex; align-items: center; justify-content: center; font-size: 3.5rem; position: relative; margin: 0 auto; box-shadow: 0 10px 20px rgba(0,0,0,0.1); border: 4px solid white; overflow: hidden; }
         .avatar-circle.small { width: 50px; height: 50px; font-size: 1.8rem; border-width: 2px; }
 
         .card-white { background: var(--bg-card); padding: 20px; border-radius: 25px; box-shadow: var(--shadow-soft); margin-bottom: 15px; border: 1px solid var(--border-color); }
@@ -163,32 +163,27 @@
         .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
         .stat-box { background: var(--bg-card); padding: 15px; border-radius: 20px; border: 1px solid var(--border-color); text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center;}
         
-        /* Faux Graphique Barres */
         .bar-chart { display: flex; align-items: flex-end; gap: 5px; height: 60px; margin-top: 10px; width: 100%; justify-content: center;}
         .bar { width: 12px; border-radius: 5px 5px 0 0; background: var(--pastel-blue); }
         .bar.active { background: var(--primary); }
         
-        /* Faux Graphique Cercle */
         .circle-chart { position: relative; width: 60px; height: 60px; border-radius: 50%; background: conic-gradient(var(--primary) 72%, #f0f0f0 0); display: flex; align-items: center; justify-content: center; margin-top: 10px;}
         .circle-inner { width: 45px; height: 45px; border-radius: 50%; background: var(--bg-card); display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 0.9rem; color: var(--primary); }
 
-        /* Trophées */
         .trophy-scroll { display: flex; overflow-x: auto; gap: 15px; padding-bottom: 10px; }
         .trophy-scroll::-webkit-scrollbar { display: none; }
         .trophy-badge { width: 60px; height: 60px; border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 2rem; flex-shrink: 0; box-shadow: var(--shadow-soft); }
         
-        /* Boutique */
         .shop-banner { background: var(--grad-main); border-radius: 25px; padding: 20px; color: white; display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; box-shadow: var(--shadow-hover); }
         .shop-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
         .shop-item { background: var(--pastel-purple); padding: 15px; border-radius: 25px; text-align: center; display: flex; flex-direction: column; align-items: center; }
         .shop-item.blue { background: var(--pastel-blue); }
 
-        /* Listes diverses */
         .activity-item, .chat-friend-item { display: flex; align-items: center; gap: 15px; padding: 15px 0; border-bottom: 1px solid var(--border-color); }
         .activity-item:last-child, .chat-friend-item:last-child { border-bottom: none; }
 
         /* =========================================
-           JEU / GRILLES / PISTE (Le code existant adapté)
+           JEU / GRILLES / PISTE
            ========================================= */
         .player-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 15px; margin-top: 15px; }
         .role-tile-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; margin-top: 10px; }
@@ -203,7 +198,6 @@
         .role-demon { border-color: #cbd5e0; background: rgba(229, 62, 62, 0.05); }
         .role-tile-icon { width: 50px; height: 50px; font-size: 2.5rem; margin-right: 15px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;}
 
-        /* Piste Conteur */
         .track-container { display: flex; overflow-x: auto; padding: 15px; gap: 15px; width: 100%; min-height: 200px; flex-shrink: 0; background: rgba(0,0,0,0.02); border-bottom: 1px solid var(--border-color); border-radius: 25px; }
         .track-cell { min-width: 140px; height: 100%; background: var(--bg-card); border-radius: 20px; display: flex; flex-direction: column; align-items: center; position: relative; padding: 10px; border: 1px solid var(--border-color); }
         .cell-number { font-size: 2.5rem; color: var(--border-color); font-weight: 700; position: absolute; top: 5px; right: 10px; z-index: 0; opacity: 0.5; }
@@ -218,7 +212,6 @@
 
         .adjust-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; margin-top: 10px; }
 
-        /* Cartes joueurs (Vote/Notes) */
         .grid-card-wrapper { background: var(--bg-card); border-radius: 20px; border: 1px solid var(--border-color); padding: 10px; text-align: center; }
         .grid-card { position: relative; padding: 10px; cursor: pointer; border-radius: 15px; }
         .skull-badge { position: absolute; top: -5px; right: -5px; font-size: 1.5rem; background: white; border-radius: 50%; box-shadow: var(--shadow-soft); z-index: 2; }
@@ -265,7 +258,7 @@
 
 <div id="app-container">
     
-    <!-- HEADER FLOTTANT (Z-index haut, pour les jetons et le bouton retour) -->
+    <!-- HEADER FLOTTANT -->
     <div class="top-header-global" id="main-header" style="display: none;">
         <button class="back-btn" onclick="window.returnToMenu()">❮</button>
         <div style="flex:1;"></div>
@@ -359,9 +352,7 @@
             
             <div id="chat-friends-list" style="margin-bottom: 20px;">
                 <p class="text-muted" style="font-size:0.8rem; font-weight:bold; margin-bottom:10px; text-transform:uppercase;">Chat Privé (Amis)</p>
-                <div id="private-chat-buttons" style="background:var(--bg-card); border-radius:20px; padding:0 15px;">
-                    <!-- Liste des amis cliquables pour ouvrir leur chat -->
-                </div>
+                <div id="private-chat-buttons" style="background:var(--bg-card); border-radius:20px; padding:0 15px;"></div>
             </div>
 
             <p class="text-muted" style="font-size:0.8rem; font-weight:bold; margin-bottom:10px; text-transform:uppercase;">Chat Public</p>
@@ -383,7 +374,6 @@
             </div>
             
             <div style="background:var(--bg-card); border-radius:25px; padding:20px; box-shadow:var(--shadow-soft);">
-                <!-- Mockup de classement -->
                 <div style="display:flex; align-items:center; gap:15px; padding:15px 0; border-bottom:1px solid var(--border-color);">
                     <strong style="color:var(--primary); font-size:1.2rem;">1</strong>
                     <div class="avatar-circle small" style="background:#fbd38d;">👑</div>
@@ -432,7 +422,6 @@
                 <div class="stat-box">
                     <span style="font-size:0.8rem; color:var(--text-muted); font-weight:600;">Parties Jouées</span>
                     <h3 style="font-size:2rem; color:var(--text-dark); margin:5px 0;" id="profile-games">0</h3>
-                    <!-- Faux graphe -->
                     <div class="bar-chart">
                         <div class="bar" style="height:30%;"></div>
                         <div class="bar" style="height:60%;"></div>
@@ -442,7 +431,6 @@
                 </div>
                 <div class="stat-box">
                     <span style="font-size:0.8rem; color:var(--text-muted); font-weight:600;">Taux Victoire</span>
-                    <!-- Faux cercle -->
                     <div class="circle-chart">
                         <div class="circle-inner" id="profile-winrate">0%</div>
                     </div>
@@ -474,17 +462,8 @@
                     </div>
                     <span style="color:var(--online-color); font-weight:bold;">+10 🪙</span>
                 </div>
-                <div class="activity-item">
-                    <div class="avatar-circle small" style="background:var(--pastel-blue); color:#3182ce;">🛒</div>
-                    <div style="flex:1;">
-                        <strong style="display:block; font-size:0.9rem;">Achat Boutique</strong>
-                        <span class="text-muted" style="font-size:0.75rem;">Hier</span>
-                    </div>
-                    <span style="color:var(--offline-color); font-weight:bold;">-200 🪙</span>
-                </div>
             </div>
 
-            <!-- Code Ami et Actions -->
             <div class="card-white" style="text-align: center; margin-bottom: 20px;">
                 <p style="margin-bottom:10px; font-size:0.9rem;">Mon Code Ami</p>
                 <h2 style="color: var(--primary); letter-spacing: 4px; font-size:1.8rem; margin:0;" id="profile-friend-code">XXXX</h2>
@@ -502,10 +481,6 @@
             <button class="btn outline" style="color:var(--offline-color); border-color:var(--offline-color); margin-bottom:40px;" onclick="window.logout()">Déconnexion</button>
         </div>
     </div>
-
-    <!-- =========================================
-         ÉCRANS DE JEU (Garde la structure existante mais avec les nouvelles classes)
-         ========================================= -->
 
     <!-- ÉCRAN: SALON (ATTENTE) -->
     <div id="screen-room" class="screen">
@@ -529,7 +504,7 @@
         </div>
     </div>
 
-    <!-- ÉCRAN: ATTRIBUTION DES RÔLES (CONTEUR ONLY) -->
+    <!-- ÉCRAN: ATTRIBUTION DES RÔLES -->
     <div id="screen-role-assignment" class="screen">
         <div class="content-wrapper" style="padding-top: 60px;">
             <h2 style="color:var(--primary);">Attribution des Rôles</h2>
@@ -603,7 +578,7 @@
     <button class="fab-scenario" id="btn-scenario" onclick="window.openScenarioModal()">📖 Scénario</button>
 
     <!-- =========================================
-         OVERLAYS ET MODALS (Pop-ups style "Félicitations")
+         MODALS
          ========================================= -->
     
     <div id="vs-overlay">
@@ -623,7 +598,6 @@
         </div>
     </div>
 
-    <!-- MODAL CHAT PRIVE DEDIE -->
     <div id="modal-chat-panel" class="modal" style="padding:0; justify-content:flex-end;">
         <div class="modal-content" style="height: 85vh; padding: 20px; border-radius: 30px 30px 0 0;">
             <div class="section-title">
@@ -635,14 +609,6 @@
                 <input type="text" id="panel-chat-input" class="input-field" style="margin:0; border-radius:25px;" placeholder="Message...">
                 <button class="btn" style="width:50px; height:50px; border-radius:50%; padding:0; display:flex; align-items:center; justify-content:center;" onclick="window.sendPanelMessage()">➤</button>
             </div>
-        </div>
-    </div>
-
-    <div id="modal-role-picker" class="modal">
-        <div class="modal-content">
-            <h2 style="margin-bottom:15px; text-align:center;">Choisir un rôle</h2>
-            <div class="role-tile-grid scrollable-area" id="picker-tile-container" style="max-height: 50vh;"></div>
-            <button class="btn outline" style="margin-top:15px;" onclick="document.getElementById('modal-role-picker').classList.remove('active')">Annuler</button>
         </div>
     </div>
 
@@ -667,7 +633,7 @@
         </div>
     </div>
 
-    <!-- NAVBAR BASSE (Style App 5 Boutons) -->
+    <!-- NAVBAR BASSE -->
     <nav id="bottom-nav" style="display: none;">
         <button class="active" onclick="window.showMainNav('screen-home', this)">
             <span class="icon">🎮</span><span class="label">Jeu</span>
@@ -692,12 +658,14 @@
      JAVASCRIPT ET LOGIQUE DE JEU
      ========================================= -->
 <script type="module">
-    // HELPER FUNCTIONS
     window.getAvatarHtml = function(val) {
         if(!val) return '👤';
-        if(val.includes('/') || val.includes('.')) { return `<img src="${val}" alt="avatar" style="width:100%; height:100%; object-fit:cover; border-radius:50%;" onerror="this.outerHTML='👤'">`; }
+        if(val.includes('/') || val.includes('.')) {
+            return `<img src="${val}" alt="avatar" style="width:100%; height:100%; object-fit:cover; border-radius:50%;" onerror="this.outerHTML='👤'">`;
+        }
         return val;
     };
+
     window.getRoleImageHtml = function(roleObj) {
         if(!roleObj) return '❓';
         let imgPath = `assets/role_${roleObj.id}.png`;
@@ -705,28 +673,28 @@
     };
 
     const rolesDB = [
-        { id: 'cartographe', name: "Le Cartographe", team: "gentil", emoji: "🗺️", speed: 1, order: 5, desc: "Sait si le plus avancé est Gentil." },
-        { id: 'eclaireur', name: "L'Éclaireur", team: "gentil", emoji: "🔦", speed: 2, order: 6, desc: "Apprend la distance entre 2 joueurs." },
+        { id: 'cartographe', name: "Le Cartographe", team: "gentil", emoji: "🗺️", speed: 1, order: 5, desc: "Sait si le plus avancé est Gentil/Méchant." },
+        { id: 'eclaireur', name: "L'Éclaireur", team: "gentil", emoji: "🔦", speed: 2, order: 6, desc: "Apprend la distance exacte entre 2 joueurs." },
         { id: 'guetteur', name: "Le Guetteur", team: "gentil", emoji: "🔭", speed: 1, order: 9, desc: "Sait si un joueur a été ciblé cette nuit." },
-        { id: 'veilleur', name: "Veilleur", team: "gentil", emoji: "🦉", speed: 1, order: 8, desc: "Sait si le Démon est sur sa case ou devant." },
-        { id: 'passager', name: "Clandestin", team: "gentil", emoji: "🧳", speed: 0, order: 3, desc: "Copie la vitesse d'un autre joueur." },
-        { id: 'metronome', name: "Le Métronome", team: "gentil", emoji: "⏱️", speed: 1, order: 10, desc: "Connait le total de cases parcourues." },
+        { id: 'veilleur', name: "Veilleur de Nuit", team: "gentil", emoji: "🦉", speed: 1, order: 8, desc: "Sait si le Démon est sur sa case ou devant." },
+        { id: 'passager', name: "Passager Clandestin", team: "gentil", emoji: "🧳", speed: 0, order: 3, desc: "Copie la vitesse d'un autre joueur." },
+        { id: 'metronome', name: "Le Métronome", team: "gentil", emoji: "⏱️", speed: 1, order: 10, desc: "Connait le nombre total de cases parcourues." },
         { id: 'brancardier', name: "Le Brancardier", team: "gentil", emoji: "🚑", speed: 1, order: 1, desc: "[1x] Fait réutiliser le pouvoir d'un Spectre." },
-        { id: 'nitro', name: "Le Nitro", team: "gentil", emoji: "🚀", speed: 1, order: 4, desc: "[1x] Gagne +4 cases, Vit. 0 la nuit d'après." },
-        { id: 'tisseur', name: "Tisseur", team: "gentil", emoji: "🔗", speed: 2, order: 2, desc: "[1x] Échange sa vitesse avec un autre." },
+        { id: 'nitro', name: "Le Nitro", team: "gentil", emoji: "🚀", speed: 1, order: 4, desc: "[1x] Gagne +4 cases, Vitesse 0 la nuit d'après." },
+        { id: 'tisseur', name: "Tisseur de Liens", team: "gentil", emoji: "🔗", speed: 2, order: 2, desc: "[1x] Échange sa vitesse avec un autre." },
         { id: 'klaxon', name: "Le Klaxon", team: "gentil", emoji: "📢", speed: 2, order: 99, desc: "[1x Jour] Annonce publiquement sa case." },
-        { id: 'cascadeur', name: "Le Cascadeur", team: "gentil", emoji: "🤸", speed: 3, order: 99, desc: "[1x Jour] Révèle rôle. Démon forcé cibler." },
-        { id: 'sherif', name: "Le Shérif", team: "gentil", emoji: "🤠", speed: 1, order: 99, desc: "[1x Jour] Révèle rôle, annule l'élimination." },
-        { id: 'espion', name: "Espion de Voie", team: "gentil", emoji: "🕵️", speed: 1, order: 99, desc: "[1x Jour] Demande si joueur est devant." },
+        { id: 'cascadeur', name: "Le Cascadeur", team: "gentil", emoji: "🤸", speed: 3, order: 99, desc: "[1x Jour] Révèle rôle. Vitesse 1, Démon forcé cibler." },
+        { id: 'sherif', name: "Le Shérif", team: "gentil", emoji: "🤠", speed: 1, order: 99, desc: "[1x Jour] Révèle rôle pour annuler l'élimination." },
+        { id: 'espion', name: "Espion de Voie", team: "gentil", emoji: "🕵️", speed: 1, order: 99, desc: "[1x Jour] Demande si un joueur est devant/derrière." },
         { id: 'sprinteur', name: "Le Sprinteur", team: "gentil", emoji: "⚡", speed: 3, order: 99, desc: "Vitesse naturelle la plus rapide." },
-        { id: 'coureur', name: "Coureur Fond", team: "gentil", emoji: "🏃", speed: 2, order: 99, desc: "Immunisé contre Démon (Tours 1 et 2)." },
+        { id: 'coureur', name: "Coureur de Fond", team: "gentil", emoji: "🏃", speed: 2, order: 99, desc: "Immunisé contre le Démon (Tours 1 et 2)." },
         { id: 'somnambule', name: "Le Somnambule", team: "outsider", emoji: "🛌", speed: '?', order: 99, desc: "Vitesse 1 ou 3 aléatoire chaque nuit." },
         { id: 'peureux', name: "Le Peureux", team: "outsider", emoji: "😨", speed: 2, order: 99, desc: "Recule de 1 case si on le dépasse." },
         { id: 'ancre', name: "L'Ancre", team: "outsider", emoji: "⚓", speed: 0, order: 99, desc: "Bloque la vitesse max de TOUS à 2 cases." },
-        { id: 'grappin', name: "Le Grappin", team: "sbire", emoji: "🪝", speed: 1, order: 7, desc: "Immobilise un joueur chaque nuit." },
-        { id: 'brouilleur', name: "Le Brouilleur", team: "sbire", emoji: "📻", speed: 1, order: 7, desc: "Fausse les infos visant un joueur." },
+        { id: 'grappin', name: "Le Grappin", team: "sbire", emoji: "🪝", speed: 1, order: 7, desc: "Immobilise un joueur (Vitesse 0) chaque nuit." },
+        { id: 'brouilleur', name: "Le Brouilleur", team: "sbire", emoji: "📻", speed: 1, order: 7, desc: "Fausse les informations visant un joueur." },
         { id: 'falsificateur', name: "Falsificateur", team: "sbire", emoji: "🎭", speed: 2, order: 99, desc: "[1x Jour] Donne fausse case aux enquêteurs." },
-        { id: 'cauchemar', name: "Le Cauchemar", team: "demon", emoji: "👹", speed: 2, order: 11, desc: "Élimine 1/nuit. +3 cases si cible devant." }
+        { id: 'cauchemar', name: "Le Cauchemar", team: "demon", emoji: "👹", speed: 2, order: 11, desc: "Élimine 1/nuit. +3 cases si cible est devant." }
     ];
 
     let user = { name: '', email: '', avatar: '👤', tokens: 0, title: 'Novice', friendCode: '', friends: [], isAdmin: false, lastLogin: '', streak: 0, gamesPlayed: 0, gamesWon: 0 };
@@ -735,7 +703,7 @@
     
     let shopItems = JSON.parse(localStorage.getItem('shop')) || [
         { type: 'avatar', val: 'assets/avatar_luffy.png', price: 200 }, { type: 'avatar', val: '🐉', price: 200 }, { type: 'avatar', val: '👽', price: 200 },
-        { type: 'title', val: 'Héros des Ombres', price: 100, color: '#f2854e' }, { type: 'title', val: 'L\'Intouchable', price: 150, color: '#4fd1c5' }
+        { type: 'title', val: 'Maître du Mensonge', price: 150, color: '' }, { type: 'title', val: 'L\'Intouchable', price: 150, color: '#4fd1c5' }
     ];
 
     let players = []; let botCount = 0; let selectedRoles = rolesDB.map(r => r.id);
@@ -750,7 +718,7 @@
     let currentExecutionTarget = { id: null, votes: 0 }; let tempAccusedId = null; let tempAccuseRequest = null;
     let playerToAssign = null; 
 
-    /* === INITIALISATION === */
+    /* === INITIALISATION FIREBASE === */
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
     import { getAuth, signInWithPopup, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
     
@@ -761,10 +729,10 @@
     };
 
     let app, auth;
-    try { app = initializeApp(firebaseConfig); auth = getAuth(app); } catch (error) { console.warn("Mode local"); }
+    try { app = initializeApp(firebaseConfig); auth = getAuth(app); } catch (error) { console.warn("Mode hors-ligne", error); }
 
     window.loginGoogle = async function() {
-        if (!auth) { alert("Firebase non configuré."); return; }
+        if (!auth) { alert("Erreur: Firebase non configuré correctement."); return; }
         try {
             const provider = new GoogleAuthProvider(); const result = await signInWithPopup(auth, provider);
             user.name = result.user.displayName || "Joueur"; user.email = result.user.email; user.avatar = '👤';
@@ -777,7 +745,8 @@
             user.name = "Joueur" + Math.floor(100+Math.random()*900); user.avatar = ['🦊', '🦉', '🐰', '🐺'][Math.floor(Math.random() * 4)]; user.isAdmin = false;
         } else {
             let email = document.getElementById('login-email').value; let pass = document.getElementById('login-pass').value;
-            if(!email || email.trim() === '') return alert("Email requis."); if(!pass || pass.trim() === '') return alert("Mot de passe requis.");
+            if(!email || email.trim() === '') return alert("Entrez une adresse email valide.");
+            if(!pass || pass.trim() === '') return alert("Entrez un mot de passe.");
             user.name = email.split('@')[0]; user.avatar = '👤'; checkAdmin(email);
         }
         finalizeLogin();
@@ -820,23 +789,22 @@
     window.saveUserData = function() { localStorage.setItem('user_' + user.name, JSON.stringify(user)); };
     window.logout = function() { location.reload(); };
 
-    window.updateUI = function() {
-        document.getElementById('home-username').innerText = user.name; document.getElementById('home-title').innerText = user.title;
-        document.getElementById('ui-tokens').innerText = user.isAdmin ? "∞" : user.tokens; 
+window.updateUI = function() {
+        if(document.getElementById('home-username')) document.getElementById('home-username').innerText = user.name;
+        if(document.getElementById('home-title')) document.getElementById('home-title').innerText = user.title;
+        if(document.getElementById('ui-tokens')) document.getElementById('ui-tokens').innerText = user.isAdmin ? "∞" : user.tokens;
+        if(document.getElementById('profile-name')) document.getElementById('profile-name').innerText = user.name;
+        if(document.getElementById('profile-title')) document.getElementById('profile-title').innerText = user.title;
+        if(document.getElementById('profile-avatar')) document.getElementById('profile-avatar').innerHTML = window.getAvatarHtml(user.avatar);
+        if(document.getElementById('profile-friend-code')) document.getElementById('profile-friend-code').innerText = user.friendCode;
+        if(document.getElementById('profile-games')) document.getElementById('profile-games').innerText = user.gamesPlayed;
+        if(document.getElementById('profile-wins')) document.getElementById('profile-wins').innerText = user.gamesWon;
         
-        document.getElementById('profile-name').innerText = user.name; document.getElementById('profile-title').innerText = user.title; 
-        document.getElementById('profile-avatar').innerHTML = window.getAvatarHtml(user.avatar);
-        document.getElementById('home-avatar').innerHTML = window.getAvatarHtml(user.avatar);
-        document.getElementById('profile-friend-code').innerText = user.friendCode;
-        
-        document.getElementById('profile-games').innerText = user.gamesPlayed; document.getElementById('profile-wins').innerText = user.gamesWon;
         let winrate = user.gamesPlayed > 0 ? Math.round((user.gamesWon / user.gamesPlayed) * 100) : 0;
-        document.getElementById('profile-winrate').innerText = winrate + "%";
-        
-        // Leaderboard mock update
-        document.getElementById('rank-my-name').innerText = user.name;
-        document.getElementById('rank-my-avatar').innerHTML = window.getAvatarHtml(user.avatar);
-        document.getElementById('rank-my-wins').innerText = user.gamesWon;
+        if(document.getElementById('profile-winrate')) document.getElementById('profile-winrate').innerText = winrate + "%";
+        if(document.getElementById('rank-my-name')) document.getElementById('rank-my-name').innerText = user.name;
+        if(document.getElementById('rank-my-avatar')) document.getElementById('rank-my-avatar').innerHTML = window.getAvatarHtml(user.avatar);
+        if(document.getElementById('rank-my-wins')) document.getElementById('rank-my-wins').innerText = user.gamesWon;
     };
 
     window.checkDailyLogin = function() {
@@ -859,9 +827,7 @@
         document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         
-        // Cacher header pour certaines vues pour faire plus propre
         document.getElementById('main-header').style.display = (id === 'screen-home' || id === 'screen-profile') ? 'none' : 'flex';
-        
         if(id === 'screen-chat') window.renderChatFriends();
     };
     
@@ -905,10 +871,9 @@
         });
     };
     
-    // Gère la liste des amis cliquables dans l'onglet Message
     window.renderChatFriends = function() {
         const container = document.getElementById('private-chat-buttons'); container.innerHTML = '';
-        if(user.friends.length === 0) { container.innerHTML = '<p class="text-muted padding:10px;">Ajoutez des amis pour discuter.</p>'; return; }
+        if(user.friends.length === 0) { container.innerHTML = '<p class="text-muted" style="padding:10px;">Ajoutez des amis pour discuter.</p>'; return; }
         
         user.friends.forEach(f => {
             container.innerHTML += `
@@ -972,7 +937,7 @@
     window.renderShop = function() {
         const avatarsDiv = document.getElementById('shop-avatars'); const titlesDiv = document.getElementById('shop-titles');
         avatarsDiv.innerHTML = ''; titlesDiv.innerHTML = '';
-        document.getElementById('shop-solde').innerText = user.isAdmin ? "∞ 🪙" : `${user.tokens} 🪙`;
+        if(document.getElementById('shop-solde')) document.getElementById('shop-solde').innerText = user.isAdmin ? "∞ 🪙" : `${user.tokens} 🪙`;
 
         shopItems.forEach((item, index) => {
             if(item.type === 'avatar') {
@@ -1045,11 +1010,11 @@
         const list = document.getElementById('room-players-list'); list.innerHTML = '';
         players.forEach(p => { 
             let badge = p.isConteur ? '<div style="color:var(--primary); font-weight:bold; font-size:0.8rem; margin-top:5px;">👑 Conteur</div>' : '';
-            let btn = (!p.isConteur) ? `<button class="btn outline small" style="margin-top:10px; width:100%;" onclick="window.setConteur(${p.id})">Donner 👑</button>` : '';
+            let btn = (!p.isConteur) ? `<button class="btn outline small" style="margin-top:10px; width:100%; font-size:1rem; padding:10px;" onclick="window.setConteur(${p.id})">Donner 👑</button>` : '';
             list.innerHTML += `
             <div class="card-white" style="display:flex; flex-direction:column; align-items:center; padding:15px; text-align:center;">
-                <div class="avatar-circle small" style="margin-bottom:10px;">${window.getAvatarHtml(p.avatar)}</div>
-                <strong style="font-size:1rem;">${p.name}</strong>
+                <div class="avatar-circle" style="width:60px; height:60px; font-size:2.5rem; margin-bottom:10px;">${window.getAvatarHtml(p.avatar)}</div>
+                <strong style="font-size:1.2rem;">${p.name}</strong>
                 ${badge} ${btn}
             </div>`; 
         });
@@ -1081,11 +1046,11 @@
 
     window.startRoleAssignment = function() {
         let nonConteurs = players.filter(p => !p.isConteur); let n = nonConteurs.length;
-        if(n < 5) return alert("Minimum 5 joueurs et 1 Conteur !");
+        if(n < 5) return alert("Il faut au moins 5 joueurs et 1 Conteur (6 personnes minimum) pour jouer à ce jeu !");
         
         let availableRoles = rolesDB.filter(r => selectedRoles.includes(r.id));
         let demons = availableRoles.filter(r => r.team === 'demon');
-        if(demons.length === 0) return alert("Sélectionnez au moins 1 Démon !");
+        if(demons.length === 0) return alert("Vous devez sélectionner au moins 1 Démon dans l'urne !");
 
         let dist = getRequiredDistribution(n);
         document.getElementById('ra-player-count').innerText = n;
@@ -1322,7 +1287,7 @@
     };
     window.changePos = function(id, amount) { let p = players.find(x => x.id === id); if(!p.isSpectre) { p.pos = Math.max(0, Math.min(12, p.pos + amount)); window.renderTrack(); window.renderConteurAdjusters(); } };
 
-    /* === GRILLES JOUEUR (NOTES) === */
+    /* === GRILLES JOUEUR === */
     window.renderPlayerGrid = function() {
         const grid = document.getElementById('player-day-grid'); grid.innerHTML = '';
         let availableRoles = rolesDB.filter(r => selectedRoles.includes(r.id));
