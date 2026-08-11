@@ -4,51 +4,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>L'Échappée des Ombres</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     
     <style>
         /* =========================================
-           VARIABLES ET NOUVEAU THÈME (Inspiré des images)
+           VARIABLES ET THÈMES
            ========================================= */
         :root {
-            --bg-app: #fbf5ee; /* Beige clair */
-            --bg-card: #ffffff;
-            --text-dark: #333333;
-            --text-muted: #8a8a8f;
-            
-            /* Couleurs principales (Orange Corail) */
-            --primary: #f2854e;
-            --primary-dark: #e06c35;
-            --grad-main: linear-gradient(135deg, #fcae71, #f2854e);
-            
-            /* Couleurs pastel pour les cartes (Boutique, etc.) */
-            --pastel-purple: #e0d4f6;
-            --pastel-blue: #d4e5f6;
-            
-            /* Ombres plus douces et diffuses */
-            --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.04);
-            --shadow-hover: 0 12px 35px rgba(242, 133, 78, 0.25);
-            --border-color: #f2e9df;
-            
-            --online-color: #48bb78; 
-            --offline-color: #f56565;
-            
-            /* Variables rétrocompatibilité pour le jeu */
-            --grad-purple: var(--grad-main);
+            --bg-app: #f4f7fc; --bg-card: #ffffff;
+            --text-dark: #2d3748; --text-muted: #a0aec0;
+            --grad-purple: linear-gradient(135deg, #b794f4, #f687b3);
             --grad-blue: linear-gradient(135deg, #63b3ed, #4fd1c5);
             --grad-yellow: linear-gradient(135deg, #fbd38d, #f6e05e);
+            --shadow-soft: 0 4px 15px rgba(0, 0, 0, 0.05);
+            --shadow-hover: 0 8px 25px rgba(183, 148, 244, 0.3);
+            --border-color: #e2e8f0;
+            --online-color: #48bb78; --offline-color: #f56565;
         }
 
         body[data-theme="dark"] {
             --bg-app: #12121c; --bg-card: #1e1e2f;
             --text-dark: #f5f6fa; --text-muted: #718096;
             --border-color: #2d3748;
-            --primary: #f2854e;
-            --grad-main: linear-gradient(135deg, #d55a30, #b23b15);
+            --grad-purple: linear-gradient(135deg, #805ad5, #d53f8c);
         }
 
         /* =========================================
-           BASE ET LAYOUT FULL SCREEN
+           BASE ET LAYOUT FULL SCREEN WEB APP
            ========================================= */
         * { box-sizing: border-box; }
         
@@ -63,216 +45,192 @@
             background-color: var(--bg-app); position: relative; overflow: hidden;
         }
         
-        @media (min-width: 768px) {
-            #app-container {
-                max-width: 450px; /* Retour à une vue app centrée pour sublimer ce design UI Mobile */
-                height: 95vh; border-radius: 30px; box-shadow: 0 20px 50px rgba(0,0,0,0.15);
-                border: 8px solid #ffffff;
-            }
-        }
-        
         h1, h2, h3, h4, h5 { margin: 0; color: var(--text-dark); }
         p { margin: 0; }
         .text-muted { color: var(--text-muted); font-size: 0.85rem; }
         
         .content-wrapper {
-            width: 100%; display: flex; flex-direction: column; height: 100%; padding: 0 20px;
+            max-width: 1200px; width: 100%; margin: 0 auto; display: flex;
+            flex-direction: column; height: 100%; padding: 0 15px;
         }
 
-        .scrollable-area { flex: 1; overflow-y: auto; min-height: 0; padding: 10px 0; }
-        .scrollable-area::-webkit-scrollbar { display: none; } /* Cache la scrollbar pour faire plus "App" */
-        
-        .screen { display: none; flex: 1; overflow-y: auto; overflow-x: hidden; padding: 0; }
+        .screen { display: none; flex: 1; overflow-y: auto; overflow-x: hidden; padding: 15px 0; }
         .screen.active { display: flex; flex-direction: column; }
+        .scrollable-area { flex: 1; overflow-y: auto; min-height: 0; padding: 10px 0; }
 
         /* =========================================
            BOUTONS ET INPUTS
            ========================================= */
         .btn { 
-            background: var(--primary); color: white; border: none; padding: 16px 20px; 
-            margin: 8px 0; border-radius: 25px; font-size: 1.05rem; font-weight: 700; 
+            background: var(--grad-purple); color: white; border: none; padding: 12px 20px; 
+            margin: 5px 0; border-radius: 15px; font-size: 1rem; font-weight: 600; 
             cursor: pointer; text-align: center; width: 100%; box-shadow: var(--shadow-soft); transition: 0.2s; flex-shrink: 0;
         }
-        .btn:hover { transform: translateY(-2px); box-shadow: var(--shadow-hover); background: var(--primary-dark); }
+        .btn:hover { transform: translateY(-2px); box-shadow: var(--shadow-hover); }
         .btn:active { transform: scale(0.98); }
         
-        .btn.outline { background: transparent; color: var(--primary); border: 2px solid var(--primary); box-shadow: none; }
-        .btn.outline:hover { background: rgba(242, 133, 78, 0.05); box-shadow: none; }
-        
-        .btn.small { padding: 8px 16px; font-size: 0.85rem; width: auto; margin:0; border-radius: 15px; }
+        .btn.outline { background: transparent; color: #b794f4; border: 2px solid #b794f4; }
+        .btn.outline:hover { background: rgba(183, 148, 244, 0.1); }
+        .btn.small { padding: 8px 15px; font-size: 0.85rem; width: auto; margin:0; border-radius: 10px; }
         .btn.danger { background: #fc8181; color: white;}
         .btn.blue { background: var(--grad-blue); }
         .btn.success { background: var(--online-color); color: white; }
 
         .input-field, select { 
-            width: 100%; padding: 16px; margin-bottom: 12px; border-radius: 20px; 
+            width: 100%; padding: 15px; margin-bottom: 10px; border-radius: 12px; 
             border: 2px solid var(--border-color); background: var(--bg-card); 
-            color: var(--text-dark); font-family: inherit; font-size: 0.95rem; outline: none; transition: border 0.3s;
+            color: var(--text-dark); font-family: inherit; font-size: 1rem; outline: none; transition: border 0.3s;
         }
-        .input-field:focus, select:focus { border-color: var(--primary); }
+        .input-field:focus, select:focus { border-color: #b794f4; }
 
         /* =========================================
-           HEADER ET NAVIGATION (5 Onglets)
+           HEADER ET NAVIGATION
            ========================================= */
-        .top-header-global { 
+        header { 
             padding: 15px 20px; display: flex; justify-content: space-between; 
-            align-items: center; z-index: 10; flex-shrink: 0; background: transparent; position: absolute; width: 100%; top:0;
+            align-items: center; background: var(--bg-card); z-index: 10; border-bottom: 1px solid var(--border-color); flex-shrink: 0;
         }
-        .back-btn { background: var(--bg-card); border: none; padding: 10px; border-radius: 50%; color: var(--text-dark); font-weight: bold; cursor: pointer; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-soft);}
+        .back-btn { background: var(--bg-app); border: none; padding: 10px 15px; border-radius: 10px; color: var(--text-dark); font-weight: 600; cursor: pointer; display: none; }
         
-        .tokens-badge { font-weight: 700; background: var(--bg-card); padding: 8px 15px; border-radius: 20px; color: var(--primary); box-shadow: var(--shadow-soft); display: flex; align-items: center; gap: 5px; }
-
         nav { 
-            display: flex; background: var(--bg-card); padding: 15px 10px 25px 10px; 
-            box-shadow: 0 -10px 30px rgba(0,0,0,0.03); z-index: 10; border-radius: 35px 35px 0 0; flex-shrink: 0;
-            justify-content: space-around;
+            display: flex; background: var(--bg-card); padding: 10px; box-shadow: 0 -5px 15px rgba(0,0,0,0.05); 
+            z-index: 10; border-top: 1px solid var(--border-color); flex-shrink: 0;
         }
-        nav button { 
-            flex: 1; background: none; border: none; color: var(--text-muted); 
-            font-size: 1.5rem; cursor: pointer; transition: 0.2s; display: flex; flex-direction: column; align-items: center; gap: 4px;
-        }
-        nav button span.icon { font-size: 1.4rem; }
-        nav button span.label { font-size: 0.6rem; font-weight: 600; }
-        nav button.active { color: var(--primary); }
-        nav button.active span.icon { transform: translateY(-3px); }
+        nav button { flex: 1; background: none; border: none; color: var(--text-muted); font-size: 1.5rem; cursor: pointer; transition: 0.2s; }
+        nav button:hover { color: #b794f4; }
+        nav button.active { color: #b794f4; transform: translateY(-3px); }
 
         /* =========================================
-           UI COMPOSANTS (Inspirés des images)
+           CARTES ET GRILLES
            ========================================= */
-        .curved-header {
-            background: var(--grad-main);
-            border-radius: 0 0 45px 45px;
-            padding: 60px 20px 30px 20px;
-            text-align: center;
-            color: white;
-            margin-bottom: 20px;
-            position: relative;
-            box-shadow: var(--shadow-soft);
-        }
-
-        .avatar-circle { width: 90px; height: 90px; border-radius: 50%; background: var(--bg-card); display: flex; align-items: center; justify-content: center; font-size: 3.5rem; position: relative; margin: 0 auto; box-shadow: 0 10px 20px rgba(0,0,0,0.1); border: 4px solid white; }
-        .avatar-circle.small { width: 50px; height: 50px; font-size: 1.8rem; border-width: 2px; }
-
-        .card-white { background: var(--bg-card); padding: 20px; border-radius: 25px; box-shadow: var(--shadow-soft); margin-bottom: 15px; border: 1px solid var(--border-color); }
+        .card-gradient { background: var(--grad-yellow); padding: 25px; border-radius: 20px; color: #2d3748; margin-bottom: 15px; flex-shrink: 0; }
+        .card-white { background: var(--bg-card); padding: 20px; border-radius: 15px; box-shadow: var(--shadow-soft); margin-bottom: 10px; border: 1px solid var(--border-color); }
         
-        .section-title { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 15px; }
-        .section-title h3 { font-size: 1.1rem; font-weight: 700; }
-        .section-title span { font-size: 0.8rem; color: var(--primary); cursor: pointer; font-weight: 600; }
+        .avatar-circle { width: 60px; height: 60px; border-radius: 50%; background: #edf2f7; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; position: relative; }
+        .status-dot { position: absolute; bottom: 0; right: 0; width: 15px; height: 15px; border-radius: 50%; border: 3px solid var(--bg-card); }
+        .status-dot.online { background-color: var(--online-color); }
+        .status-dot.offline { background-color: var(--offline-color); }
 
-        /* Statistiques Profil */
-        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .stat-box { background: var(--bg-card); padding: 15px; border-radius: 20px; border: 1px solid var(--border-color); text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center;}
-        
-        /* Faux Graphique Barres */
-        .bar-chart { display: flex; align-items: flex-end; gap: 5px; height: 60px; margin-top: 10px; width: 100%; justify-content: center;}
-        .bar { width: 12px; border-radius: 5px 5px 0 0; background: var(--pastel-blue); }
-        .bar.active { background: var(--primary); }
-        
-        /* Faux Graphique Cercle */
-        .circle-chart { position: relative; width: 60px; height: 60px; border-radius: 50%; background: conic-gradient(var(--primary) 72%, #f0f0f0 0); display: flex; align-items: center; justify-content: center; margin-top: 10px;}
-        .circle-inner { width: 45px; height: 45px; border-radius: 50%; background: var(--bg-card); display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 0.9rem; color: var(--primary); }
-
-        /* Trophées */
-        .trophy-scroll { display: flex; overflow-x: auto; gap: 15px; padding-bottom: 10px; }
-        .trophy-scroll::-webkit-scrollbar { display: none; }
-        .trophy-badge { width: 60px; height: 60px; border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 2rem; flex-shrink: 0; box-shadow: var(--shadow-soft); }
-        
-        /* Boutique */
-        .shop-banner { background: var(--grad-main); border-radius: 25px; padding: 20px; color: white; display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; box-shadow: var(--shadow-hover); }
-        .shop-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .shop-item { background: var(--pastel-purple); padding: 15px; border-radius: 25px; text-align: center; display: flex; flex-direction: column; align-items: center; }
-        .shop-item.blue { background: var(--pastel-blue); }
-
-        /* Listes diverses */
-        .activity-item, .chat-friend-item { display: flex; align-items: center; gap: 15px; padding: 15px 0; border-bottom: 1px solid var(--border-color); }
-        .activity-item:last-child, .chat-friend-item:last-child { border-bottom: none; }
-
-        /* =========================================
-           JEU / GRILLES / PISTE (Le code existant adapté)
-           ========================================= */
-        .player-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 15px; margin-top: 15px; }
-        .role-tile-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; margin-top: 10px; }
+        .shop-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 15px; margin-bottom: 15px; }
+        .player-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 15px; margin-top: 15px; }
+        .role-tile-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 15px; margin-top: 10px; }
         .assignment-grid { display: flex; flex-direction: column; gap: 15px; margin-top: 10px; }
 
-        .role-tile { display: flex; align-items: center; background: var(--bg-card); padding: 12px; border-radius: 20px; border: 1px solid var(--border-color); cursor: pointer; transition: 0.2s; }
-        .role-tile.selected { border: 2px solid var(--primary); background: rgba(242, 133, 78, 0.05); }
+        .shop-avatar-circle { width: 80px; height: 80px; border-radius: 50%; background: #edf2f7; display: flex; align-items: center; justify-content: center; font-size: 3.5rem; margin: 0 auto 10px auto; }
+        
+        .role-tile { display: flex; align-items: center; background: var(--bg-card); padding: 15px; border-radius: 15px; border: 2px solid var(--border-color); cursor: pointer; transition: 0.2s; }
+        .role-tile:hover { transform: translateY(-2px); }
+        .role-tile.selected { border-width: 3px; }
         
         .role-gentil { border-color: #cbd5e0; background: rgba(49, 130, 206, 0.05); }
+        .role-gentil.selected { border-color: #3182ce; }
         .role-outsider { border-color: #cbd5e0; background: rgba(99, 179, 237, 0.05); }
+        .role-outsider.selected { border-color: #63b3ed; }
         .role-sbire { border-color: #cbd5e0; background: rgba(252, 129, 129, 0.05); }
+        .role-sbire.selected { border-color: #fc8181; }
         .role-demon { border-color: #cbd5e0; background: rgba(229, 62, 62, 0.05); }
-        .role-tile-icon { width: 50px; height: 50px; font-size: 2.5rem; margin-right: 15px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;}
-
-        /* Piste Conteur */
-        .track-container { display: flex; overflow-x: auto; padding: 15px; gap: 15px; width: 100%; min-height: 200px; flex-shrink: 0; background: rgba(0,0,0,0.02); border-bottom: 1px solid var(--border-color); border-radius: 25px; }
-        .track-cell { min-width: 140px; height: 100%; background: var(--bg-card); border-radius: 20px; display: flex; flex-direction: column; align-items: center; position: relative; padding: 10px; border: 1px solid var(--border-color); }
-        .cell-number { font-size: 2.5rem; color: var(--border-color); font-weight: 700; position: absolute; top: 5px; right: 10px; z-index: 0; opacity: 0.5; }
-        .player-pions-group { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-top: 40px; z-index: 1; width: 100%; overflow-y: auto; }
-        .pion { width: 45px; height: 45px; border-radius: 50%; color: white; font-size: 1.5rem; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-soft); border: 2px solid white; overflow: hidden; }
-        .pion.spectre { filter: grayscale(100%); opacity: 0.5; }
-        .pion-label { font-size: 0.7rem; font-weight: 600; margin-top: 4px; max-width: 60px; overflow: hidden; }
+        .role-demon.selected { border-color: #e53e3e; }
         
-        .order-badge { position: absolute; top: -5px; right: -5px; background: #e74c3c; color: white; border-radius: 50%; width: 20px; height: 20px; font-size: 0.7rem; display: flex; align-items: center; justify-content: center; font-weight: bold; border: 2px solid white; z-index: 2; }
+        .role-tile-icon { width: 70px; height: 70px; font-size: 3rem; margin-right: 15px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;}
+
+        /* =========================================
+           PISTE DE COURSE CONTEUR GEANTE
+           ========================================= */
+        .track-container { 
+            display: flex; overflow-x: auto; padding: 20px; gap: 20px; width: 100%; min-height: 280px; 
+            flex-shrink: 0; background: rgba(0,0,0,0.02); border-bottom: 2px solid var(--border-color); border-radius: 15px;
+        }
+        .track-container::-webkit-scrollbar { height: 12px; }
+        .track-container::-webkit-scrollbar-thumb { background: #b794f4; border-radius: 6px; }
+
+        .track-cell { 
+            min-width: 200px; height: 100%; background: var(--bg-card); border-radius: 20px; display: flex; flex-direction: column; 
+            align-items: center; position: relative; padding: 15px; border: 2px solid var(--border-color); box-shadow: var(--shadow-soft);
+        }
+        .cell-number { font-size: 4rem; color: var(--border-color); font-weight: 700; position: absolute; top: 10px; right: 15px; z-index: 0; opacity: 0.3; }
+        
+        .player-pions-group { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 60px; z-index: 1; width: 100%; overflow-y: auto; }
+        .pion-container { display: flex; flex-direction: column; align-items: center; cursor: pointer; position: relative; }
+        .pion { width: 70px; height: 70px; border-radius: 50%; color: white; font-size: 2.5rem; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-soft); border: 3px solid white; }
+        .pion.spectre { background: #cbd5e0 !important; box-shadow: none; filter: grayscale(100%); opacity: 0.7; }
+        .pion-label { font-size: 1rem; font-weight: 700; margin-top: 5px; max-width: 90px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; }
+        
+        .order-badge { 
+            position: absolute; top: -5px; right: -5px; background: #e74c3c; color: white; border-radius: 50%; 
+            width: 25px; height: 25px; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; 
+            font-weight: bold; border: 3px solid white; z-index: 2; 
+        }
+
         .bg-good { background: #3182ce !important; }
         .bg-evil { background: #e53e3e !important; }
 
-        .adjust-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; margin-top: 10px; }
-
-        /* Cartes joueurs (Vote/Notes) */
-        .grid-card-wrapper { background: var(--bg-card); border-radius: 20px; border: 1px solid var(--border-color); padding: 10px; text-align: center; }
-        .grid-card { position: relative; padding: 10px; cursor: pointer; border-radius: 15px; }
-        .skull-badge { position: absolute; top: -5px; right: -5px; font-size: 1.5rem; background: white; border-radius: 50%; box-shadow: var(--shadow-soft); z-index: 2; }
-
-        #secret-position { background: var(--bg-card); padding: 25px; text-align: center; border-radius: 25px; margin-top: 20px; user-select: none; border: 2px solid var(--border-color); cursor: pointer; flex-shrink: 0; box-shadow: var(--shadow-soft); }
-        #secret-data { display: none; font-size: 3rem; color: var(--primary); margin-top: 10px; font-weight: 900; }
-        .timer-display { font-size: 3.5rem; font-weight: 700; color: var(--primary); text-align: center; margin: 10px 0; }
+        .adjust-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 15px; margin-top: 15px; }
 
         /* =========================================
-           CHAT
+           VUE JOUEUR & AUTRES
            ========================================= */
-        .chat-container { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; margin-bottom: 10px; }
-        .chat-msg { background: #f0f0f5; padding: 12px 15px; border-radius: 20px 20px 20px 5px; width: fit-content; max-width: 85%; font-size:0.95rem; }
-        .chat-msg.me { background: var(--primary); color: white; align-self: flex-end; border-radius: 20px 20px 5px 20px; }
-        .chat-msg .author { font-size: 0.75rem; font-weight: bold; margin-bottom: 3px; opacity: 0.8; }
-        .admin-mode .chat-del-btn { display: block; position: absolute; top: -5px; right: -5px; background: red; color: white; border-radius: 50%; width: 20px; height: 20px; border: none; font-size: 10px; }
+        .grid-card-wrapper { background: var(--bg-card); border-radius: 15px; border: 1px solid var(--border-color); padding: 12px; text-align: center; box-shadow: var(--shadow-soft); }
+        .grid-card { position: relative; padding: 10px; cursor: pointer; transition: 0.2s; border-radius: 10px; }
+        .grid-card:hover { background: rgba(0,0,0,0.03); }
+        .skull-badge { position: absolute; top: -5px; right: -5px; font-size: 2rem; background: white; border-radius: 50%; box-shadow: 0 0 10px rgba(0,0,0,0.5); z-index: 2; }
+        .spectre { opacity: 0.5; filter: grayscale(100%); }
+
+        #secret-position { 
+            background: var(--bg-card); padding: 25px; text-align: center; border-radius: 20px; 
+            margin-top: 20px; user-select: none; border: 2px solid var(--border-color); cursor: pointer; flex-shrink: 0;
+            box-shadow: var(--shadow-soft);
+        }
+        #secret-position:active { transform: scale(0.98); }
+        #secret-data { display: none; font-size: 3rem; color: #b794f4; margin-top: 10px; font-weight: 900; }
+        
+        .timer-display { display:block; width:100%; font-size: 4rem; font-weight: 900; color: #b794f4; text-align: center; margin: 15px 0; line-height: 1; }
 
         /* =========================================
-           MODALS ET ANIMATIONS
+           MESSAGERIE
+           ========================================= */
+        .chat-tabs { display: flex; gap: 10px; margin-bottom: 10px; flex-shrink:0; }
+        .chat-tab { flex: 1; padding: 10px; text-align: center; background: var(--bg-card); border-radius: 12px; cursor: pointer; font-weight: 600; border: 1px solid var(--border-color); }
+        .chat-tab.active { background: var(--grad-purple); color: white; border: none; }
+        
+        .chat-container { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; margin-bottom: 10px; min-height: 250px; border-radius:15px; padding:15px; background:rgba(0,0,0,0.02); border: 1px solid var(--border-color);}
+        .chat-msg { background: var(--bg-card); padding: 12px 15px; border-radius: 15px; border: 1px solid var(--border-color); width: fit-content; max-width: 85%; position: relative; font-size:1rem; box-shadow: 0 2px 5px rgba(0,0,0,0.02);}
+        .chat-msg.me { background: var(--grad-purple); color: white; align-self: flex-end; border:none;}
+        .chat-msg .author { font-size: 0.8rem; font-weight: bold; margin-bottom: 3px; opacity: 0.8; cursor: pointer; }
+        .chat-msg .author:hover { text-decoration: underline; }
+
+        /* =========================================
+           ANIMATION VS & MODALS
            ========================================= */
         #vs-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 200; justify-content: center; align-items: center; flex-direction: row; gap: 30px; backdrop-filter: blur(5px); }
-        .vs-avatar { font-size: 5rem; background: white; border-radius: 50%; width: 120px; height: 120px; display: flex; justify-content: center; align-items: center; overflow: hidden; }
+        .vs-avatar { font-size: 6rem; background: white; border-radius: 50%; width: 150px; height: 150px; display: flex; justify-content: center; align-items: center; box-shadow: 0 0 30px rgba(183,148,244,0.5); overflow:hidden; }
         .slide-left { animation: slideInLeft 0.5s ease-out forwards; }
         .slide-right { animation: slideInRight 0.5s ease-out forwards; }
-        .zoom-vs { font-size: 4.5rem; font-weight: 900; color: #f6e05e; animation: zoomIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+        .zoom-vs { font-size: 5rem; font-weight: 900; color: #f6e05e; text-shadow: 0 0 20px red; animation: zoomIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
         @keyframes slideInLeft { from { transform: translateX(-200px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
         @keyframes slideInRight { from { transform: translateX(200px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
         @keyframes zoomIn { from { transform: scale(0); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 
-        .modal { display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 100; padding: 20px; flex-direction: column; justify-content: flex-end; backdrop-filter: blur(5px); }
-        .modal.active { display: flex; animation: slideUp 0.3s ease-out forwards;}
-        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
-
-        .modal-content { background: var(--bg-app); border-radius: 35px 35px 0 0; padding: 30px 20px; max-height: 90vh; display: flex; flex-direction: column; width: 100%; margin: 0 auto; max-width: 600px;}
+        .modal { display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 100; padding: 20px; flex-direction: column; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
+        .modal.active { display: flex; }
         
-        .fab-scenario { position: absolute; bottom: 100px; right: 20px; background: var(--bg-card); color: var(--primary); border: 2px solid var(--border-color); padding: 12px 25px; border-radius: 30px; font-weight: bold; font-size: 1.1rem; box-shadow: var(--shadow-hover); cursor: pointer; z-index: 50; display: none; }
+        .fab-scenario { position: absolute; bottom: 80px; right: 20px; background: var(--bg-card); color: var(--text-dark); border: 2px solid var(--border-color); padding: 12px 25px; border-radius: 30px; font-weight: bold; font-size: 1.1rem; box-shadow: var(--shadow-hover); cursor: pointer; z-index: 50; display: none; }
         
         .notification-toast { display: none; position: absolute; top: 20px; left: 50%; transform: translateX(-50%); background: #e53e3e; color: white; padding: 20px 30px; border-radius: 20px; box-shadow: var(--shadow-hover); z-index: 300; text-align: center; width: 90%; max-width: 500px; }
-        .notification-toast.show { display: block; animation: slideDown 0.3s ease-out forwards; }
-        @keyframes slideDown { from { top: -100px; opacity: 0; } to { top: 20px; opacity: 1; } }
+        .notification-toast.show { display: block; }
+        
+        #admin-panel-btn { display: none; position: absolute; top: 80px; right: 10px; background: linear-gradient(135deg, #e53e3e, #dd6b20); color: white; border-radius: 50%; width: 45px; height: 45px; align-items: center; justify-content: center; font-size: 1.2rem; cursor: pointer; z-index: 50; box-shadow: var(--shadow-hover); }
+        .admin-mode #admin-panel-btn { display: flex; }
     </style>
 </head>
 <body data-theme="light">
 
 <div id="app-container">
     
-    <!-- HEADER FLOTTANT (Z-index haut, pour les jetons et le bouton retour) -->
-    <div class="top-header-global" id="main-header" style="display: none;">
-        <button class="back-btn" onclick="window.returnToMenu()">❮</button>
-        <div style="flex:1;"></div>
-        <div class="tokens-badge">
-            <span id="ui-tokens">0</span> 🪙
-        </div>
-    </div>
+    <header id="main-header" style="display: none;">
+        <button class="back-btn" onclick="window.returnToMenu()">❮ Quitter</button>
+        <span id="header-turn" style="font-weight:700; font-size:1.2rem; color: #b794f4;"></span>
+        <div style="font-weight: 600; background: rgba(183,148,244,0.2); padding: 8px 15px; border-radius: 12px; color: #b794f4;">💎 <span id="ui-tokens">0</span></div>
+    </header>
 
     <div id="conteur-accuse-notif" class="notification-toast">
         <h3 style="color: white; margin-bottom: 10px;">⚠️ Demande d'Accusation</h3>
@@ -283,317 +241,222 @@
         </div>
     </div>
 
+    <div id="admin-panel-btn" onclick="window.openAdminPanel()">⚙️</div>
+
     <!-- ÉCRAN: LOGIN -->
-    <div id="screen-login" class="screen active" style="justify-content: center; align-items: center; padding: 20px;">
-        <div style="width: 100%; text-align: center;">
+    <div id="screen-login" class="screen active" style="justify-content: center; align-items: center;">
+        <div style="max-width: 500px; width: 100%; text-align: center;">
             <div style="font-size: 6rem; margin-bottom: 15px;">🌙</div>
-            <h1 style="color: var(--primary); font-size: 3rem; margin-bottom: 40px; font-weight: 800;">L'Échappée</h1>
+            <h1 style="color: #b794f4; font-size: 3.5rem; margin-bottom: 30px;">L'Échappée</h1>
             
-            <div style="padding: 0 10px;">
+            <div class="card-white" style="padding: 30px;">
                 <input type="email" id="login-email" class="input-field" placeholder="Email (ex: joueur@gmail.com)">
                 <input type="password" id="login-pass" class="input-field" placeholder="Mot de passe">
                 
                 <button class="btn" onclick="window.login('email')">Connexion Email</button>
-                <button class="btn outline" style="margin-top:10px;" onclick="window.loginGoogle()">🌐 Continuer avec Google</button>
+                <button class="btn outline" style="color: var(--text-dark); border-color: var(--border-color); margin-top:15px;" onclick="window.loginGoogle()">🌐 Continuer avec Google</button>
                 
-                <div style="text-align: center; margin: 25px 0; color: var(--text-muted); font-size:1rem; font-weight:bold;">OU</div>
-                <button class="btn" style="background: var(--text-muted);" onclick="window.login('guest')">Jouer en Invité</button>
+                <div style="text-align: center; margin: 20px 0; color: var(--text-muted); font-size:1.1rem; font-weight:bold;">OU</div>
+                <button class="btn" style="background: #a0aec0;" onclick="window.login('guest')">Jouer en Invité</button>
             </div>
         </div>
     </div>
 
-    <!-- ÉCRAN: ACCUEIL (JEU) -->
+    <!-- ÉCRAN: ACCUEIL -->
     <div id="screen-home" class="screen">
-        <div class="curved-header" style="padding-top: 70px;">
-            <div class="avatar-circle" id="home-avatar" style="margin-bottom: 15px;">👤</div>
-            <h2 style="font-size: 1.8rem; color: white; margin-bottom: 5px;" id="home-username">Joueur</h2>
-            <p style="opacity: 0.9;" id="home-title">Novice</p>
-        </div>
-        
-        <div class="content-wrapper scrollable-area">
-            <div class="section-title">
-                <h3>Mon Espace de Jeu</h3>
+        <div class="content-wrapper">
+            <div class="card-gradient">
+                <p style="margin: 0; font-size: 1.1rem; opacity: 0.8;">Bienvenue,</p>
+                <h2 style="margin: 5px 0 10px 0; font-size: 2.5rem;" id="home-username">Joueur</h2>
+                <p style="margin:0; font-weight:600; font-size:1.3rem;" id="home-title">Novice</p>
             </div>
-            
-            <div class="card-white" style="display:flex; flex-direction:column; align-items:center; padding: 30px 20px; text-align:center;">
-                <div style="width: 80px; height: 80px; background:var(--text-dark); border-radius:20px; display:flex; justify-content:center; align-items:center; font-size:3rem; margin-bottom:15px;">🏃</div>
-                <h3 style="margin-bottom: 10px; font-size:1.5rem;">L'Échappée des Ombres</h3>
-                <p class="text-muted" style="margin-bottom: 25px;">Plongez dans l'obscurité, trouvez les démons et survivez jusqu'à l'aube.</p>
-                
-                <button class="btn" style="padding:18px; font-size:1.1rem; border-radius:30px;" onclick="window.initRoom()">Créer un Salon</button>
-                <button class="btn outline" style="padding:18px; font-size:1.1rem; border-radius:30px; margin-top:10px;" onclick="window.joinRoomCode()">Rejoindre (Code)</button>
+            <div style="display: flex; gap: 20px; margin-top: 15px;">
+                <button class="btn" style="flex:1; padding:25px; font-size:1.3rem;" onclick="window.initRoom()">➕ Créer un Salon</button>
+                <button class="btn outline" style="flex:1; padding:25px; font-size:1.3rem;" onclick="window.joinRoomCode()">🔍 Rejoindre</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ÉCRAN: MESSAGERIE -->
+    <div id="screen-chat" class="screen">
+        <div class="content-wrapper">
+            <h2 style="flex-shrink:0; margin-bottom:15px;">💬 Messagerie</h2>
+            <div class="chat-tabs">
+                <div class="chat-tab active" id="tab-chat-global" onclick="window.switchChatMode('global')">Chat Global</div>
+                <div class="chat-tab" id="tab-chat-private" onclick="window.switchChatMode('private')">Messages Privés</div>
+            </div>
+            <div id="chat-private-selector" style="display: none; margin-bottom: 15px; flex-shrink:0;">
+                <select id="private-friend-select" onchange="window.loadChat()">
+                    <option value="">-- Sélectionnez un ami pour discuter --</option>
+                </select>
+            </div>
+            <div class="chat-container" id="chat-messages"></div>
+            <div style="display: flex; gap: 15px; flex-shrink: 0; padding-top:10px;">
+                <input type="text" id="chat-input" class="input-field" style="margin:0;" placeholder="Écrivez un message...">
+                <button class="btn small" style="padding: 0 35px; font-size:1.1rem;" onclick="window.sendChatMessage()">Envoyer</button>
             </div>
         </div>
     </div>
 
     <!-- ÉCRAN: BOUTIQUE -->
     <div id="screen-shop" class="screen">
-        <div class="content-wrapper scrollable-area" style="padding-top: 60px;">
-            <div class="section-title">
-                <h3 style="font-size: 1.5rem;">Boutique d'Articles</h3>
-                <span id="shop-solde" style="color:var(--text-dark); font-weight:bold;">0 🪙</span>
-            </div>
-            
-            <div class="shop-banner">
-                <div>
-                    <h3 style="color:white; margin-bottom:5px;">Offre de l'Aventurier</h3>
-                    <p style="font-size:0.85rem; opacity:0.9;">Pack Rare - Nouveautés</p>
-                </div>
-                <div style="font-size:3rem;">🚀</div>
-            </div>
-            
-            <h4 style="margin-top: 10px; margin-bottom: 10px;">Avatars Épiques</h4>
+        <div class="content-wrapper">
+            <h2 style="text-align: center; color: #f6e05e;">Boutique</h2>
+            <p style="text-align:center; margin-bottom:25px; font-size:1.1rem;" class="text-muted">Dépensez vos 💎 pour personnaliser votre profil.</p>
+            <h4>Avatars</h4>
             <div class="shop-grid" id="shop-avatars"></div>
-            
-            <h4 style="margin-top: 10px; margin-bottom: 10px;">Titres Honorifiques</h4>
-            <div class="shop-grid" id="shop-titles"></div>
+            <h4 style="margin-top: 15px;">Titres Honorifiques</h4>
+            <div class="shop-grid" id="shop-titles" style="grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));"></div>
         </div>
     </div>
 
-    <!-- ÉCRAN: MESSAGERIE -->
-    <div id="screen-chat" class="screen">
-        <div class="content-wrapper" style="padding-top: 60px;">
-            <div class="section-title">
-                <h3 style="font-size: 1.5rem;">Mes Discussions</h3>
-            </div>
-            
-            <div id="chat-friends-list" style="margin-bottom: 20px;">
-                <p class="text-muted" style="font-size:0.8rem; font-weight:bold; margin-bottom:10px; text-transform:uppercase;">Chat Privé (Amis)</p>
-                <div id="private-chat-buttons" style="background:var(--bg-card); border-radius:20px; padding:0 15px;">
-                    <!-- Liste des amis cliquables pour ouvrir leur chat -->
-                </div>
-            </div>
-
-            <p class="text-muted" style="font-size:0.8rem; font-weight:bold; margin-bottom:10px; text-transform:uppercase;">Chat Public</p>
-            <div class="chat-friend-item" style="background:var(--bg-card); border-radius:20px; padding:15px; cursor:pointer;" onclick="window.openChatPanel('global', 'Global')">
-                <div class="avatar-circle" style="background:var(--pastel-blue); color:#3182ce;">🌐</div>
-                <div style="flex:1;">
-                    <strong style="display:block;">Chat Global</strong>
-                    <span class="text-muted" style="font-size:0.8rem;">Discussion avec toute la communauté</span>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- ÉCRAN: CLASSEMENT -->
-    <div id="screen-leaderboard" class="screen">
-        <div class="content-wrapper scrollable-area" style="padding-top: 60px;">
-            <div class="section-title">
-                <h3 style="font-size: 1.5rem;">Classement Mondial</h3>
-            </div>
-            
-            <div style="background:var(--bg-card); border-radius:25px; padding:20px; box-shadow:var(--shadow-soft);">
-                <!-- Mockup de classement -->
-                <div style="display:flex; align-items:center; gap:15px; padding:15px 0; border-bottom:1px solid var(--border-color);">
-                    <strong style="color:var(--primary); font-size:1.2rem;">1</strong>
-                    <div class="avatar-circle small" style="background:#fbd38d;">👑</div>
-                    <strong style="flex:1;">Alex_Pro</strong>
-                    <span style="font-weight:bold;">142 Vic.</span>
-                </div>
-                <div style="display:flex; align-items:center; gap:15px; padding:15px 0; border-bottom:1px solid var(--border-color);">
-                    <strong style="color:var(--text-muted); font-size:1.2rem;">2</strong>
-                    <div class="avatar-circle small" style="background:#e2e8f0;">⚔️</div>
-                    <strong style="flex:1;">ShadowNinja</strong>
-                    <span style="font-weight:bold;">128 Vic.</span>
-                </div>
-                <div style="display:flex; align-items:center; gap:15px; padding:15px 0; border-bottom:1px solid var(--border-color);">
-                    <strong style="color:#b7791f; font-size:1.2rem;">3</strong>
-                    <div class="avatar-circle small" style="background:#fefcbf;">🦊</div>
-                    <strong style="flex:1;">RenardRuse</strong>
-                    <span style="font-weight:bold;">95 Vic.</span>
-                </div>
-                
-                <div style="text-align:center; padding:15px 0; color:var(--text-muted);">...</div>
-                
-                <div style="display:flex; align-items:center; gap:15px; padding:15px; background:var(--primary); color:white; border-radius:15px;">
-                    <strong style="font-size:1.2rem;">42</strong>
-                    <div class="avatar-circle small" style="border:none;" id="rank-my-avatar">👤</div>
-                    <strong style="flex:1;" id="rank-my-name">Moi</strong>
-                    <span style="font-weight:bold;"><span id="rank-my-wins">0</span> Vic.</span>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- ÉCRAN: PROFIL -->
+    <!-- ÉCRAN: PROFIL & AMIS -->
     <div id="screen-profile" class="screen">
-        <div class="curved-header" style="padding-top: 70px;">
-            <div class="avatar-circle" id="profile-avatar" style="margin-bottom: 15px; width:100px; height:100px; font-size:4rem;">👤</div>
-            <h2 style="font-size: 1.8rem; color: white; margin-bottom: 5px;" id="profile-name">Pseudo</h2>
-            <p style="opacity: 0.9;" id="profile-title">Titre Actuel</p>
-        </div>
-        
-        <div class="content-wrapper scrollable-area">
-            
-            <div class="section-title">
-                <h3>Mes Statistiques</h3>
-            </div>
-            <div class="stats-grid" style="margin-bottom: 25px;">
-                <div class="stat-box">
-                    <span style="font-size:0.8rem; color:var(--text-muted); font-weight:600;">Parties Jouées</span>
-                    <h3 style="font-size:2rem; color:var(--text-dark); margin:5px 0;" id="profile-games">0</h3>
-                    <!-- Faux graphe -->
-                    <div class="bar-chart">
-                        <div class="bar" style="height:30%;"></div>
-                        <div class="bar" style="height:60%;"></div>
-                        <div class="bar active" style="height:90%;"></div>
-                        <div class="bar" style="height:40%;"></div>
-                    </div>
-                </div>
-                <div class="stat-box">
-                    <span style="font-size:0.8rem; color:var(--text-muted); font-weight:600;">Taux Victoire</span>
-                    <!-- Faux cercle -->
-                    <div class="circle-chart">
-                        <div class="circle-inner" id="profile-winrate">0%</div>
-                    </div>
-                    <p style="font-size:0.75rem; color:var(--text-muted); margin-top:10px;"><span id="profile-wins">0</span> Gagnées</p>
-                </div>
-            </div>
-
-            <div class="section-title">
-                <h3>Mes Trophées</h3>
-                <span>Voir tout</span>
-            </div>
-            <div class="trophy-scroll" style="margin-bottom: 25px;">
-                <div class="trophy-badge" style="background:#fbd38d;">🏆</div>
-                <div class="trophy-badge" style="background:#90cdf4;">🌟</div>
-                <div class="trophy-badge" style="background:#f6ad55;">🏵️</div>
-                <div class="trophy-badge" style="background:#a3bffa;">🏅</div>
-                <div class="trophy-badge" style="background:var(--border-color); opacity:0.5;">🔒</div>
-            </div>
-
-            <div class="section-title">
-                <h3>Activité Récente</h3>
-            </div>
-            <div class="card-white" style="padding: 0 15px; margin-bottom: 25px;">
-                <div class="activity-item">
-                    <div class="avatar-circle small" style="background:var(--pastel-purple); color:#805ad5;">🎮</div>
-                    <div style="flex:1;">
-                        <strong style="display:block; font-size:0.9rem;">Partie Jouée</strong>
-                        <span class="text-muted" style="font-size:0.75rem;">Aujourd'hui</span>
-                    </div>
-                    <span style="color:var(--online-color); font-weight:bold;">+10 🪙</span>
-                </div>
-                <div class="activity-item">
-                    <div class="avatar-circle small" style="background:var(--pastel-blue); color:#3182ce;">🛒</div>
-                    <div style="flex:1;">
-                        <strong style="display:block; font-size:0.9rem;">Achat Boutique</strong>
-                        <span class="text-muted" style="font-size:0.75rem;">Hier</span>
-                    </div>
-                    <span style="color:var(--offline-color); font-weight:bold;">-200 🪙</span>
-                </div>
-            </div>
-
-            <!-- Code Ami et Actions -->
-            <div class="card-white" style="text-align: center; margin-bottom: 20px;">
-                <p style="margin-bottom:10px; font-size:0.9rem;">Mon Code Ami</p>
-                <h2 style="color: var(--primary); letter-spacing: 4px; font-size:1.8rem; margin:0;" id="profile-friend-code">XXXX</h2>
+        <div class="content-wrapper">
+            <div style="text-align: center; margin-bottom: 20px; flex-shrink:0;">
+                <div class="avatar-circle" id="profile-avatar" style="width: 120px; height: 120px; margin: 0 auto 15px auto; font-size: 5rem;">👤</div>
+                <h2 id="profile-name" style="font-size:2.5rem;">Pseudo</h2>
+                <p class="text-muted" id="profile-title" style="font-weight:600; font-size:1.3rem;">Titre Actuel</p>
             </div>
             
-            <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+            <div style="display: flex; gap: 15px; margin-bottom: 20px; flex-shrink:0;">
+                <div class="card-white" style="flex:1; margin:0; text-align:center;">
+                    <span style="font-size: 1rem; color: var(--text-muted);">Parties Jouées</span>
+                    <h3 id="profile-games" style="color: #b794f4; font-size:2rem;">0</h3>
+                </div>
+                <div class="card-white" style="flex:1; margin:0; text-align:center;">
+                    <span style="font-size: 1rem; color: var(--text-muted);">Victoires</span>
+                    <h3 id="profile-wins" style="color: #4fd1c5; font-size:2rem;">0</h3>
+                </div>
+            </div>
+
+            <div class="card-white" style="text-align: center; flex-shrink:0; max-width: 500px; margin: 0 auto 20px auto; width: 100%;">
+                <p style="margin:0; font-size:1.3rem;">Code Ami : <strong style="color: #b794f4; letter-spacing: 4px;" id="profile-friend-code">XXXX</strong></p>
+            </div>
+            
+            <h4 style="margin-top: 10px;">Liste d'Amis</h4>
+            <div id="friends-list-container" style="flex:1; overflow-y: auto; min-height:150px; margin-bottom: 20px; border:2px solid var(--border-color); border-radius:15px; padding:15px; background:var(--bg-card);"></div>
+            
+            <div style="display: flex; gap: 15px; flex-shrink:0; margin-bottom: 15px;">
                 <input type="text" id="add-friend-input" class="input-field" placeholder="Code Ami (4 chiffres)" maxlength="4" style="margin:0;">
-                <button class="btn outline" style="width:auto; padding: 0 20px;" onclick="window.addFriend()">Ajouter</button>
+                <button class="btn small outline" style="padding: 0 30px; font-size:1.1rem;" onclick="window.addFriend()">Ajouter</button>
             </div>
             
-            <div class="card-white" style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 20px;">
-                <span style="font-weight:600; font-size:0.95rem;">Mode Nuit</span>
-                <button class="btn small" style="background:var(--border-color); color:var(--text-dark);" onclick="window.toggleTheme()" id="btn-theme">Désactivé</button>
+            <h4 style="margin-top: 20px; flex-shrink:0;">Paramètres</h4>
+            <div class="card-white" style="display:flex; justify-content:space-between; align-items:center; flex-shrink:0; margin-bottom: 20px; padding:20px;">
+                <span style="font-weight:600; font-size:1.1rem;">Mode Sombre / Clair</span>
+                <button class="btn small" style="font-size:1.1rem; padding:10px 20px;" onclick="window.toggleTheme()" id="btn-theme">Désactivé</button>
             </div>
-            <button class="btn outline" style="color:var(--offline-color); border-color:var(--offline-color); margin-bottom:40px;" onclick="window.logout()">Déconnexion</button>
+            <button class="btn danger outline" style="flex-shrink:0; padding:15px; font-size:1.1rem;" onclick="window.logout()">Déconnexion</button>
         </div>
     </div>
-
-    <!-- =========================================
-         ÉCRANS DE JEU (Garde la structure existante mais avec les nouvelles classes)
-         ========================================= -->
 
     <!-- ÉCRAN: SALON (ATTENTE) -->
     <div id="screen-room" class="screen">
-        <div class="content-wrapper" style="padding-top: 60px;">
-            <h2>Préparation du Salon</h2>
-            <div class="card-white" style="text-align: center; margin: 15px 0;">
-                <p style="margin:0; font-size:1rem;">Code du Salon : <strong style="color: var(--primary); letter-spacing: 3px;" id="room-code-display">XXXXXX</strong></p>
+        <div class="content-wrapper">
+            <h2 style="flex-shrink:0;">Préparation du Salon</h2>
+            
+            <div class="card-white" style="text-align: center; flex-shrink:0; margin: 20px 0;">
+                <p style="margin:0; font-size:1.3rem;">Code du Salon : <strong style="color: #b794f4; letter-spacing: 4px;" id="room-code-display">XXXXXX</strong></p>
             </div>
-            <p class="text-muted" style="margin-bottom:10px;">Gérez les joueurs (Minimum 5 Joueurs + 1 Conteur).</p>
-            <div id="room-players-list" class="room-players-grid scrollable-area"></div>
-            <div style="display: flex; gap: 15px; margin: 15px 0; flex-shrink:0;">
-                <button class="btn outline" style="flex:1;" onclick="window.addBot()">➕ Ajouter Bot</button>
-                <button class="btn" style="background:var(--border-color); color:var(--text-dark); flex:1;" onclick="window.removeBot()">➖ Retirer Bot</button>
+            <p class="text-muted" style="margin-bottom:15px; flex-shrink:0; font-size:1.1rem;">Gérez les joueurs (Minimum 5 Joueurs + 1 Conteur).</p>
+            
+            <!-- Liste des joueurs -->
+            <div id="room-players-list" class="scrollable-area" style="display:flex; flex-direction:column; gap:10px;"></div>
+            
+            <div style="display: flex; gap: 20px; margin: 20px 0; flex-shrink:0;">
+                <button class="btn outline" style="flex:1; padding:15px; font-size:1.1rem;" onclick="window.addBot()">➕ Ajouter Bot</button>
+                <button class="btn" style="background:var(--border-color); color:var(--text-dark); flex:1; padding:15px; font-size:1.1rem;" onclick="window.removeBot()">➖ Retirer Bot</button>
             </div>
-            <div style="flex-shrink:0; padding-top:10px; border-top: 1px solid var(--border-color);">
-                <button class="btn outline" style="display: flex; align-items: center; justify-content: center; gap: 10px; color:var(--text-dark); border-color:var(--border-color);" onclick="document.getElementById('modal-role-selection').classList.add('active')">
-                    <span style="font-size: 1.5rem;">🎭</span> Configuration du Scénario (<span id="role-count">22</span>)
+
+            <div style="flex-shrink:0; padding-top:15px; border-top: 2px solid var(--border-color);">
+                <button class="btn blue" style="display: flex; align-items: center; justify-content: center; gap: 15px; padding:20px;" onclick="document.getElementById('modal-role-selection').classList.add('active')">
+                    <span style="font-size: 2rem;">🎭</span> <span style="font-size:1.3rem;">Configuration du Scénario (<span id="role-count">22</span>)</span>
                 </button>
-                <button class="btn" style="margin-top: 10px; font-size: 1.2rem; padding: 20px;" onclick="window.startRoleAssignment()">SUIVANT ❯</button>
+                <button class="btn success" style="margin-top: 15px; font-size: 1.4rem; padding: 25px;" onclick="window.startRoleAssignment()">SUIVANT ❯</button>
             </div>
         </div>
     </div>
 
     <!-- ÉCRAN: ATTRIBUTION DES RÔLES (CONTEUR ONLY) -->
     <div id="screen-role-assignment" class="screen">
-        <div class="content-wrapper" style="padding-top: 60px;">
-            <h2 style="color:var(--primary);">Attribution des Rôles</h2>
-            <div class="card-white" style="text-align:center; margin: 10px 0; padding:15px;">
-                <strong style="color:var(--text-dark);">Répartition (<span id="ra-player-count">0</span> joueurs)</strong><br>
-                <span id="ra-distribution" style="color:var(--text-muted); font-size:0.9rem;">Vill: 0 | Marg: 0 | Sbires: 0 | Démon: 1</span>
+        <div class="content-wrapper">
+            <h2 style="flex-shrink:0; color:#b794f4; font-size:2rem;">Attribution des Rôles</h2>
+            
+            <div class="card-white" style="text-align:center; flex-shrink:0; margin-bottom:15px; padding:20px;">
+                <strong style="color:var(--text-dark); font-size:1.3rem;">Répartition Obligatoire (<span id="ra-player-count">0</span> joueurs)</strong><br>
+                <span id="ra-distribution" style="color:var(--text-muted); font-size:1.1rem;">Villageois: 0 | Marginaux: 0 | Sbires: 0 | Démon: 1</span>
             </div>
+            
             <div id="assignment-list" class="assignment-grid scrollable-area"></div>
-            <div style="flex-shrink:0; margin-top:10px; padding-top:10px; border-top: 1px solid var(--border-color);">
-                <button class="btn outline" style="margin-bottom:10px;" onclick="window.randomizeRoles()">🎲 Tout au hasard</button>
-                <button class="btn" style="font-size:1.2rem; padding:18px;" onclick="window.confirmAndStart()">✅ LANCER LA PARTIE</button>
+            
+            <div style="flex-shrink:0; margin-top:20px; padding-top:20px; border-top: 2px solid var(--border-color);">
+                <button class="btn outline" style="margin-bottom:15px; padding:15px; font-size:1.2rem;" onclick="window.randomizeRoles()">🎲 Tout distribuer au hasard</button>
+                <button class="btn success" style="font-size:1.4rem; padding:25px;" onclick="window.confirmAndStart()">✅ LANCER LA PARTIE</button>
             </div>
         </div>
     </div>
 
     <!-- ÉCRAN: VUE CONTEUR -->
-    <div id="screen-conteur" class="screen" style="padding: 0; padding-top:50px;">
-        <div style="background: var(--grad-main); text-align: center; padding: 15px; color: white; flex-shrink: 0; box-shadow: var(--shadow-soft);">
-            <h3 id="conteur-phase-title" style="margin:0; font-size:1.3rem;">Mode Conteur</h3>
+    <div id="screen-conteur" class="screen" style="padding: 0;">
+        <div style="background: var(--grad-blue); text-align: center; padding: 20px; color: white; flex-shrink: 0; box-shadow: var(--shadow-soft);">
+            <h3 id="conteur-phase-title" style="margin:0; font-size:1.8rem;">Mode Conteur</h3>
         </div>
+        
         <div class="track-container" id="conteur-track"></div>
-        <div class="content-wrapper scrollable-area" style="padding: 15px;">
+        
+        <div class="content-wrapper scrollable-area" style="padding: 20px;">
             <div id="conteur-night-tools" style="display:none; width: 100%;">
-                <h4 style="margin-bottom: 10px;">Ajustements :</h4>
+                <h4 style="margin-bottom: 15px; font-size:1.4rem;">Ajustements des positions :</h4>
                 <div id="conteur-pos-adjust" class="adjust-grid"></div>
             </div>
-            <div id="conteur-day-tools" class="card-white" style="display: none; flex-direction: column; align-items: center; justify-content:center; margin: 10px auto; width: 100%;">
-                <h4 style="margin-bottom:15px; color:var(--text-dark);">Chronomètre</h4>
-                <div style="display: flex; gap: 10px; align-items: center; justify-content: center; width:100%;">
-                    <input type="number" id="timer-min" class="input-field" value="1" min="0" style="width: 60px; margin:0; text-align:center; padding:10px; font-weight:bold;">
-                    <span style="font-weight:bold; font-size:1.5rem;">:</span>
-                    <input type="number" id="timer-sec" class="input-field" value="30" min="0" max="59" style="width: 60px; margin:0; text-align:center; padding:10px; font-weight:bold;">
-                    <button class="btn outline small" style="margin-left:10px;" onclick="window.startCustomTimer()">GO</button>
+
+            <div id="conteur-day-tools" class="card-white" style="display: none; flex-direction: column; align-items: center; justify-content:center; margin: 20px auto; max-width: 500px; width: 100%; padding:25px;">
+                <h4 style="margin-bottom:20px; color:var(--text-dark); font-size:1.5rem;">Chronomètre de Débat</h4>
+                <div style="display: flex; gap: 15px; align-items: center; justify-content: center; width:100%;">
+                    <div style="display:flex; flex-direction:column; align-items:center;">
+                        <input type="number" id="timer-min" class="input-field" value="1" min="0" style="width: 80px; margin:0; text-align:center; font-size:1.5rem; font-weight:bold;">
+                        <span style="font-size:0.9rem; color:var(--text-muted); margin-top:5px;">Min</span>
+                    </div>
+                    <span style="font-weight:bold; font-size:3rem; margin-bottom:25px;">:</span>
+                    <div style="display:flex; flex-direction:column; align-items:center;">
+                        <input type="number" id="timer-sec" class="input-field" value="30" min="0" max="59" style="width: 80px; margin:0; text-align:center; font-size:1.5rem; font-weight:bold;">
+                        <span style="font-size:0.9rem; color:var(--text-muted); margin-top:5px;">Sec</span>
+                    </div>
+                    <button class="btn outline" style="padding: 15px 30px; margin-left:15px; font-size:1.2rem;" onclick="window.startCustomTimer()">GO</button>
                 </div>
                 <div id="conteur-timer" class="timer-display">01:30</div>
             </div>
-            <div id="conteur-controls-container" style="margin-top: 15px; text-align: center;"></div>
-            <div style="display: flex; gap: 15px; margin-top: auto; padding-top: 20px;">
-                <button class="btn danger" style="flex:1;" onclick="window.endGame(false)">Victoire Ombres</button>
-                <button class="btn success" style="flex:1;" onclick="window.endGame(true)">Victoire Bien</button>
+            
+            <div id="conteur-controls-container" style="margin-top: 25px; text-align: center;"></div>
+
+            <div style="display: flex; gap: 20px; margin-top: auto; padding-top: 35px;">
+                <button class="btn danger" style="flex:1; padding: 20px; font-size:1.2rem;" onclick="window.endGame(false)">Victoire Ombres</button>
+                <button class="btn success" style="flex:1; padding: 20px; font-size:1.2rem;" onclick="window.endGame(true)">Victoire Bien</button>
             </div>
         </div>
     </div>
 
     <!-- ÉCRAN: VUE JOUEUR -->
     <div id="screen-player" class="screen">
-        <div class="content-wrapper" style="padding-top: 50px;">
-            <h3 id="player-phase-title" style="text-align: center; color: var(--primary); font-size:1.5rem; flex-shrink: 0;">Phase</h3>
-            <p id="player-phase-desc" style="text-align:center; margin-top:5px; margin-bottom:15px; font-size:0.95rem; flex-shrink: 0;"></p>
+        <div class="content-wrapper">
+            <h3 id="player-phase-title" style="text-align: center; color: #b794f4; font-size:2.2rem; flex-shrink: 0;">Phase</h3>
+            <p id="player-phase-desc" style="text-align:center; margin-top:5px; margin-bottom:25px; font-size:1.1rem; flex-shrink: 0;"></p>
             
-            <div id="player-role-display" class="card-gradient" style="text-align: center; padding: 25px; display: none; flex-direction: column; align-items: center; flex-shrink: 0; margin:0 auto; width:100%;">
-                <p style="margin: 0; color: rgba(0,0,0,0.6); font-size:0.9rem; font-weight:600;">Votre Rôle Secret</p>
-                <div id="player-role-emoji" style="width:100px; height:100px; font-size: 4rem; margin: 10px 0; display:flex; justify-content:center; align-items:center;">❓</div>
-                <h3 id="player-role-name" style="color: var(--text-dark); font-size: 1.5rem; margin-top: 0;">-</h3>
-                <div style="background: rgba(255,255,255,0.5); padding: 15px; border-radius: 15px; margin-top: 15px; color: var(--text-dark); width:100%;">
-                    <p style="font-weight: bold; margin-bottom: 5px; font-size:1rem;">Vitesse : <span id="player-role-speed" style="color:var(--primary-dark);">0</span></p>
-                    <p style="font-size: 0.85rem; opacity:0.9; line-height:1.4;" id="player-role-desc">Description</p>
+            <div id="player-role-display" class="card-gradient" style="background: var(--grad-purple); text-align: center; padding: 30px; display: none; flex-direction: column; align-items: center; flex-shrink: 0; max-width:600px; margin:0 auto; width:100%;">
+                <p style="margin: 0; color: rgba(255,255,255,0.9); font-size:1.2rem; font-weight:600;">Votre Rôle Secret</p>
+                <div id="player-role-emoji" style="width:150px; height:150px; font-size: 6rem; margin: 15px 0; display:flex; justify-content:center; align-items:center;">❓</div>
+                <h3 id="player-role-name" style="color: white; font-size: 2.2rem; margin-top: 0;">-</h3>
+                <div style="background: rgba(0,0,0,0.25); padding: 20px; border-radius: 15px; margin-top: 20px; color: white; width:100%;">
+                    <p style="font-weight: bold; margin-bottom: 10px; font-size:1.3rem;">Vitesse de base : <span id="player-role-speed" style="color:#f6e05e;">0</span></p>
+                    <p style="font-size: 1.1rem; opacity:0.9; line-height:1.5;" id="player-role-desc">Description</p>
                 </div>
             </div>
 
             <div id="player-day-grid" class="player-grid scrollable-area" style="display:none; align-content:start;"></div>
             
-            <div id="secret-position" onmousedown="window.revealPosition(true)" onmouseup="window.revealPosition(false)" onmouseleave="window.revealPosition(false)" ontouchstart="window.revealPosition(true)" ontouchend="window.revealPosition(false)">
-                <span style="font-size:2rem; display:block; margin-bottom:5px;">👁️</span>
+            <div id="secret-position" style="margin-top:15px;" onmousedown="window.revealPosition(true)" onmouseup="window.revealPosition(false)" onmouseleave="window.revealPosition(false)" ontouchstart="window.revealPosition(true)" ontouchend="window.revealPosition(false)">
+                <span style="font-size:3rem; display:block; margin-bottom:10px;">👁️</span>
                 Maintenir pour voir ma case
                 <div id="secret-data">Case 0</div>
             </div>
@@ -603,7 +466,7 @@
     <button class="fab-scenario" id="btn-scenario" onclick="window.openScenarioModal()">📖 Scénario</button>
 
     <!-- =========================================
-         OVERLAYS ET MODALS (Pop-ups style "Félicitations")
+         OVERLAYS ET MODALS
          ========================================= -->
     
     <div id="vs-overlay">
@@ -613,77 +476,94 @@
     </div>
 
     <div id="modal-vote" class="modal">
-        <div class="modal-content">
-            <h2 style="color: var(--text-dark); text-align:center;">Phase de Vote</h2>
-            <p style="margin: 15px 0; text-align:center; font-size:1.1rem;">Éliminer <strong id="vote-target-name" style="color: #e74c3c;">Joueur</strong> ?</p>
-            <div style="display: flex; gap: 15px; margin-top: 10px;">
-                <button class="btn success" style="flex:1; padding: 15px; font-size: 1.2rem;" onclick="window.castVote(true)">👍 OUI</button>
-                <button class="btn danger" style="flex:1; padding: 15px; font-size: 1.2rem;" onclick="window.castVote(false)">👎 NON</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL CHAT PRIVE DEDIE -->
-    <div id="modal-chat-panel" class="modal" style="padding:0; justify-content:flex-end;">
-        <div class="modal-content" style="height: 85vh; padding: 20px; border-radius: 30px 30px 0 0;">
-            <div class="section-title">
-                <h3 id="chat-panel-title">Discussion</h3>
-                <span onclick="document.getElementById('modal-chat-panel').classList.remove('active')">Fermer ✕</span>
-            </div>
-            <div class="chat-container" id="panel-chat-messages" style="background:transparent; border:none; padding:0;"></div>
-            <div style="display: flex; gap: 10px; flex-shrink: 0; margin-top:10px;">
-                <input type="text" id="panel-chat-input" class="input-field" style="margin:0; border-radius:25px;" placeholder="Message...">
-                <button class="btn" style="width:50px; height:50px; border-radius:50%; padding:0; display:flex; align-items:center; justify-content:center;" onclick="window.sendPanelMessage()">➤</button>
+        <div class="card-white" style="text-align: center; padding:40px; width: 100%; max-width: 500px;">
+            <h2 style="color: var(--text-dark); font-size: 2.2rem;">Phase de Vote</h2>
+            <p style="margin: 25px 0; font-size: 1.4rem;">Éliminer <strong id="vote-target-name" style="color: #e74c3c;">Joueur</strong> ?</p>
+            <div style="display: flex; gap: 20px; margin-top: 30px;">
+                <button class="btn success" style="flex:1; padding: 25px; font-size: 1.8rem;" onclick="window.castVote(true)">👍 OUI</button>
+                <button class="btn danger" style="flex:1; padding: 25px; font-size: 1.8rem;" onclick="window.castVote(false)">👎 NON</button>
             </div>
         </div>
     </div>
 
     <div id="modal-role-picker" class="modal">
-        <div class="modal-content">
-            <h2 style="margin-bottom:15px; text-align:center;">Choisir un rôle</h2>
-            <div class="role-tile-grid scrollable-area" id="picker-tile-container" style="max-height: 50vh;"></div>
-            <button class="btn outline" style="margin-top:15px;" onclick="document.getElementById('modal-role-picker').classList.remove('active')">Annuler</button>
+        <div class="card-white" style="flex: 1; display: flex; flex-direction: column; overflow: hidden; width:100%; max-width:900px; height:90vh; padding:30px;">
+            <h2 style="margin-bottom:15px; flex-shrink: 0; font-size:2rem;">Choisir un rôle</h2>
+            <div class="role-tile-grid scrollable-area" id="picker-tile-container"></div>
+            <button class="btn outline" style="margin-top:20px; flex-shrink: 0; padding:15px; font-size:1.2rem;" onclick="document.getElementById('modal-role-picker').classList.remove('active')">Annuler</button>
         </div>
     </div>
 
     <div id="modal-role-selection" class="modal">
-        <div class="modal-content" style="height: 90vh;">
-            <h2 style="margin-bottom:10px;">Urne du Scénario</h2>
-            <p class="text-muted" style="margin-bottom: 10px;">Cochez les rôles à distribuer.</p>
+        <div class="card-white" style="flex: 1; display: flex; flex-direction: column; overflow: hidden; width:100%; max-width:1000px; height:90vh; padding:30px;">
+            <h2 style="margin-bottom:15px; flex-shrink: 0; font-size:2rem;">Urne du Scénario</h2>
+            <p class="text-muted" style="margin-bottom: 15px; font-size:1.1rem;">Cochez les rôles qui pourront être distribués.</p>
             <div class="role-tile-grid scrollable-area" id="role-tile-container"></div>
-            <button class="btn" style="margin-top:15px;" onclick="document.getElementById('modal-role-selection').classList.remove('active')">Valider</button>
+            <button class="btn" style="margin-top:20px; flex-shrink: 0; padding:20px; font-size:1.4rem;" onclick="document.getElementById('modal-role-selection').classList.remove('active')">Valider le Scénario</button>
         </div>
     </div>
 
     <div id="modal-scenario" class="modal">
-        <div class="modal-content" style="height: 85vh;">
-            <h2 style="margin-bottom:15px; color:var(--primary); text-align:center;">📖 Scénario & Ordre</h2>
+        <div class="card-white" style="flex: 1; display: flex; flex-direction: column; overflow: hidden; width:100%; max-width:900px; height:85vh; padding:30px;">
+            <h2 style="margin-bottom:20px; flex-shrink: 0; color:#b794f4; text-align:center; font-size:2.2rem;">📖 Scénario & Ordre</h2>
             <div class="chat-tabs" style="flex-shrink:0;">
-                <div class="chat-tab active" id="tab-scenario-roles" onclick="window.switchScenarioTab('roles')">Rôles en Jeu</div>
-                <div class="chat-tab" id="tab-scenario-order" onclick="window.switchScenarioTab('order')">Ordre Nuit</div>
+                <div class="chat-tab active" id="tab-scenario-roles" onclick="window.switchScenarioTab('roles')" style="font-size:1.2rem; padding:15px;">Rôles en Jeu</div>
+                <div class="chat-tab" id="tab-scenario-order" onclick="window.switchScenarioTab('order')" style="font-size:1.2rem; padding:15px;">Ordre Nuit</div>
             </div>
-            <div class="scrollable-area" id="scenario-content"></div>
-            <button class="btn outline" style="margin-top:15px;" onclick="document.getElementById('modal-scenario').classList.remove('active')">Fermer</button>
+            <div class="scrollable-area" id="scenario-content" style="padding: 15px;"></div>
+            <button class="btn outline" style="margin-top:25px; flex-shrink: 0; padding:20px; font-size:1.2rem;" onclick="document.getElementById('modal-scenario').classList.remove('active')">Fermer</button>
         </div>
     </div>
 
-    <!-- NAVBAR BASSE (Style App 5 Boutons) -->
+    <div id="modal-friend-profile" class="modal">
+        <div class="card-white" style="text-align: center; width: 100%; max-width:450px; padding:40px;">
+            <div class="avatar-circle" id="mfp-avatar" style="width: 120px; height: 120px; margin: 0 auto 20px auto; font-size: 5rem;">👤</div>
+            <h2 id="mfp-name" style="font-size:2.2rem;">Ami</h2>
+            <p class="text-muted" id="mfp-title" style="font-size:1.3rem; font-weight:600;">Titre</p>
+            <div style="margin-top: 35px; display: flex; flex-direction: column; gap: 15px;">
+                <button class="btn blue" style="padding:20px; font-size:1.1rem;" onclick="window.messageFriend()">✉️ Envoyer un Message Privé</button>
+                <button class="btn outline" style="padding:20px; font-size:1.1rem;" onclick="document.getElementById('modal-friend-profile').classList.remove('active')">Fermer</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-daily" class="modal">
+        <div class="card-white" style="text-align: center; padding:50px; max-width:500px; width:90%;">
+            <h2 style="font-size: 2.5rem;">🎁 Bonus Quotidien !</h2>
+            <p style="font-size: 1.4rem; margin-top:15px;">Jour <span id="daily-day" style="font-weight:bold;">1</span> de connexion consécutive.</p>
+            <h1 style="color: #f6e05e; font-size: 6rem; margin: 25px 0; text-shadow: 0 5px 15px rgba(0,0,0,0.1);">+<span id="daily-amount">10</span> 💎</h1>
+            <button class="btn" style="font-size: 1.4rem; padding: 20px;" onclick="document.getElementById('modal-daily').classList.remove('active')">Récupérer</button>
+        </div>
+    </div>
+
+    <div id="modal-admin" class="modal">
+        <div class="card-white" style="margin:auto; width: 100%; max-width:500px; padding:30px;">
+            <h2 style="color: #e53e3e; text-align:center; font-size:2rem;">⚙️ Panneau Admin</h2>
+            <p class="text-muted" style="text-align:center; margin-bottom:20px; font-size:1.1rem;">Entrez un Emoji ou un chemin d'image (ex: assets/avatar_luffy.png)</p>
+            <h4 style="margin-top:20px; font-size:1.2rem;">Ajouter à la boutique</h4>
+            <select id="admin-item-type" style="font-size:1.1rem; padding:15px;">
+                <option value="avatar">Avatar</option>
+                <option value="title">Titre Honorifique</option>
+            </select>
+            <input type="text" id="admin-item-val" class="input-field" placeholder="Emoji ou Chemin Image" style="font-size:1.1rem; padding:15px;">
+            <input type="number" id="admin-item-price" class="input-field" placeholder="Prix en 💎 (ex: 300)" style="font-size:1.1rem; padding:15px;">
+            <input type="text" id="admin-item-color" class="input-field" placeholder="Couleur Hexa (Optionnel)" style="font-size:1.1rem; padding:15px;">
+            <button class="btn admin" style="padding:15px; font-size:1.2rem;" onclick="window.adminAddShopItem()">Ajouter l'article</button>
+            
+            <h4 style="margin-top:25px; font-size:1.2rem;">Actions Rapides</h4>
+            <button class="btn outline" style="padding:15px; font-size:1.1rem;" onclick="window.adminGiveTokens()">Donner 1000 💎 (Moi)</button>
+            <button class="btn danger" style="padding:15px; font-size:1.1rem;" onclick="window.adminClearChat()">Vider le Chat Global</button>
+            
+            <button class="btn" style="background:var(--bg-app); color:var(--text-dark); margin-top:20px; padding:15px; font-size:1.2rem;" onclick="document.getElementById('modal-admin').classList.remove('active')">Fermer</button>
+        </div>
+    </div>
+
+    <!-- NAVBAR BASSE -->
     <nav id="bottom-nav" style="display: none;">
-        <button class="active" onclick="window.showMainNav('screen-home', this)">
-            <span class="icon">🎮</span><span class="label">Jeu</span>
-        </button>
-        <button onclick="window.showMainNav('screen-shop', this)">
-            <span class="icon">🛒</span><span class="label">Boutique</span>
-        </button>
-        <button onclick="window.showMainNav('screen-chat', this)">
-            <span class="icon">💬</span><span class="label">Message</span>
-        </button>
-        <button onclick="window.showMainNav('screen-leaderboard', this)">
-            <span class="icon">🏆</span><span class="label">Classement</span>
-        </button>
-        <button onclick="window.showMainNav('screen-profile', this)">
-            <span class="icon">👤</span><span class="label">Profil</span>
-        </button>
+        <button class="active" onclick="window.showMainNav('screen-home', this)">🎮</button>
+        <button onclick="window.showMainNav('screen-shop', this)">🛒</button>
+        <button onclick="window.showMainNav('screen-chat', this)">💬</button>
+        <button onclick="window.showMainNav('screen-profile', this)">👤</button>
     </nav>
     
 </div>
@@ -692,12 +572,14 @@
      JAVASCRIPT ET LOGIQUE DE JEU
      ========================================= -->
 <script type="module">
-    // HELPER FUNCTIONS
     window.getAvatarHtml = function(val) {
         if(!val) return '👤';
-        if(val.includes('/') || val.includes('.')) { return `<img src="${val}" alt="avatar" style="width:100%; height:100%; object-fit:cover; border-radius:50%;" onerror="this.outerHTML='👤'">`; }
+        if(val.includes('/') || val.includes('.')) {
+            return `<img src="${val}" alt="avatar" style="width:100%; height:100%; object-fit:cover; border-radius:50%;" onerror="this.outerHTML='👤'">`;
+        }
         return val;
     };
+
     window.getRoleImageHtml = function(roleObj) {
         if(!roleObj) return '❓';
         let imgPath = `assets/role_${roleObj.id}.png`;
@@ -705,28 +587,28 @@
     };
 
     const rolesDB = [
-        { id: 'cartographe', name: "Le Cartographe", team: "gentil", emoji: "🗺️", speed: 1, order: 5, desc: "Sait si le plus avancé est Gentil." },
-        { id: 'eclaireur', name: "L'Éclaireur", team: "gentil", emoji: "🔦", speed: 2, order: 6, desc: "Apprend la distance entre 2 joueurs." },
+        { id: 'cartographe', name: "Le Cartographe", team: "gentil", emoji: "🗺️", speed: 1, order: 5, desc: "Sait si le plus avancé est Gentil/Méchant." },
+        { id: 'eclaireur', name: "L'Éclaireur", team: "gentil", emoji: "🔦", speed: 2, order: 6, desc: "Apprend la distance exacte entre 2 joueurs." },
         { id: 'guetteur', name: "Le Guetteur", team: "gentil", emoji: "🔭", speed: 1, order: 9, desc: "Sait si un joueur a été ciblé cette nuit." },
-        { id: 'veilleur', name: "Veilleur", team: "gentil", emoji: "🦉", speed: 1, order: 8, desc: "Sait si le Démon est sur sa case ou devant." },
-        { id: 'passager', name: "Clandestin", team: "gentil", emoji: "🧳", speed: 0, order: 3, desc: "Copie la vitesse d'un autre joueur." },
-        { id: 'metronome', name: "Le Métronome", team: "gentil", emoji: "⏱️", speed: 1, order: 10, desc: "Connait le total de cases parcourues." },
+        { id: 'veilleur', name: "Veilleur de Nuit", team: "gentil", emoji: "🦉", speed: 1, order: 8, desc: "Sait si le Démon est sur sa case ou devant." },
+        { id: 'passager', name: "Passager Clandestin", team: "gentil", emoji: "🧳", speed: 0, order: 3, desc: "Copie la vitesse d'un autre joueur." },
+        { id: 'metronome', name: "Le Métronome", team: "gentil", emoji: "⏱️", speed: 1, order: 10, desc: "Connait le nombre total de cases parcourues." },
         { id: 'brancardier', name: "Le Brancardier", team: "gentil", emoji: "🚑", speed: 1, order: 1, desc: "[1x] Fait réutiliser le pouvoir d'un Spectre." },
-        { id: 'nitro', name: "Le Nitro", team: "gentil", emoji: "🚀", speed: 1, order: 4, desc: "[1x] Gagne +4 cases, Vit. 0 la nuit d'après." },
-        { id: 'tisseur', name: "Tisseur", team: "gentil", emoji: "🔗", speed: 2, order: 2, desc: "[1x] Échange sa vitesse avec un autre." },
+        { id: 'nitro', name: "Le Nitro", team: "gentil", emoji: "🚀", speed: 1, order: 4, desc: "[1x] Gagne +4 cases, Vitesse 0 la nuit d'après." },
+        { id: 'tisseur', name: "Tisseur de Liens", team: "gentil", emoji: "🔗", speed: 2, order: 2, desc: "[1x] Échange sa vitesse avec un autre." },
         { id: 'klaxon', name: "Le Klaxon", team: "gentil", emoji: "📢", speed: 2, order: 99, desc: "[1x Jour] Annonce publiquement sa case." },
-        { id: 'cascadeur', name: "Le Cascadeur", team: "gentil", emoji: "🤸", speed: 3, order: 99, desc: "[1x Jour] Révèle rôle. Démon forcé cibler." },
-        { id: 'sherif', name: "Le Shérif", team: "gentil", emoji: "🤠", speed: 1, order: 99, desc: "[1x Jour] Révèle rôle, annule l'élimination." },
-        { id: 'espion', name: "Espion de Voie", team: "gentil", emoji: "🕵️", speed: 1, order: 99, desc: "[1x Jour] Demande si joueur est devant." },
+        { id: 'cascadeur', name: "Le Cascadeur", team: "gentil", emoji: "🤸", speed: 3, order: 99, desc: "[1x Jour] Révèle rôle. Vitesse 1, Démon forcé cibler." },
+        { id: 'sherif', name: "Le Shérif", team: "gentil", emoji: "🤠", speed: 1, order: 99, desc: "[1x Jour] Révèle rôle pour annuler l'élimination." },
+        { id: 'espion', name: "Espion de Voie", team: "gentil", emoji: "🕵️", speed: 1, order: 99, desc: "[1x Jour] Demande si un joueur est devant/derrière." },
         { id: 'sprinteur', name: "Le Sprinteur", team: "gentil", emoji: "⚡", speed: 3, order: 99, desc: "Vitesse naturelle la plus rapide." },
-        { id: 'coureur', name: "Coureur Fond", team: "gentil", emoji: "🏃", speed: 2, order: 99, desc: "Immunisé contre Démon (Tours 1 et 2)." },
+        { id: 'coureur', name: "Coureur de Fond", team: "gentil", emoji: "🏃", speed: 2, order: 99, desc: "Immunisé contre le Démon (Tours 1 et 2)." },
         { id: 'somnambule', name: "Le Somnambule", team: "outsider", emoji: "🛌", speed: '?', order: 99, desc: "Vitesse 1 ou 3 aléatoire chaque nuit." },
         { id: 'peureux', name: "Le Peureux", team: "outsider", emoji: "😨", speed: 2, order: 99, desc: "Recule de 1 case si on le dépasse." },
         { id: 'ancre', name: "L'Ancre", team: "outsider", emoji: "⚓", speed: 0, order: 99, desc: "Bloque la vitesse max de TOUS à 2 cases." },
-        { id: 'grappin', name: "Le Grappin", team: "sbire", emoji: "🪝", speed: 1, order: 7, desc: "Immobilise un joueur chaque nuit." },
-        { id: 'brouilleur', name: "Le Brouilleur", team: "sbire", emoji: "📻", speed: 1, order: 7, desc: "Fausse les infos visant un joueur." },
+        { id: 'grappin', name: "Le Grappin", team: "sbire", emoji: "🪝", speed: 1, order: 7, desc: "Immobilise un joueur (Vitesse 0) chaque nuit." },
+        { id: 'brouilleur', name: "Le Brouilleur", team: "sbire", emoji: "📻", speed: 1, order: 7, desc: "Fausse les informations visant un joueur." },
         { id: 'falsificateur', name: "Falsificateur", team: "sbire", emoji: "🎭", speed: 2, order: 99, desc: "[1x Jour] Donne fausse case aux enquêteurs." },
-        { id: 'cauchemar', name: "Le Cauchemar", team: "demon", emoji: "👹", speed: 2, order: 11, desc: "Élimine 1/nuit. +3 cases si cible devant." }
+        { id: 'cauchemar', name: "Le Cauchemar", team: "demon", emoji: "👹", speed: 2, order: 11, desc: "Élimine 1/nuit. +3 cases si cible est devant." }
     ];
 
     let user = { name: '', email: '', avatar: '👤', tokens: 0, title: 'Novice', friendCode: '', friends: [], isAdmin: false, lastLogin: '', streak: 0, gamesPlayed: 0, gamesWon: 0 };
@@ -735,56 +617,74 @@
     
     let shopItems = JSON.parse(localStorage.getItem('shop')) || [
         { type: 'avatar', val: 'assets/avatar_luffy.png', price: 200 }, { type: 'avatar', val: '🐉', price: 200 }, { type: 'avatar', val: '👽', price: 200 },
-        { type: 'title', val: 'Héros des Ombres', price: 100, color: '#f2854e' }, { type: 'title', val: 'L\'Intouchable', price: 150, color: '#4fd1c5' }
+        { type: 'title', val: 'Maître du Mensonge', price: 150, color: '' }, { type: 'title', val: 'L\'Intouchable', price: 150, color: '#4fd1c5' }
     ];
 
     let players = []; let botCount = 0; let selectedRoles = rolesDB.map(r => r.id);
     let meIsConteur = true; let turnCount = 1; let gamePhase = 'attente'; 
     let playerNotes = {}; let currentRoomCode = "000000";
     
-    let gameInterval; window.activeTimeouts = [];
+    let gameInterval;
+    window.activeTimeouts = [];
     window.safeTimeout = function(fn, delay) { let t = setTimeout(() => { if(gamePhase !== 'attente') fn(); }, delay); window.activeTimeouts.push(t); };
     window.clearAllTimeouts = function() { window.activeTimeouts.forEach(t => clearTimeout(t)); window.activeTimeouts = []; clearInterval(gameInterval); };
 
     let hasAccusedToday = []; let hasBeenAccusedToday = [];
-    let currentExecutionTarget = { id: null, votes: 0 }; let tempAccusedId = null; let tempAccuseRequest = null;
+    let currentExecutionTarget = { id: null, votes: 0 }; 
+    let tempAccusedId = null; let tempAccuseRequest = null;
     let playerToAssign = null; 
 
-    /* === INITIALISATION === */
+    /* === CONNEXION SÉCURISÉE === */
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
     import { getAuth, signInWithPopup, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
     
     const firebaseConfig = {
-      apiKey: "AIzaSyDWL02zRvlGp6UxomuOjvwzGWkbVGizNKQ", authDomain: "echappee-des-ombres.firebaseapp.com",
-      projectId: "echappee-des-ombres", storageBucket: "echappee-des-ombres.firebasestorage.app",
-      messagingSenderId: "495681138016", appId: "1:495681138016:web:9c10f0a169f1a807bd0205"
+      apiKey: "AIzaSyDWL02zRvlGp6UxomuOjvwzGWkbVGizNKQ",
+      authDomain: "echappee-des-ombres.firebaseapp.com",
+      projectId: "echappee-des-ombres",
+      storageBucket: "echappee-des-ombres.firebasestorage.app",
+      messagingSenderId: "495681138016",
+      appId: "1:495681138016:web:9c10f0a169f1a807bd0205"
     };
 
     let app, auth;
-    try { app = initializeApp(firebaseConfig); auth = getAuth(app); } catch (error) { console.warn("Mode local"); }
+    try { app = initializeApp(firebaseConfig); auth = getAuth(app); } 
+    catch (error) { console.warn("Mode hors-ligne", error); }
 
     window.loginGoogle = async function() {
-        if (!auth) { alert("Firebase non configuré."); return; }
+        if (!auth) { alert("Erreur: Firebase non configuré correctement."); return; }
         try {
-            const provider = new GoogleAuthProvider(); const result = await signInWithPopup(auth, provider);
-            user.name = result.user.displayName || "Joueur"; user.email = result.user.email; user.avatar = '👤';
-            checkAdmin(user.email); finalizeLogin();
+            const provider = new GoogleAuthProvider();
+            const result = await signInWithPopup(auth, provider);
+            user.name = result.user.displayName || "Joueur";
+            user.email = result.user.email;
+            user.avatar = '👤';
+            checkAdmin(user.email);
+            finalizeLogin();
         } catch (error) { alert("Erreur Google: " + error.message); }
     };
 
     window.login = function(type) {
         if (type === 'guest') {
-            user.name = "Joueur" + Math.floor(100+Math.random()*900); user.avatar = ['🦊', '🦉', '🐰', '🐺'][Math.floor(Math.random() * 4)]; user.isAdmin = false;
+            user.name = "Joueur" + Math.floor(100+Math.random()*900);
+            user.avatar = ['🦊', '🦉', '🐰', '🐺'][Math.floor(Math.random() * 4)];
+            user.isAdmin = false;
         } else {
-            let email = document.getElementById('login-email').value; let pass = document.getElementById('login-pass').value;
-            if(!email || email.trim() === '') return alert("Email requis."); if(!pass || pass.trim() === '') return alert("Mot de passe requis.");
-            user.name = email.split('@')[0]; user.avatar = '👤'; checkAdmin(email);
+            let email = document.getElementById('login-email').value;
+            let pass = document.getElementById('login-pass').value;
+            if(!email || email.trim() === '') return alert("Entrez une adresse email valide.");
+            if(!pass || pass.trim() === '') return alert("Entrez un mot de passe.");
+            user.name = email.split('@')[0]; user.avatar = '👤';
+            checkAdmin(email);
         }
         finalizeLogin();
     };
 
     function checkAdmin(email) {
-        if(email.toLowerCase() === "nassim57132@gmail.com") { user.isAdmin = true; user.name = "👑 Admin Nassim"; document.body.classList.add('admin-mode'); }
+        if(email.toLowerCase() === "nassim57132@gmail.com") {
+            user.isAdmin = true; user.name = "👑 Admin Nassim";
+            document.body.classList.add('admin-mode');
+        }
     }
 
     function finalizeLogin() {
@@ -795,7 +695,8 @@
             user.friends = savedData.friends || []; user.lastLogin = savedData.lastLogin || ''; user.streak = savedData.streak || 0;
             user.gamesPlayed = savedData.gamesPlayed || 0; user.gamesWon = savedData.gamesWon || 0;
         } else {
-            user.tokens = 0; user.friendCode = Math.floor(1000 + Math.random() * 9000).toString(); user.gamesPlayed = 0; user.gamesWon = 0;
+            user.tokens = 0; user.friendCode = Math.floor(1000 + Math.random() * 9000).toString();
+            user.gamesPlayed = 0; user.gamesWon = 0;
         }
         
         window.saveUserData(); window.updateUI(); window.renderShop(); window.renderFriendsList();
@@ -808,11 +709,11 @@
         const container = document.getElementById('role-tile-container'); container.innerHTML = '';
         const cats = { 'gentil': 'Villageois', 'outsider': 'Marginaux', 'sbire': 'Sbires', 'demon': 'Démons' };
         for (let team in cats) {
-            container.innerHTML += `<h4 style="margin:15px 0 5px 0; grid-column: 1 / -1;">${cats[team]}</h4>`;
+            container.innerHTML += `<h4 style="margin:20px 0 10px 0; grid-column: 1 / -1; font-size:1.4rem;">${cats[team]}</h4>`;
             rolesDB.filter(r=>r.team===team).forEach(r => {
                 let teamClass = `role-${r.team}`;
                 container.innerHTML += `<div class="role-tile ${teamClass} selected" id="tile-${r.id}" onclick="window.toggleRole('${r.id}')">
-                    <div class="role-tile-icon">${window.getRoleImageHtml(r)}</div><div style="flex:1;"><strong>${r.name}</strong> <span class="text-muted" style="font-size:0.75rem;">(Vit: ${r.speed})</span><br><span class="text-muted" style="font-size:0.8rem;">${r.desc}</span></div></div>`;
+                    <div class="role-tile-icon">${window.getRoleImageHtml(r)}</div><div style="flex:1;"><strong style="color:var(--text-dark); font-size:1.2rem;">${r.name}</strong> <span style="font-size:0.9rem; color:var(--text-muted);">(Vit: ${r.speed})</span><br><span style="font-size:0.95rem; color:var(--text-muted);">${r.desc}</span></div></div>`;
             });
         }
     }
@@ -821,31 +722,26 @@
     window.logout = function() { location.reload(); };
 
     window.updateUI = function() {
-        document.getElementById('home-username').innerText = user.name; document.getElementById('home-title').innerText = user.title;
-        document.getElementById('ui-tokens').innerText = user.isAdmin ? "∞" : user.tokens; 
-        
-        document.getElementById('profile-name').innerText = user.name; document.getElementById('profile-title').innerText = user.title; 
-        document.getElementById('profile-avatar').innerHTML = window.getAvatarHtml(user.avatar);
-        document.getElementById('home-avatar').innerHTML = window.getAvatarHtml(user.avatar);
-        document.getElementById('profile-friend-code').innerText = user.friendCode;
-        
-        document.getElementById('profile-games').innerText = user.gamesPlayed; document.getElementById('profile-wins').innerText = user.gamesWon;
-        let winrate = user.gamesPlayed > 0 ? Math.round((user.gamesWon / user.gamesPlayed) * 100) : 0;
-        document.getElementById('profile-winrate').innerText = winrate + "%";
-        
-        // Leaderboard mock update
-        document.getElementById('rank-my-name').innerText = user.name;
-        document.getElementById('rank-my-avatar').innerHTML = window.getAvatarHtml(user.avatar);
-        document.getElementById('rank-my-wins').innerText = user.gamesWon;
+        if(document.getElementById('home-username')) document.getElementById('home-username').innerText = user.name;
+        if(document.getElementById('home-title')) document.getElementById('home-title').innerText = user.title;
+        if(document.getElementById('ui-tokens')) document.getElementById('ui-tokens').innerText = user.isAdmin ? "∞" : user.tokens;
+        if(document.getElementById('profile-name')) document.getElementById('profile-name').innerText = user.name;
+        if(document.getElementById('profile-title')) document.getElementById('profile-title').innerText = user.title;
+        if(document.getElementById('profile-avatar')) document.getElementById('profile-avatar').innerHTML = window.getAvatarHtml(user.avatar);
+        if(document.getElementById('profile-friend-code')) document.getElementById('profile-friend-code').innerText = user.friendCode;
+        if(document.getElementById('profile-games')) document.getElementById('profile-games').innerText = user.gamesPlayed;
+        if(document.getElementById('profile-wins')) document.getElementById('profile-wins').innerText = user.gamesWon;
     };
 
     window.checkDailyLogin = function() {
         const todayStr = new Date().toDateString();
         if (user.lastLogin !== todayStr) {
-            let lastDate = new Date(user.lastLogin); let yesterday = new Date(); yesterday.setDate(yesterday.getDate() - 1);
+            let lastDate = new Date(user.lastLogin);
+            let yesterday = new Date(); yesterday.setDate(yesterday.getDate() - 1);
             if (lastDate.toDateString() === yesterday.toDateString()) { user.streak++; } else { user.streak = 1; }
             if (user.streak > 7) user.streak = 1;
-            let reward = (user.streak === 1) ? 10 : 15; user.tokens += reward; user.lastLogin = todayStr;
+            let reward = (user.streak === 1) ? 10 : 15;
+            user.tokens += reward; user.lastLogin = todayStr;
             window.saveUserData(); window.updateUI();
             document.getElementById('daily-day').innerText = user.streak; document.getElementById('daily-amount').innerText = reward;
             document.getElementById('modal-daily').classList.add('active');
@@ -858,18 +754,16 @@
         document.getElementById(id).classList.add('active');
         document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
-        
-        // Cacher header pour certaines vues pour faire plus propre
-        document.getElementById('main-header').style.display = (id === 'screen-home' || id === 'screen-profile') ? 'none' : 'flex';
-        
-        if(id === 'screen-chat') window.renderChatFriends();
+        if(id === 'screen-chat') window.loadChat();
     };
     
     window.returnToMenu = function() {
         gamePhase = 'attente'; window.clearAllTimeouts(); 
         document.getElementById('btn-scenario').style.display = 'none';
         document.getElementById('conteur-accuse-notif').classList.remove('show');
-        window.showMainNav('screen-home', document.querySelectorAll('nav button')[0]);
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        document.getElementById('screen-home').classList.add('active');
+        document.getElementById('bottom-nav').style.display = 'flex';
         document.querySelector('.back-btn').style.display = 'none';
         document.getElementById('header-turn').innerText = "";
     };
@@ -891,31 +785,18 @@
     };
 
     window.renderFriendsList = function() {
-        const container = document.getElementById('friends-list-container');
-        container.innerHTML = '';
+        const container = document.getElementById('friends-list-container'); const selector = document.getElementById('private-friend-select');
+        container.innerHTML = ''; selector.innerHTML = '<option value="">-- Sélectionnez un ami --</option>';
         if(user.friends.length === 0) { container.innerHTML = '<p class="text-muted text-center" style="margin-top:10px;">Aucun ami.</p>'; return; }
 
         user.friends.forEach(f => {
-            let statusClass = Math.random() > 0.5 ? 'online' : 'offline';
+            let isOnline = Math.random() > 0.5; let statusClass = isOnline ? 'online' : 'offline';
             container.innerHTML += `
-                <div class="chat-friend-item" style="cursor: pointer;" onclick="window.openFriendProfile('${f.code}')">
-                    <div class="avatar-circle small">${window.getAvatarHtml(f.avatar)}<div class="status-dot ${statusClass}"></div></div>
-                    <div style="flex: 1;"><strong style="display:block; font-size:0.95rem;">${f.name}</strong><span class="text-muted" style="font-size:0.75rem;">Code: ${f.code}</span></div>
+                <div class="card-white" style="padding: 10px; display: flex; align-items: center; cursor: pointer;" onclick="window.openFriendProfile('${f.code}')">
+                    <div class="avatar-circle" style="width: 45px; height: 45px; font-size: 1.5rem; margin-right: 15px;">${window.getAvatarHtml(f.avatar)}<div class="status-dot ${statusClass}"></div></div>
+                    <strong style="flex: 1; font-size: 1.1rem;">${f.name}</strong><span class="text-muted">Code: ${f.code}</span>
                 </div>`;
-        });
-    };
-    
-    // Gère la liste des amis cliquables dans l'onglet Message
-    window.renderChatFriends = function() {
-        const container = document.getElementById('private-chat-buttons'); container.innerHTML = '';
-        if(user.friends.length === 0) { container.innerHTML = '<p class="text-muted padding:10px;">Ajoutez des amis pour discuter.</p>'; return; }
-        
-        user.friends.forEach(f => {
-            container.innerHTML += `
-                <div class="chat-friend-item" style="cursor:pointer;" onclick="window.openChatPanel('private', '${f.code}')">
-                    <div class="avatar-circle small">${window.getAvatarHtml(f.avatar)}</div>
-                    <div style="flex:1;"><strong style="display:block; font-size:0.95rem;">${f.name}</strong><span class="text-muted" style="font-size:0.75rem;">Appuyez pour discuter</span></div>
-                </div>`;
+            selector.innerHTML += `<option value="${f.code}">${f.name}</option>`;
         });
     };
 
@@ -928,58 +809,63 @@
         }
     };
     
+    window.openFriendProfileByName = function(name) {
+        if(name === user.name) return;
+        let friend = user.friends.find(f => f.name === name);
+        if(friend) { window.openFriendProfile(friend.code); } else { alert(`${name} n'est pas dans votre liste d'amis.`); }
+    };
+
     window.messageFriend = function() {
         document.getElementById('modal-friend-profile').classList.remove('active');
-        window.openChatPanel('private', currentChatTarget);
+        window.showMainNav('screen-chat', document.querySelectorAll('nav button')[2]);
+        window.switchChatMode('private');
+        document.getElementById('private-friend-select').value = currentChatTarget; window.loadChat();
     };
 
-    window.openChatPanel = function(mode, targetCodeOrName) {
+    window.switchChatMode = function(mode) {
         currentChatMode = mode;
-        if(mode === 'global') {
-            document.getElementById('chat-panel-title').innerText = "Chat Global";
-        } else {
-            currentChatTarget = targetCodeOrName;
-            let f = user.friends.find(x => x.code === currentChatTarget);
-            document.getElementById('chat-panel-title').innerText = f ? f.name : "Chat Privé";
-        }
-        document.getElementById('modal-chat-panel').classList.add('active');
-        window.loadPanelChat();
+        document.getElementById('tab-chat-global').classList.remove('active'); document.getElementById('tab-chat-private').classList.remove('active');
+        document.getElementById('tab-chat-' + mode).classList.add('active');
+        document.getElementById('chat-private-selector').style.display = (mode === 'private') ? 'block' : 'none';
+        window.loadChat();
     };
 
-    window.loadPanelChat = function() {
-        const c = document.getElementById('panel-chat-messages'); c.innerHTML = ''; let filteredMessages = [];
+    window.loadChat = function() {
+        const c = document.getElementById('chat-messages'); c.innerHTML = ''; let filteredMessages = [];
         if (currentChatMode === 'global') { filteredMessages = chatMessages.filter(m => m.target === 'global'); } 
         else {
-            filteredMessages = chatMessages.filter(m => (m.target === currentChatTarget && m.author === user.name) || (m.target === user.name && m.author === "Joueur_" + currentChatTarget));
+            let targetCode = document.getElementById('private-friend-select').value;
+            if(!targetCode) return c.innerHTML = '<p class="text-muted text-center" style="margin-top:20px;">Sélectionnez un ami.</p>';
+            filteredMessages = chatMessages.filter(m => (m.target === targetCode && m.author === user.name) || (m.target === user.name && m.author === "Joueur_" + targetCode));
         }
 
         filteredMessages.forEach((msg, i) => {
             let isMe = (msg.author === user.name) ? 'me' : '';
-            c.innerHTML += `<div class="chat-msg ${isMe}"><div class="author">${msg.author}</div><div>${msg.text}</div></div>`;
+            c.innerHTML += `<div class="chat-msg ${isMe}"><div class="author" onclick="window.openFriendProfileByName('${msg.author}')">${msg.author}</div><div>${msg.text}</div><button class="chat-del-btn" onclick="window.deleteMessage(${i})">X</button></div>`;
         });
         c.scrollTop = c.scrollHeight;
     };
     
-    window.sendPanelMessage = function() {
-        let input = document.getElementById('panel-chat-input');
+    window.sendChatMessage = function() {
+        let input = document.getElementById('chat-input');
         if(input.value.trim() === '') return;
-        let target = currentChatMode === 'global' ? 'global' : currentChatTarget;
+        let target = 'global';
+        if(currentChatMode === 'private') { target = document.getElementById('private-friend-select').value; if(!target) return alert("Sélectionnez un ami !"); }
         chatMessages.push({ author: user.name, target: target, text: input.value });
-        localStorage.setItem('chat', JSON.stringify(chatMessages)); input.value = ''; window.loadPanelChat();
+        localStorage.setItem('chat', JSON.stringify(chatMessages)); input.value = ''; window.loadChat();
     };
+    window.deleteMessage = function(i) { if(user.isAdmin) { chatMessages.splice(i, 1); localStorage.setItem('chat', JSON.stringify(chatMessages)); window.loadChat(); } };
 
     /* === BOUTIQUE === */
     window.renderShop = function() {
         const avatarsDiv = document.getElementById('shop-avatars'); const titlesDiv = document.getElementById('shop-titles');
         avatarsDiv.innerHTML = ''; titlesDiv.innerHTML = '';
-        document.getElementById('shop-solde').innerText = user.isAdmin ? "∞ 🪙" : `${user.tokens} 🪙`;
-
         shopItems.forEach((item, index) => {
             if(item.type === 'avatar') {
-                avatarsDiv.innerHTML += `<div class="shop-item"><div class="shop-avatar-circle">${window.getAvatarHtml(item.val)}</div><strong style="margin-top:auto;">Avatar Épique</strong><span style="font-size:0.8rem; font-weight:bold; color:var(--primary);">${item.price} 🪙</span><button class="btn small" style="margin-top:10px; width:100%;" onclick="window.buyItem(${index})">Acheter</button></div>`;
+                avatarsDiv.innerHTML += `<div class="card-white" style="text-align:center; padding:15px; cursor:pointer;" onclick="window.buyItem(${index})"><div class="shop-avatar-circle">${window.getAvatarHtml(item.val)}</div><strong style="color:var(--text-dark); font-size:1.2rem;">${item.price} 💎</strong></div>`;
             } else {
                 let colorStyle = item.color ? `color:${item.color};` : '';
-                titlesDiv.innerHTML += `<div class="shop-item blue"><strong style="${colorStyle} font-size:1.1rem; margin-bottom:10px;">${item.val}</strong><span style="font-size:0.8rem; font-weight:bold; color:var(--primary); margin-top:auto;">${item.price} 🪙</span><button class="btn small outline" style="margin-top:10px; width:100%;" onclick="window.buyItem(${index})">Acheter</button></div>`;
+                titlesDiv.innerHTML += `<div class="card-white" style="cursor:pointer; text-align:center;" onclick="window.buyItem(${index})"><strong style="${colorStyle} font-size:1.1rem;">${item.val}</strong><br><span class="text-muted">${item.price} 💎</span></div>`;
             }
         });
     };
@@ -987,11 +873,11 @@
     window.buyItem = function(index) {
         let item = shopItems[index];
         if(user.isAdmin || user.tokens >= item.price) {
-            if(confirm(`Acheter cet article pour ${item.price} 🪙 ?`)) {
+            if(confirm(`Acheter cet article pour ${item.price} 💎 ?`)) {
                 if(!user.isAdmin) user.tokens -= item.price;
                 if(item.type === 'avatar') user.avatar = item.val;
                 if(item.type === 'title') user.title = item.val;
-                window.saveUserData(); window.updateUI(); window.renderShop(); alert('Achat réussi !');
+                window.saveUserData(); window.updateUI(); alert('Achat réussi !');
             }
         } else { alert("Fonds insuffisants ! Jouez pour en gagner."); }
     };
@@ -1005,7 +891,6 @@
                 { id: 1, name: user.name, isConteur: false, isSpectre: false, role: '', avatar: user.avatar, pos: 0 }
             ];
             botCount = 0; currentRoomCode = code; meIsConteur = false;
-            document.getElementById('main-header').style.display = 'flex';
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
             document.getElementById('screen-room').classList.add('active');
             document.getElementById('bottom-nav').style.display = 'none';
@@ -1020,7 +905,6 @@
         botCount = 0; playerNotes = {}; gamePhase = 'attente'; window.clearAllTimeouts();
         currentRoomCode = Math.floor(100000 + Math.random() * 900000).toString();
         
-        document.getElementById('main-header').style.display = 'flex';
         document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
         document.getElementById('screen-room').classList.add('active');
         document.getElementById('bottom-nav').style.display = 'none';
@@ -1045,12 +929,13 @@
         const list = document.getElementById('room-players-list'); list.innerHTML = '';
         players.forEach(p => { 
             let badge = p.isConteur ? '<div style="color:var(--primary); font-weight:bold; font-size:0.8rem; margin-top:5px;">👑 Conteur</div>' : '';
-            let btn = (!p.isConteur) ? `<button class="btn outline small" style="margin-top:10px; width:100%;" onclick="window.setConteur(${p.id})">Donner 👑</button>` : '';
+            let btn = (!p.isConteur) ? `<button class="btn outline small" style="margin-top:10px; width:100%; font-size:1rem; padding:10px;" onclick="window.setConteur(${p.id})">Donner 👑</button>` : '';
             list.innerHTML += `
             <div class="card-white" style="display:flex; flex-direction:column; align-items:center; padding:15px; text-align:center;">
-                <div class="avatar-circle small" style="margin-bottom:10px;">${window.getAvatarHtml(p.avatar)}</div>
-                <strong style="font-size:1rem;">${p.name}</strong>
-                ${badge} ${btn}
+                <div class="avatar-circle" style="width:60px; height:60px; font-size:2.5rem; margin-bottom:10px;">${window.getAvatarHtml(p.avatar)}</div>
+                <strong style="font-size:1.2rem;">${p.name}</strong>
+                ${badge}
+                ${btn}
             </div>`; 
         });
     };
@@ -1080,12 +965,13 @@
     }
 
     window.startRoleAssignment = function() {
-        let nonConteurs = players.filter(p => !p.isConteur); let n = nonConteurs.length;
-        if(n < 5) return alert("Minimum 5 joueurs et 1 Conteur !");
+        let nonConteurs = players.filter(p => !p.isConteur);
+        let n = nonConteurs.length;
+        if(n < 5) return alert("Il faut au moins 5 joueurs et 1 Conteur (6 personnes minimum) pour jouer à ce jeu !");
         
         let availableRoles = rolesDB.filter(r => selectedRoles.includes(r.id));
         let demons = availableRoles.filter(r => r.team === 'demon');
-        if(demons.length === 0) return alert("Sélectionnez au moins 1 Démon !");
+        if(demons.length === 0) return alert("Vous devez sélectionner au moins 1 Démon dans l'urne !");
 
         let dist = getRequiredDistribution(n);
         document.getElementById('ra-player-count').innerText = n;
@@ -1107,8 +993,11 @@
         }
     };
 
-    window.randomizeRoles = function() {
-        let nonConteurs = players.filter(p => !p.isConteur); let n = nonConteurs.length; let dist = getRequiredDistribution(n);
+    window.randomizeRoles = function(isInitial = false) {
+        let nonConteurs = players.filter(p => !p.isConteur);
+        let n = nonConteurs.length;
+        let dist = getRequiredDistribution(n);
+
         let availableRoles = rolesDB.filter(r => selectedRoles.includes(r.id));
         let poolGentils = availableRoles.filter(r => r.team === 'gentil').sort(() => 0.5 - Math.random());
         let poolOutsiders = availableRoles.filter(r => r.team === 'outsider').sort(() => 0.5 - Math.random());
@@ -1117,33 +1006,47 @@
 
         let finalDeck = [];
         const pickRoles = (pool, count, fallback) => {
-            for(let i=0; i<count; i++) { if(pool.length > 0) finalDeck.push(pool.pop()); else finalDeck.push(rolesDB.find(r => r.team === fallback)); }
+            for(let i=0; i<count; i++) {
+                if(pool.length > 0) finalDeck.push(pool.pop());
+                else finalDeck.push(rolesDB.find(r => r.team === fallback));
+            }
         };
 
-        pickRoles(poolGentils, dist.gentil, 'gentil'); pickRoles(poolOutsiders, dist.outsider, 'outsider');
-        pickRoles(poolSbires, dist.sbire, 'sbire'); pickRoles(poolDemons, dist.demon, 'demon');
+        pickRoles(poolGentils, dist.gentil, 'gentil');
+        pickRoles(poolOutsiders, dist.outsider, 'outsider');
+        pickRoles(poolSbires, dist.sbire, 'sbire');
+        pickRoles(poolDemons, dist.demon, 'demon');
 
         finalDeck.sort(() => 0.5 - Math.random());
         nonConteurs.forEach((p, i) => { p.role = finalDeck[i].name; p.pos = 0; p.isSpectre = false; });
+        
         if(meIsConteur) window.renderRoleAssignment();
     };
 
     window.openRolePicker = function(id) {
-        playerToAssign = id; const container = document.getElementById('picker-tile-container'); container.innerHTML = '';
+        playerToAssign = id;
+        const container = document.getElementById('picker-tile-container'); 
+        container.innerHTML = '';
         let availableRoles = rolesDB.filter(r => selectedRoles.includes(r.id));
         
         availableRoles.forEach(r => {
             let teamClass = `role-${r.team}`;
             container.innerHTML += `<div class="role-tile ${teamClass}" onclick="window.selectRoleForPlayer('${r.name}')">
                 <div class="role-tile-icon">${window.getRoleImageHtml(r)}</div>
-                <div style="flex:1;"><strong style="color:var(--text-dark); font-size:1.1rem;">${r.name}</strong> <span class="text-muted">(Vit: ${r.speed})</span><br><span class="text-muted" style="font-size:0.8rem;">${r.desc}</span></div>
+                <div style="flex:1;">
+                    <strong style="color:var(--text-dark); font-size:1.2rem;">${r.name}</strong> <span style="font-size:0.9rem; color:var(--text-muted);">(Vit: ${r.speed})</span><br>
+                    <span style="font-size:0.95rem; color:var(--text-muted);">${r.desc}</span>
+                </div>
             </div>`;
         });
         document.getElementById('modal-role-picker').classList.add('active');
     };
 
     window.selectRoleForPlayer = function(roleName) {
-        if(playerToAssign !== null) { window.updatePlayerRole(playerToAssign, roleName); document.getElementById('modal-role-picker').classList.remove('active'); }
+        if(playerToAssign !== null) {
+            window.updatePlayerRole(playerToAssign, roleName);
+            document.getElementById('modal-role-picker').classList.remove('active');
+        }
     };
 
     window.renderRoleAssignment = function() {
@@ -1157,11 +1060,13 @@
             <div class="card-white" style="display:flex; flex-direction:column; align-items:center; padding:15px; text-align:center;">
                 <div class="avatar-circle small" style="margin-bottom:5px;">${window.getAvatarHtml(p.avatar)}</div>
                 <strong style="font-size:1.1rem; margin-bottom:10px;">${p.name}</strong>
+                
                 <div class="role-tile ${teamClass}" style="width:100%; padding:10px; margin-bottom:10px; pointer-events:none; flex-direction:column; text-align:center; gap:5px;">
-                    <div style="width:50px; height:50px;">${window.getRoleImageHtml(currentRole)}</div>
+                    <div style="width:50px; height:50px; font-size:2.5rem;">${window.getRoleImageHtml(currentRole)}</div>
                     <strong style="color:var(--text-dark); font-size:1rem;">${currentRole.name}</strong>
                 </div>
-                <button class="btn outline small" style="width:100%;" onclick="window.openRolePicker(${p.id})">Modifier le rôle</button>
+                
+                <button class="btn blue small" style="width:100%; padding:12px; font-size:1rem;" onclick="window.openRolePicker(${p.id})">Choisir le rôle</button>
             </div>`;
         });
         document.getElementById('assignment-list').innerHTML = html;
@@ -1170,12 +1075,17 @@
     window.updatePlayerRole = function(id, roleName) { let p = players.find(x => x.id === id); if(p) { p.role = roleName; window.renderRoleAssignment(); } };
 
     window.confirmAndStart = function() {
-        let nonConteurs = players.filter(p => !p.isConteur); let dist = getRequiredDistribution(nonConteurs.length);
+        let nonConteurs = players.filter(p => !p.isConteur);
+        let dist = getRequiredDistribution(nonConteurs.length);
         let currentDist = { gentil: 0, outsider: 0, sbire: 0, demon: 0 };
-        nonConteurs.forEach(p => { let r = rolesDB.find(x => x.name === p.role); if(r) currentDist[r.team]++; });
+        
+        nonConteurs.forEach(p => {
+            let r = rolesDB.find(x => x.name === p.role);
+            if(r) currentDist[r.team]++;
+        });
 
         if(currentDist.gentil !== dist.gentil || currentDist.outsider !== dist.outsider || currentDist.sbire !== dist.sbire || currentDist.demon !== dist.demon) {
-            return alert(`Erreur de répartition !\n\nIl faut OBLIGATOIREMENT :\nVill: ${dist.gentil}, Marg: ${dist.outsider}, Sbires: ${dist.sbire}, Démon: ${dist.demon}`);
+            return alert(`Erreur de répartition !\n\nVous avez mis :\nVill: ${currentDist.gentil}, Marg: ${currentDist.outsider}, Sbires: ${currentDist.sbire}, Démon: ${currentDist.demon}\n\nIl faut OBLIGATOIREMENT :\nVill: ${dist.gentil}, Marg: ${dist.outsider}, Sbires: ${dist.sbire}, Démon: ${dist.demon}`);
         }
 
         document.getElementById('screen-role-assignment').classList.remove('active');
@@ -1185,7 +1095,10 @@
     };
 
     /* === SCÉNARIO & ORDRE NUIT === */
-    window.openScenarioModal = function() { document.getElementById('modal-scenario').classList.add('active'); window.switchScenarioTab('roles'); };
+    window.openScenarioModal = function() {
+        document.getElementById('modal-scenario').classList.add('active');
+        window.switchScenarioTab('roles');
+    };
 
     window.switchScenarioTab = function(tab) {
         document.getElementById('tab-scenario-roles').classList.toggle('active', tab === 'roles');
@@ -1197,22 +1110,24 @@
             let html = '<div class="role-tile-grid">';
             availableRoles.forEach(r => { 
                 let tClass = `role-${r.team}`;
-                html += `<div class="role-tile ${tClass}"><div class="role-tile-icon">${window.getRoleImageHtml(r)}</div><div style="flex:1;"><strong style="color:var(--text-dark);">${r.name}</strong> <span class="text-muted" style="font-size:0.75rem;">(Vit: ${r.speed})</span><br><span class="text-muted" style="font-size:0.8rem;">${r.desc}</span></div></div>`; 
+                html += `<div class="role-tile ${tClass}"><div class="role-tile-icon">${window.getRoleImageHtml(r)}</div><div style="flex:1;"><strong style="color:var(--text-dark);">${r.name}</strong> <span style="font-size:0.75rem; color:var(--text-muted);">(Vit: ${r.speed})</span><br><span style="font-size:0.8rem; color:var(--text-muted);">${r.desc}</span></div></div>`; 
             });
             html += '</div>'; content.innerHTML = html;
         } else {
             let rolesToShow = [];
             if(meIsConteur) {
-                let activeRoles = players.filter(p => !p.isConteur).map(p => p.role); rolesToShow = rolesDB.filter(r => activeRoles.includes(r.name) && r.order < 99);
+                let activeRoles = players.filter(p => !p.isConteur).map(p => p.role);
+                rolesToShow = rolesDB.filter(r => activeRoles.includes(r.name) && r.order < 99);
             } else {
                 rolesToShow = rolesDB.filter(r => selectedRoles.includes(r.id) && r.order < 99);
             }
             rolesToShow.sort((a,b) => a.order - b.order);
             
-            let html = '<ol style="padding-left: 20px; font-size:1.1rem; line-height:2;">';
-            html += `<li><strong>👻 Spectres</strong></li>`;
+            let html = '<ol style="padding-left: 20px; font-size:1.1rem; line-height:1.8;">';
+            html += `<li><strong>👻 Spectres</strong> (Vent d'Outre-Tombe)</li>`;
             rolesToShow.forEach(r => { html += `<li style="margin-bottom:10px;"><div style="display:inline-block; width:35px; height:35px; vertical-align:middle; margin-right:10px;">${window.getRoleImageHtml(r)}</div> <strong>${r.name}</strong></li>`; });
-            html += '</ol>'; content.innerHTML = html;
+            html += '</ol>';
+            content.innerHTML = html;
         }
     };
 
@@ -1227,19 +1142,25 @@
             window.renderTrack();
             
             if (newPhase === 'nuit') {
-                cTitle.innerText = `Tour ${turnCount} - La Nuit`; cNightTools.style.display = 'block'; cDayTools.style.display = 'none';
-                window.renderConteurAdjusters(); cControls.innerHTML = `<button class="btn success" style="padding:20px; font-size:1.2rem;" onclick="window.triggerPhase('jour')">☀️ Le jour se lève</button>`;
+                cTitle.innerText = `Tour ${turnCount} - La Nuit`;
+                cNightTools.style.display = 'block'; cDayTools.style.display = 'none';
+                window.renderConteurAdjusters();
+                cControls.innerHTML = `<button class="btn success" style="padding:20px; font-size:1.2rem;" onclick="window.triggerPhase('jour')">☀️ Le jour se lève</button>`;
             } 
             else if (newPhase === 'jour') {
-                cTitle.innerText = `Tour ${turnCount} - Débats`; cNightTools.style.display = 'none'; cDayTools.style.display = 'flex';
-                document.getElementById('conteur-timer').innerText = "00:00"; cControls.innerHTML = `<p class="text-muted" style="margin-bottom:10px;">Attendez les demandes d'accusation.</p>`;
+                cTitle.innerText = `Tour ${turnCount} - Débats`;
+                cNightTools.style.display = 'none'; cDayTools.style.display = 'flex';
+                document.getElementById('conteur-timer').innerText = "00:00";
+                cControls.innerHTML = `<p class="text-muted" style="margin-bottom:10px;">Attendez les demandes d'accusation.</p>`;
             }
             else if (newPhase === 'accusation') {
-                cTitle.innerText = `Tour ${turnCount} - Votes`; cNightTools.style.display = 'none'; cDayTools.style.display = 'none';
+                cTitle.innerText = `Tour ${turnCount} - Votes en cours`;
+                cNightTools.style.display = 'none'; cDayTools.style.display = 'none';
                 cControls.innerHTML = `<p class="text-muted" style="text-align:center; font-size:1.1rem; margin-bottom:15px;">Les joueurs votent pour éliminer : <strong>${players.find(p=>p.id===tempAccusedId)?.name}</strong></p><button class="btn outline" style="padding:20px; font-size:1.2rem;" onclick="window.triggerPhase('aube')">🌅 Clore les votes</button>`;
             }
             else if (newPhase === 'aube') {
-                cTitle.innerText = `Tour ${turnCount} - L'Aube`; cNightTools.style.display = 'none'; cDayTools.style.display = 'none';
+                cTitle.innerText = `Tour ${turnCount} - L'Aube`;
+                cNightTools.style.display = 'none'; cDayTools.style.display = 'none';
                 cControls.innerHTML = `<button class="btn" style="background:var(--text-dark); padding:20px; font-size:1.2rem;" onclick="window.nextTurn()">🌙 Passer à la Nuit suivante</button>`;
             }
         } else {
@@ -1302,7 +1223,7 @@
                 let orderBadge = (roleObj.order < 99) ? `<div class="order-badge">${roleObj.order}</div>` : '';
                 let teamClass = (roleObj.team === 'gentil' || roleObj.team === 'outsider') ? 'bg-good' : 'bg-evil';
                 
-                pionsHtml += `<div class="pion-container" onclick="alert('${p.name} est : ${roleObj.emoji} ${p.role}')">
+                pionsHtml += `<div class="pion-container" onclick="window.showRoleInfo('${p.role}')">
                     ${orderBadge}<div class="pion ${p.isSpectre?'spectre':''} ${teamClass}">${window.getRoleImageHtml(roleObj)}</div><div class="pion-label">${p.name}</div></div>`;
             });
             track.innerHTML += `<div class="track-cell"><div class="cell-number">${i}</div><div class="player-pions-group">${pionsHtml}</div></div>`;
@@ -1316,13 +1237,13 @@
             let borderColor = (roleObj.team === 'gentil' || roleObj.team === 'outsider') ? '#3182ce' : '#e53e3e';
             
             div.innerHTML += `<div class="card-white" style="margin-bottom:0; display:flex; justify-content:space-between; align-items:center; padding:10px; background:${cardBg}; border-color:${borderColor};">
-                <span style="font-weight:600; font-size:1.1rem; color:${borderColor}; cursor:pointer;" onclick="alert('${roleObj.emoji} ${roleObj.name}')"><span class="adjust-role-icon" style="width:35px; height:35px;">${window.getRoleImageHtml(roleObj)}</span> ${p.name}</span>
+                <span style="font-weight:600; font-size:1.1rem; color:${borderColor}; cursor:pointer;" onclick="window.showRoleInfo('${p.role}')"><span class="adjust-role-icon" style="width:35px; height:35px;">${window.getRoleImageHtml(roleObj)}</span> ${p.name}</span>
                 <div style="display:flex; align-items:center;"><button class="btn small outline" onclick="window.changePos(${p.id}, -1)">-</button><span style="width:40px;text-align:center;font-weight:700;font-size:1.2rem;">${p.pos}</span><button class="btn small" onclick="window.changePos(${p.id}, 1)">+</button></div></div>`;
         });
     };
     window.changePos = function(id, amount) { let p = players.find(x => x.id === id); if(!p.isSpectre) { p.pos = Math.max(0, Math.min(12, p.pos + amount)); window.renderTrack(); window.renderConteurAdjusters(); } };
 
-    /* === GRILLES JOUEUR (NOTES) === */
+    /* === GRILLES JOUEUR === */
     window.renderPlayerGrid = function() {
         const grid = document.getElementById('player-day-grid'); grid.innerHTML = '';
         let availableRoles = rolesDB.filter(r => selectedRoles.includes(r.id));
@@ -1338,11 +1259,11 @@
                 <div class="grid-card ${p.isSpectre?'spectre':''}" ${clickAction} style="border:none; box-shadow:none; padding:10px;">
                     ${skull}
                     <div style="display:flex; justify-content:center; align-items:center; gap:10px; margin-bottom:10px;">
-                        <div class="avatar-circle" style="width:70px; height:70px; font-size:2.5rem; background:transparent;">${window.getAvatarHtml(p.avatar)}</div>
+                        <div class="avatar-circle" style="width:60px; height:60px; font-size:2.5rem; background:transparent;">${window.getAvatarHtml(p.avatar)}</div>
                     </div>
                     <div style="font-weight:700; font-size:1.1rem; margin-bottom:5px;">${p.name} ${p.isSpectre?'👻':''}</div>
                 </div>
-                <select class="input-field" style="margin:0; padding:8px; font-size:0.9rem; border-color:transparent; background:rgba(0,0,0,0.03);" onchange="window.updatePlayerNote(${p.id}, this.value)">
+                <select class="input-field" style="margin:0; padding:8px; font-size:0.9rem; border-color:transparent; background:rgba(0,0,0,0.05);" onchange="window.updatePlayerNote(${p.id}, this.value)">
                     <option value="">-- Rôle ? --</option>
                     ${options.replace(`value="${noteVal}"`, `value="${noteVal}" selected`)}
                 </select>
