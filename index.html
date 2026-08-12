@@ -8,7 +8,7 @@
     
     <style>
         /* =========================================
-           VARIABLES ET NOUVEAU THÈME (Inspiré des images)
+           VARIABLES ET THÈMES
            ========================================= */
         :root {
             --bg-app: #fbf5ee; /* Beige clair */
@@ -48,7 +48,7 @@
         }
 
         /* =========================================
-           BASE ET LAYOUT FULL SCREEN
+           BASE ET LAYOUT FULL SCREEN (PC ET MOBILE)
            ========================================= */
         * { box-sizing: border-box; }
         
@@ -63,9 +63,10 @@
             background-color: var(--bg-app); position: relative; overflow: hidden;
         }
         
+        /* VERSION PC ET TABLETTE (Large et Responsive) */
         @media (min-width: 768px) {
             #app-container {
-                max-width: 450px;
+                max-width: 1000px; /* BEAUCOUP PLUS LARGE SUR PC */
                 height: 95vh; border-radius: 30px; box-shadow: 0 20px 50px rgba(0,0,0,0.15);
                 border: 8px solid #ffffff;
             }
@@ -75,13 +76,9 @@
         p { margin: 0; }
         .text-muted { color: var(--text-muted); font-size: 0.85rem; }
         
-        .content-wrapper {
-            width: 100%; display: flex; flex-direction: column; height: 100%; padding: 0 20px;
-        }
-
+        .content-wrapper { width: 100%; display: flex; flex-direction: column; height: 100%; padding: 0 20px; }
         .scrollable-area { flex: 1; overflow-y: auto; min-height: 0; padding: 10px 0; }
         .scrollable-area::-webkit-scrollbar { display: none; }
-        
         .screen { display: none; flex: 1; overflow-y: auto; overflow-x: hidden; padding: 0; }
         .screen.active { display: flex; flex-direction: column; }
 
@@ -112,14 +109,13 @@
         .input-field:focus, select:focus { border-color: var(--primary); }
 
         /* =========================================
-           HEADER ET NAVIGATION (5 Onglets)
+           HEADER ET NAVIGATION
            ========================================= */
         .top-header-global { 
             padding: 15px 20px; display: flex; justify-content: space-between; 
             align-items: center; z-index: 10; flex-shrink: 0; background: transparent; position: absolute; width: 100%; top:0;
         }
         .back-btn { background: var(--bg-card); border: none; padding: 10px; border-radius: 50%; color: var(--text-dark); font-weight: bold; cursor: pointer; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-soft);}
-        
         .tokens-badge { font-weight: 700; background: var(--bg-card); padding: 8px 15px; border-radius: 20px; color: var(--primary); box-shadow: var(--shadow-soft); display: flex; align-items: center; gap: 5px; }
 
         nav { 
@@ -137,17 +133,11 @@
         nav button.active span.icon { transform: translateY(-3px); }
 
         /* =========================================
-           UI COMPOSANTS
+           UI COMPOSANTS (Cartes, Profil, Jauge)
            ========================================= */
         .curved-header {
-            background: var(--grad-main);
-            border-radius: 0 0 45px 45px;
-            padding: 60px 20px 30px 20px;
-            text-align: center;
-            color: white;
-            margin-bottom: 20px;
-            position: relative;
-            box-shadow: var(--shadow-soft);
+            background: var(--grad-main); border-radius: 0 0 45px 45px;
+            padding: 60px 20px 30px 20px; text-align: center; color: white; margin-bottom: 20px; position: relative; box-shadow: var(--shadow-soft);
         }
 
         .avatar-circle { width: 90px; height: 90px; border-radius: 50%; background: var(--bg-card); display: flex; align-items: center; justify-content: center; font-size: 3.5rem; position: relative; margin: 0 auto; box-shadow: 0 10px 20px rgba(0,0,0,0.1); border: 4px solid white; overflow: hidden; }
@@ -159,20 +149,15 @@
         .section-title h3 { font-size: 1.1rem; font-weight: 700; }
         .section-title span { font-size: 0.8rem; color: var(--primary); cursor: pointer; font-weight: 600; }
 
-        /* Statistiques Profil */
         .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
         .stat-box { background: var(--bg-card); padding: 15px; border-radius: 20px; border: 1px solid var(--border-color); text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center;}
-        
-        .bar-chart { display: flex; align-items: flex-end; gap: 5px; height: 60px; margin-top: 10px; width: 100%; justify-content: center;}
-        .bar { width: 12px; border-radius: 5px 5px 0 0; background: var(--pastel-blue); }
-        .bar.active { background: var(--primary); }
         
         .circle-chart { position: relative; width: 60px; height: 60px; border-radius: 50%; background: conic-gradient(var(--primary) 72%, #f0f0f0 0); display: flex; align-items: center; justify-content: center; margin-top: 10px;}
         .circle-inner { width: 45px; height: 45px; border-radius: 50%; background: var(--bg-card); display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 0.9rem; color: var(--primary); }
 
         .trophy-scroll { display: flex; overflow-x: auto; gap: 15px; padding-bottom: 10px; }
         .trophy-scroll::-webkit-scrollbar { display: none; }
-        .trophy-badge { width: 60px; height: 60px; border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 2rem; flex-shrink: 0; box-shadow: var(--shadow-soft); }
+        .trophy-badge { width: 60px; height: 60px; border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 2rem; flex-shrink: 0; box-shadow: var(--shadow-soft); transition: 0.3s; }
         
         .shop-banner { background: var(--grad-main); border-radius: 25px; padding: 20px; color: white; display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; box-shadow: var(--shadow-hover); }
         .shop-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
@@ -187,7 +172,8 @@
            ========================================= */
         .player-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 15px; margin-top: 15px; }
         .role-tile-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; margin-top: 10px; }
-        .assignment-grid { display: flex; flex-direction: column; gap: 15px; margin-top: 10px; }
+        .assignment-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px; margin-top: 15px; }
+        .room-players-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; }
 
         .role-tile { display: flex; align-items: center; background: var(--bg-card); padding: 12px; border-radius: 20px; border: 1px solid var(--border-color); cursor: pointer; transition: 0.2s; }
         .role-tile.selected { border: 2px solid var(--primary); background: rgba(242, 133, 78, 0.05); }
@@ -196,17 +182,17 @@
         .role-outsider { border-color: #cbd5e0; background: rgba(99, 179, 237, 0.05); }
         .role-sbire { border-color: #cbd5e0; background: rgba(252, 129, 129, 0.05); }
         .role-demon { border-color: #cbd5e0; background: rgba(229, 62, 62, 0.05); }
-        .role-tile-icon { width: 50px; height: 50px; font-size: 2.5rem; margin-right: 15px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;}
+        .role-tile-icon { width: 50px; height: 50px; font-size: 2.5rem; margin-right: 15px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; position: relative;}
 
         .track-container { display: flex; overflow-x: auto; padding: 15px; gap: 15px; width: 100%; min-height: 200px; flex-shrink: 0; background: rgba(0,0,0,0.02); border-bottom: 1px solid var(--border-color); border-radius: 25px; }
         .track-cell { min-width: 140px; height: 100%; background: var(--bg-card); border-radius: 20px; display: flex; flex-direction: column; align-items: center; position: relative; padding: 10px; border: 1px solid var(--border-color); }
         .cell-number { font-size: 2.5rem; color: var(--border-color); font-weight: 700; position: absolute; top: 5px; right: 10px; z-index: 0; opacity: 0.5; }
         .player-pions-group { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-top: 40px; z-index: 1; width: 100%; overflow-y: auto; }
-        .pion { width: 45px; height: 45px; border-radius: 50%; color: white; font-size: 1.5rem; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-soft); border: 2px solid white; overflow: hidden; }
+        .pion { width: 45px; height: 45px; border-radius: 50%; color: white; font-size: 1.5rem; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-soft); border: 2px solid white; overflow: visible; position:relative; }
         .pion.spectre { filter: grayscale(100%); opacity: 0.5; }
         .pion-label { font-size: 0.7rem; font-weight: 600; margin-top: 4px; max-width: 60px; overflow: hidden; }
         
-        .order-badge { position: absolute; top: -5px; right: -5px; background: #e74c3c; color: white; border-radius: 50%; width: 20px; height: 20px; font-size: 0.7rem; display: flex; align-items: center; justify-content: center; font-weight: bold; border: 2px solid white; z-index: 2; }
+        .order-badge { position: absolute; top: -5px; right: -5px; background: #e74c3c; color: white; border-radius: 50%; width: 20px; height: 20px; font-size: 0.7rem; display: flex; align-items: center; justify-content: center; font-weight: bold; border: 2px solid white; z-index: 5; }
         .bg-good { background: #3182ce !important; }
         .bg-evil { background: #e53e3e !important; }
 
@@ -221,26 +207,15 @@
         .timer-display { font-size: 3.5rem; font-weight: 700; color: var(--primary); text-align: center; margin: 10px 0; }
 
         /* =========================================
-           CHAT
+           CHAT ET MODALS
            ========================================= */
         .chat-container { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; margin-bottom: 10px; }
         .chat-msg { background: #f0f0f5; padding: 12px 15px; border-radius: 20px 20px 20px 5px; width: fit-content; max-width: 85%; font-size:0.95rem; }
         .chat-msg.me { background: var(--primary); color: white; align-self: flex-end; border-radius: 20px 20px 5px 20px; }
-        .chat-msg .author { font-size: 0.75rem; font-weight: bold; margin-bottom: 3px; opacity: 0.8; }
-        .admin-mode .chat-del-btn { display: block; position: absolute; top: -5px; right: -5px; background: red; color: white; border-radius: 50%; width: 20px; height: 20px; border: none; font-size: 10px; }
-
-        /* =========================================
-           MODALS ET ANIMATIONS
-           ========================================= */
+        
         #vs-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 200; justify-content: center; align-items: center; flex-direction: row; gap: 30px; backdrop-filter: blur(5px); }
         .vs-avatar { font-size: 5rem; background: white; border-radius: 50%; width: 120px; height: 120px; display: flex; justify-content: center; align-items: center; overflow: hidden; }
-        .slide-left { animation: slideInLeft 0.5s ease-out forwards; }
-        .slide-right { animation: slideInRight 0.5s ease-out forwards; }
-        .zoom-vs { font-size: 4.5rem; font-weight: 900; color: #f6e05e; animation: zoomIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
-        @keyframes slideInLeft { from { transform: translateX(-200px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-        @keyframes slideInRight { from { transform: translateX(200px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-        @keyframes zoomIn { from { transform: scale(0); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-
+        
         .modal { display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 100; padding: 20px; flex-direction: column; justify-content: flex-end; backdrop-filter: blur(5px); }
         .modal.active { display: flex; animation: slideUp 0.3s ease-out forwards;}
         @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
@@ -250,14 +225,14 @@
         .fab-scenario { position: absolute; bottom: 100px; right: 20px; background: var(--bg-card); color: var(--primary); border: 2px solid var(--border-color); padding: 12px 25px; border-radius: 30px; font-weight: bold; font-size: 1.1rem; box-shadow: var(--shadow-hover); cursor: pointer; z-index: 50; display: none; }
         
         .notification-toast { display: none; position: absolute; top: 20px; left: 50%; transform: translateX(-50%); background: #e53e3e; color: white; padding: 20px 30px; border-radius: 20px; box-shadow: var(--shadow-hover); z-index: 300; text-align: center; width: 90%; max-width: 500px; }
-        .notification-toast.show { display: block; }
+        .notification-toast.show { display: block; animation: slideDown 0.3s ease-out forwards; }
+        @keyframes slideDown { from { top: -100px; opacity: 0; } to { top: 20px; opacity: 1; } }
     </style>
 </head>
 <body data-theme="light">
 
 <div id="app-container">
     
-    <!-- HEADER FLOTTANT -->
     <div class="top-header-global" id="main-header" style="display: none;">
         <button class="back-btn" onclick="window.returnToMenu()">❮</button>
         <div style="flex:1;"></div>
@@ -280,14 +255,11 @@
         <div style="width: 100%; text-align: center;">
             <div style="font-size: 6rem; margin-bottom: 15px;">🌙</div>
             <h1 style="color: var(--primary); font-size: 3rem; margin-bottom: 40px; font-weight: 800;">L'Échappée</h1>
-            
             <div style="padding: 0 10px;">
                 <input type="email" id="login-email" class="input-field" placeholder="Email (ex: joueur@gmail.com)">
                 <input type="password" id="login-pass" class="input-field" placeholder="Mot de passe">
-                
                 <button class="btn" onclick="window.login('email')">Connexion Email</button>
                 <button class="btn outline" style="margin-top:10px;" onclick="window.loginGoogle()">🌐 Continuer avec Google</button>
-                
                 <div style="text-align: center; margin: 25px 0; color: var(--text-muted); font-size:1rem; font-weight:bold;">OU</div>
                 <button class="btn" style="background: var(--text-muted);" onclick="window.login('guest')">Jouer en Invité</button>
             </div>
@@ -301,17 +273,12 @@
             <h2 style="font-size: 1.8rem; color: white; margin-bottom: 5px;" id="home-username">Joueur</h2>
             <p style="opacity: 0.9;" id="home-title">Novice</p>
         </div>
-        
         <div class="content-wrapper scrollable-area">
-            <div class="section-title">
-                <h3>Mon Espace de Jeu</h3>
-            </div>
-            
+            <div class="section-title"><h3>Mon Espace de Jeu</h3></div>
             <div class="card-white" style="display:flex; flex-direction:column; align-items:center; padding: 30px 20px; text-align:center;">
                 <div style="width: 80px; height: 80px; background:var(--text-dark); border-radius:20px; display:flex; justify-content:center; align-items:center; font-size:3rem; margin-bottom:15px;">🏃</div>
                 <h3 style="margin-bottom: 10px; font-size:1.5rem;">L'Échappée des Ombres</h3>
                 <p class="text-muted" style="margin-bottom: 25px;">Plongez dans l'obscurité, trouvez les démons et survivez jusqu'à l'aube.</p>
-                
                 <button class="btn" style="padding:18px; font-size:1.1rem; border-radius:30px;" onclick="window.initRoom()">Créer un Salon</button>
                 <button class="btn outline" style="padding:18px; font-size:1.1rem; border-radius:30px; margin-top:10px;" onclick="window.joinRoomCode()">Rejoindre (Code)</button>
             </div>
@@ -325,7 +292,6 @@
                 <h3 style="font-size: 1.5rem;">Boutique d'Articles</h3>
                 <span id="shop-solde" style="color:var(--text-dark); font-weight:bold;">0 🪙</span>
             </div>
-            
             <div class="shop-banner">
                 <div>
                     <h3 style="color:white; margin-bottom:5px;">Offre de l'Aventurier</h3>
@@ -333,10 +299,8 @@
                 </div>
                 <div style="font-size:3rem;">🚀</div>
             </div>
-            
             <h4 style="margin-top: 10px; margin-bottom: 10px;">Avatars Épiques</h4>
             <div class="shop-grid" id="shop-avatars"></div>
-            
             <h4 style="margin-top: 10px; margin-bottom: 10px;">Titres Honorifiques</h4>
             <div class="shop-grid" id="shop-titles"></div>
         </div>
@@ -345,22 +309,15 @@
     <!-- ÉCRAN: MESSAGERIE -->
     <div id="screen-chat" class="screen">
         <div class="content-wrapper" style="padding-top: 60px;">
-            <div class="section-title">
-                <h3 style="font-size: 1.5rem;">Mes Discussions</h3>
-            </div>
-            
+            <div class="section-title"><h3 style="font-size: 1.5rem;">Mes Discussions</h3></div>
             <div id="chat-friends-list" style="margin-bottom: 20px;">
                 <p class="text-muted" style="font-size:0.8rem; font-weight:bold; margin-bottom:10px; text-transform:uppercase;">Chat Privé (Amis)</p>
                 <div id="private-chat-buttons" style="background:var(--bg-card); border-radius:20px; padding:0 15px;"></div>
             </div>
-
             <p class="text-muted" style="font-size:0.8rem; font-weight:bold; margin-bottom:10px; text-transform:uppercase;">Chat Public</p>
             <div class="chat-friend-item" style="background:var(--bg-card); border-radius:20px; padding:15px; cursor:pointer;" onclick="window.openChatPanel('global', 'Global')">
                 <div class="avatar-circle" style="background:var(--pastel-blue); color:#3182ce;">🌐</div>
-                <div style="flex:1;">
-                    <strong style="display:block;">Chat Global</strong>
-                    <span class="text-muted" style="font-size:0.8rem;">Discussion avec toute la communauté</span>
-                </div>
+                <div style="flex:1;"><strong style="display:block;">Chat Global</strong><span class="text-muted" style="font-size:0.8rem;">Discussion avec toute la communauté</span></div>
             </div>
         </div>
     </div>
@@ -368,32 +325,19 @@
     <!-- ÉCRAN: CLASSEMENT -->
     <div id="screen-leaderboard" class="screen">
         <div class="content-wrapper scrollable-area" style="padding-top: 60px;">
-            <div class="section-title">
-                <h3 style="font-size: 1.5rem;">Classement Mondial</h3>
-            </div>
-            
+            <div class="section-title"><h3 style="font-size: 1.5rem;">Classement Mondial</h3></div>
             <div style="background:var(--bg-card); border-radius:25px; padding:20px; box-shadow:var(--shadow-soft);">
                 <div style="display:flex; align-items:center; gap:15px; padding:15px 0; border-bottom:1px solid var(--border-color);">
                     <strong style="color:var(--primary); font-size:1.2rem;">1</strong>
                     <div class="avatar-circle small" style="background:#fbd38d;">👑</div>
-                    <strong style="flex:1;">Alex_Pro</strong>
-                    <span style="font-weight:bold;">142 Vic.</span>
+                    <strong style="flex:1;">Alex_Pro</strong><span style="font-weight:bold;">142 Vic.</span>
                 </div>
                 <div style="display:flex; align-items:center; gap:15px; padding:15px 0; border-bottom:1px solid var(--border-color);">
                     <strong style="color:var(--text-muted); font-size:1.2rem;">2</strong>
                     <div class="avatar-circle small" style="background:#e2e8f0;">⚔️</div>
-                    <strong style="flex:1;">ShadowNinja</strong>
-                    <span style="font-weight:bold;">128 Vic.</span>
+                    <strong style="flex:1;">ShadowNinja</strong><span style="font-weight:bold;">128 Vic.</span>
                 </div>
-                <div style="display:flex; align-items:center; gap:15px; padding:15px 0; border-bottom:1px solid var(--border-color);">
-                    <strong style="color:#b7791f; font-size:1.2rem;">3</strong>
-                    <div class="avatar-circle small" style="background:#fefcbf;">🦊</div>
-                    <strong style="flex:1;">RenardRuse</strong>
-                    <span style="font-weight:bold;">95 Vic.</span>
-                </div>
-                
                 <div style="text-align:center; padding:15px 0; color:var(--text-muted);">...</div>
-                
                 <div style="display:flex; align-items:center; gap:15px; padding:15px; background:var(--primary); color:white; border-radius:15px;">
                     <strong style="font-size:1.2rem;">42</strong>
                     <div class="avatar-circle small" style="border:none;" id="rank-my-avatar">👤</div>
@@ -404,54 +348,52 @@
         </div>
     </div>
 
-    <!-- ÉCRAN: PROFIL -->
+    <!-- ÉCRAN: PROFIL (Avec Jauge et Rôle Favori) -->
     <div id="screen-profile" class="screen">
         <div class="curved-header" style="padding-top: 70px;">
             <div class="avatar-circle" id="profile-avatar" style="margin-bottom: 15px; width:100px; height:100px; font-size:4rem;">👤</div>
             <h2 style="font-size: 1.8rem; color: white; margin-bottom: 5px;" id="profile-name">Pseudo</h2>
             <p style="opacity: 0.9;" id="profile-title">Titre Actuel</p>
+            
+            <!-- Niveau & EXP -->
+            <div style="margin-top: 15px; text-align:center;">
+                <strong style="color:white; font-size:1.1rem; text-shadow: 0 2px 4px rgba(0,0,0,0.2);">Niveau <span id="profile-level">1</span></strong>
+                <div style="width: 70%; margin: 8px auto; background: rgba(0,0,0,0.3); height: 12px; border-radius: 6px; overflow: hidden; border:1px solid rgba(255,255,255,0.2);">
+                    <div id="profile-exp-bar" style="width: 0%; height: 100%; background: #4fd1c5; transition: width 0.5s;"></div>
+                </div>
+                <span style="font-size:0.8rem; color:white; opacity:0.8;"><span id="profile-exp">0</span> / <span id="profile-exp-next">100</span> EXP</span>
+            </div>
+            
+            <!-- Rôle Favori -->
+            <div style="margin-top:10px; font-size:0.9rem;">
+                <span style="opacity:0.8;">Rôle favori:</span> <strong id="profile-fav-role" style="color:white;">Aucun</strong>
+            </div>
         </div>
         
         <div class="content-wrapper scrollable-area">
-            
-            <div class="section-title">
-                <h3>Mes Statistiques</h3>
-            </div>
+            <div class="section-title"><h3>Mes Statistiques</h3></div>
             <div class="stats-grid" style="margin-bottom: 25px;">
                 <div class="stat-box">
                     <span style="font-size:0.8rem; color:var(--text-muted); font-weight:600;">Parties Jouées</span>
                     <h3 style="font-size:2rem; color:var(--text-dark); margin:5px 0;" id="profile-games">0</h3>
                     <div class="bar-chart">
-                        <div class="bar" style="height:30%;"></div>
-                        <div class="bar" style="height:60%;"></div>
-                        <div class="bar active" style="height:90%;"></div>
-                        <div class="bar" style="height:40%;"></div>
+                        <div class="bar" style="height:30%;"></div><div class="bar" style="height:60%;"></div><div class="bar active" style="height:90%;"></div><div class="bar" style="height:40%;"></div>
                     </div>
                 </div>
                 <div class="stat-box">
                     <span style="font-size:0.8rem; color:var(--text-muted); font-weight:600;">Taux Victoire</span>
-                    <div class="circle-chart">
-                        <div class="circle-inner" id="profile-winrate">0%</div>
-                    </div>
+                    <div class="circle-chart"><div class="circle-inner" id="profile-winrate">0%</div></div>
                     <p style="font-size:0.75rem; color:var(--text-muted); margin-top:10px;"><span id="profile-wins">0</span> Gagnées</p>
                 </div>
             </div>
 
-            <div class="section-title">
-                <h3>Mes Trophées</h3>
-                <span>Voir tout</span>
-            </div>
-            <div class="trophy-scroll" style="margin-bottom: 25px;">
-                <div class="trophy-badge" style="background:#fbd38d;">🏆</div>
-                <div class="trophy-badge" style="background:#90cdf4;">🌟</div>
-                <div class="trophy-badge" style="background:#f6ad55;">🏵️</div>
-                <div class="trophy-badge" style="background:#a3bffa;">🏅</div>
-                <div class="trophy-badge" style="background:var(--border-color); opacity:0.5;">🔒</div>
+            <!-- BADGES / TROPHEES DYNAMIQUES -->
+            <div class="section-title"><h3>Mes Trophées</h3><span>Voir tout</span></div>
+            <div class="trophy-scroll" id="badges-container" style="margin-bottom: 25px;">
+                <!-- Les badges sont générés via JS ici -->
             </div>
 
-            <div class="section-title">
-                <h3>Activité Récente</h3>
-            </div>
+            <div class="section-title"><h3>Activité Récente</h3></div>
             <div class="card-white" style="padding: 0 15px; margin-bottom: 25px;">
                 <div class="activity-item">
                     <div class="avatar-circle small" style="background:var(--pastel-purple); color:#805ad5;">🎮</div>
@@ -611,6 +553,14 @@
         </div>
     </div>
 
+    <div id="modal-role-picker" class="modal">
+        <div class="modal-content">
+            <h2 style="margin-bottom:15px; text-align:center;">Choisir un rôle</h2>
+            <div class="role-tile-grid scrollable-area" id="picker-tile-container" style="max-height: 50vh;"></div>
+            <button class="btn outline" style="margin-top:15px;" onclick="document.getElementById('modal-role-picker').classList.remove('active')">Annuler</button>
+        </div>
+    </div>
+
     <div id="modal-role-selection" class="modal">
         <div class="modal-content" style="height: 90vh;">
             <h2 style="margin-bottom:10px;">Urne du Scénario</h2>
@@ -629,6 +579,16 @@
             </div>
             <div class="scrollable-area" id="scenario-content"></div>
             <button class="btn outline" style="margin-top:15px;" onclick="document.getElementById('modal-scenario').classList.remove('active')">Fermer</button>
+        </div>
+    </div>
+
+    <!-- MODAL RECOMPENSE (Mis à jour pour afficher l'EXP) -->
+    <div id="modal-daily" class="modal">
+        <div class="modal-content" style="align-items: center; justify-content: center; height: auto; padding: 40px;">
+            <h2 style="font-size: 2rem; color:var(--primary);">🎁 Bonus Quotidien !</h2>
+            <p style="font-size: 1.2rem; margin-top:10px;">Jour <span id="daily-day" style="font-weight:bold;">1</span> consécutif.</p>
+            <h1 id="daily-amount" style="color: #f6e05e; font-size: 3rem; margin: 20px 0; text-shadow: 0 5px 15px rgba(0,0,0,0.1); line-height: 1.2;">+10 💎</h1>
+            <button class="btn" style="font-size: 1.2rem; padding: 15px; width:100%;" onclick="document.getElementById('modal-daily').classList.remove('active')">Récupérer</button>
         </div>
     </div>
 
@@ -671,38 +631,44 @@
         return `<img src="${imgPath}" alt="${roleObj.name}" style="width:100%; height:100%; object-fit:contain;" onerror="this.outerHTML='${roleObj.emoji}'">`;
     };
 
+    window.getRoleIconWithBadge = function(roleObj) {
+        if(!roleObj) return '❓';
+        let badge = (roleObj.order < 99) ? `<div class="order-badge" style="position:absolute; top:-5px; right:-5px; background:#e74c3c; color:white; border-radius:50%; width:20px; height:20px; font-size:0.7rem; display:flex; align-items:center; justify-content:center; font-weight:bold; border:2px solid white; z-index:5;">${roleObj.order}</div>` : '';
+        return `<div style="position:relative; width:100%; height:100%; display:flex; align-items:center; justify-content:center;">${window.getRoleImageHtml(roleObj)}${badge}</div>`;
+    };
+
     const rolesDB = [
-        { id: 'cartographe', name: "Le Cartographe", team: "gentil", emoji: "🗺️", speed: 1, order: 5, desc: "Sait si le plus avancé est Gentil/Méchant." },
-        { id: 'eclaireur', name: "L'Éclaireur", team: "gentil", emoji: "🔦", speed: 2, order: 6, desc: "Apprend la distance exacte entre 2 joueurs." },
+        { id: 'cartographe', name: "Le Cartographe", team: "gentil", emoji: "🗺️", speed: 1, order: 5, desc: "Sait si le plus avancé est Gentil." },
+        { id: 'eclaireur', name: "L'Éclaireur", team: "gentil", emoji: "🔦", speed: 2, order: 6, desc: "Apprend la distance entre 2 joueurs." },
         { id: 'guetteur', name: "Le Guetteur", team: "gentil", emoji: "🔭", speed: 1, order: 9, desc: "Sait si un joueur a été ciblé cette nuit." },
-        { id: 'veilleur', name: "Veilleur de Nuit", team: "gentil", emoji: "🦉", speed: 1, order: 8, desc: "Sait si le Démon est sur sa case ou devant." },
-        { id: 'passager', name: "Passager Clandestin", team: "gentil", emoji: "🧳", speed: 0, order: 3, desc: "Copie la vitesse d'un autre joueur." },
-        { id: 'metronome', name: "Le Métronome", team: "gentil", emoji: "⏱️", speed: 1, order: 10, desc: "Connait le nombre total de cases parcourues." },
+        { id: 'veilleur', name: "Veilleur", team: "gentil", emoji: "🦉", speed: 1, order: 8, desc: "Sait si le Démon est sur sa case ou devant." },
+        { id: 'passager', name: "Clandestin", team: "gentil", emoji: "🧳", speed: 0, order: 3, desc: "Copie la vitesse d'un autre joueur." },
+        { id: 'metronome', name: "Le Métronome", team: "gentil", emoji: "⏱️", speed: 1, order: 10, desc: "Connait le total de cases parcourues." },
         { id: 'brancardier', name: "Le Brancardier", team: "gentil", emoji: "🚑", speed: 1, order: 1, desc: "[1x] Fait réutiliser le pouvoir d'un Spectre." },
-        { id: 'nitro', name: "Le Nitro", team: "gentil", emoji: "🚀", speed: 1, order: 4, desc: "[1x] Gagne +4 cases, Vitesse 0 la nuit d'après." },
-        { id: 'tisseur', name: "Tisseur de Liens", team: "gentil", emoji: "🔗", speed: 2, order: 2, desc: "[1x] Échange sa vitesse avec un autre." },
+        { id: 'nitro', name: "Le Nitro", team: "gentil", emoji: "🚀", speed: 1, order: 4, desc: "[1x] Gagne +4 cases, Vit. 0 la nuit d'après." },
+        { id: 'tisseur', name: "Tisseur", team: "gentil", emoji: "🔗", speed: 2, order: 2, desc: "[1x] Échange sa vitesse avec un autre." },
         { id: 'klaxon', name: "Le Klaxon", team: "gentil", emoji: "📢", speed: 2, order: 99, desc: "[1x Jour] Annonce publiquement sa case." },
-        { id: 'cascadeur', name: "Le Cascadeur", team: "gentil", emoji: "🤸", speed: 3, order: 99, desc: "[1x Jour] Révèle rôle. Vitesse 1, Démon forcé cibler." },
-        { id: 'sherif', name: "Le Shérif", team: "gentil", emoji: "🤠", speed: 1, order: 99, desc: "[1x Jour] Révèle rôle pour annuler l'élimination." },
-        { id: 'espion', name: "Espion de Voie", team: "gentil", emoji: "🕵️", speed: 1, order: 99, desc: "[1x Jour] Demande si un joueur est devant/derrière." },
+        { id: 'cascadeur', name: "Le Cascadeur", team: "gentil", emoji: "🤸", speed: 3, order: 99, desc: "[1x Jour] Révèle rôle. Démon forcé cibler." },
+        { id: 'sherif', name: "Le Shérif", team: "gentil", emoji: "🤠", speed: 1, order: 99, desc: "[1x Jour] Révèle rôle, annule l'élimination." },
+        { id: 'espion', name: "Espion de Voie", team: "gentil", emoji: "🕵️", speed: 1, order: 99, desc: "[1x Jour] Demande si joueur est devant." },
         { id: 'sprinteur', name: "Le Sprinteur", team: "gentil", emoji: "⚡", speed: 3, order: 99, desc: "Vitesse naturelle la plus rapide." },
-        { id: 'coureur', name: "Coureur de Fond", team: "gentil", emoji: "🏃", speed: 2, order: 99, desc: "Immunisé contre le Démon (Tours 1 et 2)." },
+        { id: 'coureur', name: "Coureur Fond", team: "gentil", emoji: "🏃", speed: 2, order: 99, desc: "Immunisé contre Démon (Tours 1 et 2)." },
         { id: 'somnambule', name: "Le Somnambule", team: "outsider", emoji: "🛌", speed: '?', order: 99, desc: "Vitesse 1 ou 3 aléatoire chaque nuit." },
         { id: 'peureux', name: "Le Peureux", team: "outsider", emoji: "😨", speed: 2, order: 99, desc: "Recule de 1 case si on le dépasse." },
         { id: 'ancre', name: "L'Ancre", team: "outsider", emoji: "⚓", speed: 0, order: 99, desc: "Bloque la vitesse max de TOUS à 2 cases." },
-        { id: 'grappin', name: "Le Grappin", team: "sbire", emoji: "🪝", speed: 1, order: 7, desc: "Immobilise un joueur (Vitesse 0) chaque nuit." },
-        { id: 'brouilleur', name: "Le Brouilleur", team: "sbire", emoji: "📻", speed: 1, order: 7, desc: "Fausse les informations visant un joueur." },
+        { id: 'grappin', name: "Le Grappin", team: "sbire", emoji: "🪝", speed: 1, order: 7, desc: "Immobilise un joueur chaque nuit." },
+        { id: 'brouilleur', name: "Le Brouilleur", team: "sbire", emoji: "📻", speed: 1, order: 7, desc: "Fausse les infos visant un joueur." },
         { id: 'falsificateur', name: "Falsificateur", team: "sbire", emoji: "🎭", speed: 2, order: 99, desc: "[1x Jour] Donne fausse case aux enquêteurs." },
-        { id: 'cauchemar', name: "Le Cauchemar", team: "demon", emoji: "👹", speed: 2, order: 11, desc: "Élimine 1/nuit. +3 cases si cible est devant." }
+        { id: 'cauchemar', name: "Le Cauchemar", team: "demon", emoji: "👹", speed: 2, order: 11, desc: "Élimine 1/nuit. +3 cases si cible devant." }
     ];
 
-    let user = { name: '', email: '', avatar: '👤', tokens: 0, title: 'Novice', friendCode: '', friends: [], isAdmin: false, lastLogin: '', streak: 0, gamesPlayed: 0, gamesWon: 0 };
+    let user = { name: '', email: '', avatar: '👤', tokens: 0, title: 'Novice', friendCode: '', friends: [], isAdmin: false, lastLogin: '', streak: 0, gamesPlayed: 0, gamesWon: 0, exp: 0, level: 1, roleHistory: {}, gamesAsConteur: 0, itemsBought: 0 };
     let chatMessages = JSON.parse(localStorage.getItem('chat')) || [];
     let currentChatMode = 'global'; let currentChatTarget = '';
     
     let shopItems = JSON.parse(localStorage.getItem('shop')) || [
         { type: 'avatar', val: 'assets/avatar_luffy.png', price: 200 }, { type: 'avatar', val: '🐉', price: 200 }, { type: 'avatar', val: '👽', price: 200 },
-        { type: 'title', val: 'Maître du Mensonge', price: 150, color: '' }, { type: 'title', val: 'L\'Intouchable', price: 150, color: '#4fd1c5' }
+        { type: 'title', val: 'Héros des Ombres', price: 100, color: '#f2854e' }, { type: 'title', val: 'L\'Intouchable', price: 150, color: '#4fd1c5' }
     ];
 
     let players = []; let botCount = 0; let selectedRoles = rolesDB.map(r => r.id);
@@ -728,10 +694,10 @@
     };
 
     let app, auth;
-    try { app = initializeApp(firebaseConfig); auth = getAuth(app); } catch (error) { console.warn("Mode hors-ligne", error); }
+    try { app = initializeApp(firebaseConfig); auth = getAuth(app); } catch (error) { console.warn("Mode local"); }
 
     window.loginGoogle = async function() {
-        if (!auth) { alert("Erreur: Firebase non configuré correctement."); return; }
+        if (!auth) { alert("Erreur: Firebase non configuré."); return; }
         try {
             const provider = new GoogleAuthProvider(); const result = await signInWithPopup(auth, provider);
             user.name = result.user.displayName || "Joueur"; user.email = result.user.email; user.avatar = '👤';
@@ -743,12 +709,9 @@
         if (type === 'guest') {
             user.name = "Joueur" + Math.floor(100+Math.random()*900); user.avatar = ['🦊', '🦉', '🐰', '🐺'][Math.floor(Math.random() * 4)]; user.isAdmin = false;
         } else {
-            let emailInput = document.getElementById('login-email');
-            let passInput = document.getElementById('login-pass');
-            let email = emailInput ? emailInput.value : '';
-            let pass = passInput ? passInput.value : '';
-            if(!email || email.trim() === '') return alert("Entrez une adresse email valide.");
-            if(!pass || pass.trim() === '') return alert("Entrez un mot de passe.");
+            let emailInput = document.getElementById('login-email'); let passInput = document.getElementById('login-pass');
+            let email = emailInput ? emailInput.value : ''; let pass = passInput ? passInput.value : '';
+            if(!email || email.trim() === '') return alert("Email requis."); if(!pass || pass.trim() === '') return alert("Mot de passe requis.");
             user.name = email.split('@')[0]; user.avatar = '👤'; checkAdmin(email);
         }
         finalizeLogin();
@@ -765,8 +728,11 @@
             user.avatar = savedData.avatar || user.avatar; user.friendCode = savedData.friendCode || Math.floor(1000 + Math.random() * 9000).toString();
             user.friends = savedData.friends || []; user.lastLogin = savedData.lastLogin || ''; user.streak = savedData.streak || 0;
             user.gamesPlayed = savedData.gamesPlayed || 0; user.gamesWon = savedData.gamesWon || 0;
+            user.exp = savedData.exp || 0; user.level = savedData.level || 1; 
+            user.roleHistory = savedData.roleHistory || {}; user.gamesAsConteur = savedData.gamesAsConteur || 0; user.itemsBought = savedData.itemsBought || 0;
         } else {
             user.tokens = 0; user.friendCode = Math.floor(1000 + Math.random() * 9000).toString(); user.gamesPlayed = 0; user.gamesWon = 0;
+            user.exp = 0; user.level = 1; user.roleHistory = {}; user.gamesAsConteur = 0; user.itemsBought = 0;
         }
         
         window.saveUserData(); window.updateUI(); window.renderShop(); window.renderFriendsList();
@@ -781,7 +747,7 @@
         window.checkDailyLogin();
         
         const container = document.getElementById('role-tile-container'); 
-        if (container) {
+        if(container) {
             container.innerHTML = '';
             const cats = { 'gentil': 'Villageois', 'outsider': 'Marginaux', 'sbire': 'Sbires', 'demon': 'Démons' };
             for (let team in cats) {
@@ -789,7 +755,7 @@
                 rolesDB.filter(r=>r.team===team).forEach(r => {
                     let teamClass = `role-${r.team}`;
                     container.innerHTML += `<div class="role-tile ${teamClass} selected" id="tile-${r.id}" onclick="window.toggleRole('${r.id}')">
-                        <div class="role-tile-icon">${window.getRoleImageHtml(r)}</div><div style="flex:1;"><strong>${r.name}</strong> <span class="text-muted" style="font-size:0.75rem;">(Vit: ${r.speed})</span><br><span class="text-muted" style="font-size:0.8rem;">${r.desc}</span></div></div>`;
+                        <div class="role-tile-icon">${window.getRoleIconWithBadge(r)}</div><div style="flex:1;"><strong>${r.name}</strong> <span class="text-muted" style="font-size:0.75rem;">(Vit: ${r.speed})</span><br><span class="text-muted" style="font-size:0.8rem;">${r.desc}</span></div></div>`;
                 });
             }
         }
@@ -815,19 +781,75 @@
         if(document.getElementById('rank-my-name')) document.getElementById('rank-my-name').innerText = user.name;
         if(document.getElementById('rank-my-avatar')) document.getElementById('rank-my-avatar').innerHTML = window.getAvatarHtml(user.avatar);
         if(document.getElementById('rank-my-wins')) document.getElementById('rank-my-wins').innerText = user.gamesWon;
+
+        // Level & EXP
+        user.exp = user.exp || 0;
+        user.level = Math.floor(user.exp / 100) + 1;
+        let expCurrent = user.exp % 100;
+        if(document.getElementById('profile-level')) document.getElementById('profile-level').innerText = user.level;
+        if(document.getElementById('profile-exp')) document.getElementById('profile-exp').innerText = expCurrent;
+        if(document.getElementById('profile-exp-bar')) document.getElementById('profile-exp-bar').style.width = expCurrent + "%";
+
+        // Rôle Favori
+        let favRole = "Aucun"; let maxPlays = 0;
+        for (const [role, count] of Object.entries(user.roleHistory || {})) {
+            if (count > maxPlays) { maxPlays = count; favRole = role; }
+        }
+        if(document.getElementById('profile-fav-role')) document.getElementById('profile-fav-role').innerText = favRole + (maxPlays > 0 ? ` (${maxPlays}x)` : "");
+
+        // Badges
+        const badges = [
+            { id: 'b1', icon: '🎮', name: 'Débutant', desc: 'Jouer 1 partie', unlocked: user.gamesPlayed >= 1 },
+            { id: 'b2', icon: '⚔️', name: 'Vétéran', desc: 'Jouer 20 parties', unlocked: user.gamesPlayed >= 20 },
+            { id: 'b3', icon: '🏆', name: 'Champion', desc: 'Gagner 10 parties', unlocked: user.gamesWon >= 10 },
+            { id: 'b4', icon: '🤝', name: 'Sociable', desc: 'Avoir 1 ami', unlocked: user.friends.length >= 1 },
+            { id: 'b5', icon: '🌍', name: 'Influenceur', desc: 'Avoir 5 amis', unlocked: user.friends.length >= 5 },
+            { id: 'b6', icon: '🔥', name: 'Fidèle', desc: 'Connexion 3j', unlocked: user.streak >= 3 },
+            { id: 'b7', icon: '💰', name: 'Riche', desc: 'Avoir 500 jetons', unlocked: user.tokens >= 500 },
+            { id: 'b8', icon: '👑', name: 'Conteur', desc: 'Être conteur 1 fois', unlocked: (user.gamesAsConteur || 0) >= 1 },
+            { id: 'b9', icon: '🛍️', name: 'Dépensier', desc: 'Acheter 1 objet', unlocked: (user.itemsBought || 0) >= 1 },
+            { id: 'b10', icon: '⭐', name: 'Maître', desc: 'Niveau 5', unlocked: user.level >= 5 }
+        ];
+
+        let badgesContainer = document.getElementById('badges-container');
+        if(badgesContainer) {
+            badgesContainer.innerHTML = '';
+            badges.forEach(b => {
+                let opacity = b.unlocked ? '1' : '0.3';
+                let filter = b.unlocked ? 'none' : 'grayscale(100%)';
+                let bg = b.unlocked ? 'var(--grad-main)' : 'var(--border-color)';
+                badgesContainer.innerHTML += `
+                    <div style="display:flex; flex-direction:column; align-items:center; width: 70px; flex-shrink:0; opacity:${opacity}; filter:${filter};" title="${b.desc}">
+                        <div class="trophy-badge" style="background:${bg}; color:white; margin-bottom:5px;">${b.icon}</div>
+                        <span style="font-size:0.65rem; text-align:center; line-height:1.2; font-weight:bold;">${b.name}</span>
+                    </div>`;
+            });
+        }
     };
 
     window.checkDailyLogin = function() {
         const todayStr = new Date().toDateString();
         if (user.lastLogin !== todayStr) {
-            let lastDate = new Date(user.lastLogin); let yesterday = new Date(); yesterday.setDate(yesterday.getDate() - 1);
+            let lastDate = new Date(user.lastLogin || new Date(0)); 
+            let yesterday = new Date(); yesterday.setDate(yesterday.getDate() - 1);
             if (lastDate.toDateString() === yesterday.toDateString()) { user.streak++; } else { user.streak = 1; }
             if (user.streak > 7) user.streak = 1;
-            let reward = (user.streak === 1) ? 10 : 15; user.tokens += reward; user.lastLogin = todayStr;
+            
+            let rewardTokens = (user.streak === 1) ? 10 : 15;
+            let rewardExp = 20;
+            
+            user.tokens += rewardTokens; 
+            user.exp = (user.exp || 0) + rewardExp;
+            user.lastLogin = todayStr;
+            
             window.saveUserData(); window.updateUI();
-            if(document.getElementById('daily-day')) document.getElementById('daily-day').innerText = user.streak; 
-            if(document.getElementById('daily-amount')) document.getElementById('daily-amount').innerText = reward;
-            if(document.getElementById('modal-daily')) document.getElementById('modal-daily').classList.add('active');
+            
+            let dailyDay = document.getElementById('daily-day');
+            let dailyAmount = document.getElementById('daily-amount');
+            let modalDaily = document.getElementById('modal-daily');
+            if(dailyDay) dailyDay.innerText = user.streak;
+            if(dailyAmount) dailyAmount.innerHTML = `${rewardTokens} 💎<br><span style="font-size:1.5rem; color:var(--text-dark);">+${rewardExp} EXP</span>`;
+            if(modalDaily) modalDaily.classList.add('active');
         }
     };
 
@@ -876,7 +898,7 @@
         if(user.friends.length === 0) { container.innerHTML = '<p class="text-muted text-center" style="margin-top:10px;">Aucun ami.</p>'; return; }
 
         user.friends.forEach(f => {
-            let isOnline = Math.random() > 0.5; let statusClass = isOnline ? 'online' : 'offline';
+            let statusClass = Math.random() > 0.5 ? 'online' : 'offline';
             container.innerHTML += `
                 <div class="chat-friend-item" style="cursor: pointer;" onclick="window.openFriendProfile('${f.code}')">
                     <div class="avatar-circle small">${window.getAvatarHtml(f.avatar)}<div class="status-dot ${statusClass}"></div></div>
@@ -966,12 +988,13 @@
         const titlesDiv = document.getElementById('shop-titles');
         if(!avatarsDiv || !titlesDiv) return;
         avatarsDiv.innerHTML = ''; titlesDiv.innerHTML = '';
-        if(document.getElementById('shop-solde')) document.getElementById('shop-solde').innerText = user.isAdmin ? "∞ 🪙" : `${user.tokens} 🪙`;
+        let shopSolde = document.getElementById('shop-solde');
+        if(shopSolde) shopSolde.innerText = user.isAdmin ? "∞ 🪙" : `${user.tokens} 🪙`;
 
         shopItems.forEach((item, index) => {
-            if(item.type === 'avatar' && avatarsDiv) {
+            if(item.type === 'avatar') {
                 avatarsDiv.innerHTML += `<div class="shop-item"><div class="shop-avatar-circle">${window.getAvatarHtml(item.val)}</div><strong style="margin-top:auto;">Avatar Épique</strong><span style="font-size:0.8rem; font-weight:bold; color:var(--primary);">${item.price} 🪙</span><button class="btn small" style="margin-top:10px; width:100%;" onclick="window.buyItem(${index})">Acheter</button></div>`;
-            } else if (item.type === 'title' && titlesDiv) {
+            } else {
                 let colorStyle = item.color ? `color:${item.color};` : '';
                 titlesDiv.innerHTML += `<div class="shop-item blue"><strong style="${colorStyle} font-size:1.1rem; margin-bottom:10px;">${item.val}</strong><span style="font-size:0.8rem; font-weight:bold; color:var(--primary); margin-top:auto;">${item.price} 🪙</span><button class="btn small outline" style="margin-top:10px; width:100%;" onclick="window.buyItem(${index})">Acheter</button></div>`;
             }
@@ -985,6 +1008,8 @@
                 if(!user.isAdmin) user.tokens -= item.price;
                 if(item.type === 'avatar') user.avatar = item.val;
                 if(item.type === 'title') user.title = item.val;
+                user.itemsBought = (user.itemsBought || 0) + 1;
+                user.exp = (user.exp || 0) + 10;
                 window.saveUserData(); window.updateUI(); window.renderShop(); alert('Achat réussi !');
             }
         } else { alert("Fonds insuffisants ! Jouez pour en gagner."); }
@@ -1113,7 +1138,7 @@
             let pSpeed = document.getElementById('player-role-speed');
             let pDesc = document.getElementById('player-role-desc');
             if(pName) pName.innerText = me.role;
-            if(pEmoji) pEmoji.innerHTML = window.getRoleImageHtml(myRoleObj);
+            if(pEmoji) pEmoji.innerHTML = window.getRoleIconWithBadge(myRoleObj);
             if(pSpeed) pSpeed.innerText = myRoleObj.speed;
             if(pDesc) pDesc.innerText = myRoleObj.desc;
             let screenPlayer = document.getElementById('screen-player');
@@ -1151,8 +1176,8 @@
         
         availableRoles.forEach(r => {
             let teamClass = `role-${r.team}`;
-            container.innerHTML += `<div class="role-tile ${teamClass}" onclick="window.selectRoleForPlayer('${r.name}')">
-                <div class="role-tile-icon">${window.getRoleImageHtml(r)}</div>
+            container.innerHTML += `<div class="role-tile ${teamClass}" onclick="window.selectRoleForPlayer('${r.id}')">
+                <div class="role-tile-icon">${window.getRoleIconWithBadge(r)}</div>
                 <div style="flex:1;"><strong style="color:var(--text-dark); font-size:1.1rem;">${r.name}</strong> <span class="text-muted">(Vit: ${r.speed})</span><br><span class="text-muted" style="font-size:0.8rem;">${r.desc}</span></div>
             </div>`;
         });
@@ -1160,9 +1185,10 @@
         if(modalPicker) modalPicker.classList.add('active');
     };
 
-    window.selectRoleForPlayer = function(roleName) {
-        if(playerToAssign !== null) { 
-            window.updatePlayerRole(playerToAssign, roleName); 
+    window.selectRoleForPlayer = function(roleId) {
+        let roleObj = rolesDB.find(r => r.id === roleId);
+        if(playerToAssign !== null && roleObj) { 
+            window.updatePlayerRole(playerToAssign, roleObj.name); 
             let modalPicker = document.getElementById('modal-role-picker');
             if(modalPicker) modalPicker.classList.remove('active'); 
         }
@@ -1182,10 +1208,10 @@
                 <div class="avatar-circle small" style="margin-bottom:5px;">${window.getAvatarHtml(p.avatar)}</div>
                 <strong style="font-size:1.1rem; margin-bottom:10px;">${p.name}</strong>
                 <div class="role-tile ${teamClass}" style="width:100%; padding:10px; margin-bottom:10px; pointer-events:none; flex-direction:column; text-align:center; gap:5px;">
-                    <div style="width:50px; height:50px;">${window.getRoleImageHtml(currentRole)}</div>
+                    <div style="width:50px; height:50px; position:relative;">${window.getRoleIconWithBadge(currentRole)}</div>
                     <strong style="color:var(--text-dark); font-size:1rem;">${currentRole.name}</strong>
                 </div>
-                <button class="btn outline small" style="width:100%;" onclick="window.openRolePicker(${p.id})">Modifier le rôle</button>
+                <button class="btn outline small" style="width:100%;" onclick="window.openRolePicker(${p.id})">Choisir le rôle</button>
             </div>`;
         });
         assignmentList.innerHTML = html;
@@ -1211,6 +1237,7 @@
         window.triggerPhase('nuit');
     };
 
+    /* === SCÉNARIO & ORDRE NUIT === */
     window.openScenarioModal = function() {
         let modalScenario = document.getElementById('modal-scenario');
         if(modalScenario) modalScenario.classList.add('active');
@@ -1229,7 +1256,7 @@
             let html = '<div class="role-tile-grid">';
             availableRoles.forEach(r => { 
                 let tClass = `role-${r.team}`;
-                html += `<div class="role-tile ${tClass}"><div class="role-tile-icon">${window.getRoleImageHtml(r)}</div><div style="flex:1;"><strong style="color:var(--text-dark);">${r.name}</strong> <span class="text-muted" style="font-size:0.75rem;">(Vit: ${r.speed})</span><br><span class="text-muted" style="font-size:0.8rem;">${r.desc}</span></div></div>`; 
+                html += `<div class="role-tile ${tClass}"><div class="role-tile-icon">${window.getRoleIconWithBadge(r)}</div><div style="flex:1;"><strong style="color:var(--text-dark);">${r.name}</strong> <span class="text-muted" style="font-size:0.75rem;">(Vit: ${r.speed})</span><br><span class="text-muted" style="font-size:0.8rem;">${r.desc}</span></div></div>`; 
             });
             html += '</div>'; content.innerHTML = html;
         } else {
@@ -1242,12 +1269,13 @@
             rolesToShow.sort((a,b) => a.order - b.order);
             
             let html = '<ol style="padding-left: 20px; font-size:1.1rem; line-height:2;">';
-            html += `<li><strong>👻 Spectres</strong></li>`;
-            rolesToShow.forEach(r => { html += `<li style="margin-bottom:10px;"><div style="display:inline-block; width:35px; height:35px; vertical-align:middle; margin-right:10px;">${window.getRoleImageHtml(r)}</div> <strong>${r.name}</strong></li>`; });
+            html += `<li><div style="display:inline-block; width:35px; height:35px; position:relative; vertical-align:middle; margin-right:10px;">👻</div> <strong>Les Spectres</strong></li>`;
+            rolesToShow.forEach(r => { html += `<li style="margin-bottom:10px;"><div style="display:inline-block; width:35px; height:35px; position:relative; vertical-align:middle; margin-right:10px;">${window.getRoleIconWithBadge(r)}</div> <strong>${r.name}</strong></li>`; });
             html += '</ol>'; content.innerHTML = html;
         }
     };
 
+    /* === MOTEUR DE JEU (PHASES) === */
     window.triggerPhase = function(newPhase) {
         if(gamePhase === 'attente' && newPhase !== 'nuit' && newPhase !== 'revelation') return;
         gamePhase = newPhase; window.clearAllTimeouts(); 
@@ -1345,11 +1373,10 @@
             let pionsHtml = '';
             players.filter(p => !p.isConteur && p.pos === i).forEach(p => {
                 let roleObj = rolesDB.find(r => r.name === p.role) || { emoji: '❓', order: 99, team: 'gentil' };
-                let orderBadge = (roleObj.order < 99) ? `<div class="order-badge">${roleObj.order}</div>` : '';
                 let teamClass = (roleObj.team === 'gentil' || roleObj.team === 'outsider') ? 'bg-good' : 'bg-evil';
                 
                 pionsHtml += `<div class="pion-container" onclick="alert('${p.name} est : ${roleObj.emoji} ${p.role}')">
-                    ${orderBadge}<div class="pion ${p.isSpectre?'spectre':''} ${teamClass}">${window.getRoleImageHtml(roleObj)}</div><div class="pion-label">${p.name}</div></div>`;
+                    <div class="pion ${p.isSpectre?'spectre':''} ${teamClass}">${window.getRoleIconWithBadge(roleObj)}</div><div class="pion-label">${p.name}</div></div>`;
             });
             track.innerHTML += `<div class="track-cell"><div class="cell-number">${i}</div><div class="player-pions-group">${pionsHtml}</div></div>`;
         }
@@ -1363,7 +1390,7 @@
             let borderColor = (roleObj.team === 'gentil' || roleObj.team === 'outsider') ? '#3182ce' : '#e53e3e';
             
             div.innerHTML += `<div class="card-white" style="margin-bottom:0; display:flex; justify-content:space-between; align-items:center; padding:10px; background:${cardBg}; border-color:${borderColor};">
-                <span style="font-weight:600; font-size:1.1rem; color:${borderColor}; cursor:pointer;" onclick="alert('${roleObj.emoji} ${roleObj.name}')"><span class="adjust-role-icon" style="width:35px; height:35px;">${window.getRoleImageHtml(roleObj)}</span> ${p.name}</span>
+                <span style="font-weight:600; font-size:1.1rem; color:${borderColor}; cursor:pointer;" onclick="alert('${roleObj.emoji} ${roleObj.name}')"><span class="adjust-role-icon" style="width:35px; height:35px; position:relative;">${window.getRoleIconWithBadge(roleObj)}</span> ${p.name}</span>
                 <div style="display:flex; align-items:center;"><button class="btn small outline" onclick="window.changePos(${p.id}, -1)">-</button><span style="width:40px;text-align:center;font-weight:700;font-size:1.2rem;">${p.pos}</span><button class="btn small" onclick="window.changePos(${p.id}, 1)">+</button></div></div>`;
         });
     };
@@ -1493,8 +1520,18 @@
         let btnScenario = document.getElementById('btn-scenario');
         if(btnScenario) btnScenario.style.display = 'none';
         
+        let me = players.find(p=>p.id===0);
+        if(me && !meIsConteur) {
+            user.roleHistory = user.roleHistory || {};
+            user.roleHistory[me.role] = (user.roleHistory[me.role] || 0) + 1;
+        } else if (meIsConteur) {
+            user.gamesAsConteur = (user.gamesAsConteur || 0) + 1;
+        }
+
         let gain = 10; user.gamesPlayed++;
         if (victory !== undefined && victory === true) { gain += 20; user.gamesWon++; }
+        
+        user.exp = (user.exp || 0) + 30; // 30 exp per game
         user.tokens += gain; window.saveUserData(); window.updateUI();
         
         alert(`Partie terminée ! +${gain} 💎 ajoutés à votre compte.`); window.returnToMenu();
