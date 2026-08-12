@@ -250,8 +250,7 @@
         .fab-scenario { position: absolute; bottom: 100px; right: 20px; background: var(--bg-card); color: var(--primary); border: 2px solid var(--border-color); padding: 12px 25px; border-radius: 30px; font-weight: bold; font-size: 1.1rem; box-shadow: var(--shadow-hover); cursor: pointer; z-index: 50; display: none; }
         
         .notification-toast { display: none; position: absolute; top: 20px; left: 50%; transform: translateX(-50%); background: #e53e3e; color: white; padding: 20px 30px; border-radius: 20px; box-shadow: var(--shadow-hover); z-index: 300; text-align: center; width: 90%; max-width: 500px; }
-        .notification-toast.show { display: block; animation: slideDown 0.3s ease-out forwards; }
-        @keyframes slideDown { from { top: -100px; opacity: 0; } to { top: 20px; opacity: 1; } }
+        .notification-toast.show { display: block; }
     </style>
 </head>
 <body data-theme="light">
@@ -744,7 +743,10 @@
         if (type === 'guest') {
             user.name = "Joueur" + Math.floor(100+Math.random()*900); user.avatar = ['🦊', '🦉', '🐰', '🐺'][Math.floor(Math.random() * 4)]; user.isAdmin = false;
         } else {
-            let email = document.getElementById('login-email').value; let pass = document.getElementById('login-pass').value;
+            let emailInput = document.getElementById('login-email');
+            let passInput = document.getElementById('login-pass');
+            let email = emailInput ? emailInput.value : '';
+            let pass = passInput ? passInput.value : '';
             if(!email || email.trim() === '') return alert("Entrez une adresse email valide.");
             if(!pass || pass.trim() === '') return alert("Entrez un mot de passe.");
             user.name = email.split('@')[0]; user.avatar = '👤'; checkAdmin(email);
@@ -753,7 +755,7 @@
     };
 
     function checkAdmin(email) {
-        if(email.toLowerCase() === "nassim57132@gmail.com") { user.isAdmin = true; user.name = "👑 Admin Nassim"; document.body.classList.add('admin-mode'); }
+        if(email && email.toLowerCase() === "nassim57132@gmail.com") { user.isAdmin = true; user.name = "👑 Admin Nassim"; document.body.classList.add('admin-mode'); }
     }
 
     function finalizeLogin() {
@@ -768,34 +770,42 @@
         }
         
         window.saveUserData(); window.updateUI(); window.renderShop(); window.renderFriendsList();
-        document.getElementById('screen-login').classList.remove('active');
-        document.getElementById('screen-home').classList.add('active');
-        document.getElementById('bottom-nav').style.display = 'flex';
-        document.getElementById('main-header').style.display = 'flex';
+        
+        let screenLogin = document.getElementById('screen-login');
+        if(screenLogin) screenLogin.classList.remove('active');
+        let screenHome = document.getElementById('screen-home');
+        if(screenHome) screenHome.classList.add('active');
+        let bottomNav = document.getElementById('bottom-nav');
+        if(bottomNav) bottomNav.style.display = 'flex';
+        
         window.checkDailyLogin();
         
-        const container = document.getElementById('role-tile-container'); container.innerHTML = '';
-        const cats = { 'gentil': 'Villageois', 'outsider': 'Marginaux', 'sbire': 'Sbires', 'demon': 'Démons' };
-        for (let team in cats) {
-            container.innerHTML += `<h4 style="margin:15px 0 5px 0; grid-column: 1 / -1;">${cats[team]}</h4>`;
-            rolesDB.filter(r=>r.team===team).forEach(r => {
-                let teamClass = `role-${r.team}`;
-                container.innerHTML += `<div class="role-tile ${teamClass} selected" id="tile-${r.id}" onclick="window.toggleRole('${r.id}')">
-                    <div class="role-tile-icon">${window.getRoleImageHtml(r)}</div><div style="flex:1;"><strong>${r.name}</strong> <span class="text-muted" style="font-size:0.75rem;">(Vit: ${r.speed})</span><br><span class="text-muted" style="font-size:0.8rem;">${r.desc}</span></div></div>`;
-            });
+        const container = document.getElementById('role-tile-container'); 
+        if (container) {
+            container.innerHTML = '';
+            const cats = { 'gentil': 'Villageois', 'outsider': 'Marginaux', 'sbire': 'Sbires', 'demon': 'Démons' };
+            for (let team in cats) {
+                container.innerHTML += `<h4 style="margin:15px 0 5px 0; grid-column: 1 / -1;">${cats[team]}</h4>`;
+                rolesDB.filter(r=>r.team===team).forEach(r => {
+                    let teamClass = `role-${r.team}`;
+                    container.innerHTML += `<div class="role-tile ${teamClass} selected" id="tile-${r.id}" onclick="window.toggleRole('${r.id}')">
+                        <div class="role-tile-icon">${window.getRoleImageHtml(r)}</div><div style="flex:1;"><strong>${r.name}</strong> <span class="text-muted" style="font-size:0.75rem;">(Vit: ${r.speed})</span><br><span class="text-muted" style="font-size:0.8rem;">${r.desc}</span></div></div>`;
+                });
+            }
         }
     }
 
     window.saveUserData = function() { localStorage.setItem('user_' + user.name, JSON.stringify(user)); };
     window.logout = function() { location.reload(); };
 
-window.updateUI = function() {
+    window.updateUI = function() {
         if(document.getElementById('home-username')) document.getElementById('home-username').innerText = user.name;
         if(document.getElementById('home-title')) document.getElementById('home-title').innerText = user.title;
         if(document.getElementById('ui-tokens')) document.getElementById('ui-tokens').innerText = user.isAdmin ? "∞" : user.tokens;
         if(document.getElementById('profile-name')) document.getElementById('profile-name').innerText = user.name;
         if(document.getElementById('profile-title')) document.getElementById('profile-title').innerText = user.title;
         if(document.getElementById('profile-avatar')) document.getElementById('profile-avatar').innerHTML = window.getAvatarHtml(user.avatar);
+        if(document.getElementById('home-avatar')) document.getElementById('home-avatar').innerHTML = window.getAvatarHtml(user.avatar);
         if(document.getElementById('profile-friend-code')) document.getElementById('profile-friend-code').innerText = user.friendCode;
         if(document.getElementById('profile-games')) document.getElementById('profile-games').innerText = user.gamesPlayed;
         if(document.getElementById('profile-wins')) document.getElementById('profile-wins').innerText = user.gamesWon;
@@ -815,8 +825,9 @@ window.updateUI = function() {
             if (user.streak > 7) user.streak = 1;
             let reward = (user.streak === 1) ? 10 : 15; user.tokens += reward; user.lastLogin = todayStr;
             window.saveUserData(); window.updateUI();
-            document.getElementById('daily-day').innerText = user.streak; document.getElementById('daily-amount').innerText = reward;
-            document.getElementById('modal-daily').classList.add('active');
+            if(document.getElementById('daily-day')) document.getElementById('daily-day').innerText = user.streak; 
+            if(document.getElementById('daily-amount')) document.getElementById('daily-amount').innerText = reward;
+            if(document.getElementById('modal-daily')) document.getElementById('modal-daily').classList.add('active');
         }
     };
 
@@ -827,42 +838,45 @@ window.updateUI = function() {
         document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         
-        document.getElementById('main-header').style.display = (id === 'screen-home' || id === 'screen-profile') ? 'none' : 'flex';
-        if(id === 'screen-chat') window.renderChatFriends();
+        let header = document.getElementById('main-header');
+        if(header) header.style.display = (id === 'screen-home' || id === 'screen-profile') ? 'none' : 'flex';
+        if(id === 'screen-chat' && window.renderChatFriends) window.renderChatFriends();
     };
     
     window.returnToMenu = function() {
         gamePhase = 'attente'; window.clearAllTimeouts(); 
-        document.getElementById('btn-scenario').style.display = 'none';
-        document.getElementById('conteur-accuse-notif').classList.remove('show');
+        if(document.getElementById('btn-scenario')) document.getElementById('btn-scenario').style.display = 'none';
+        if(document.getElementById('conteur-accuse-notif')) document.getElementById('conteur-accuse-notif').classList.remove('show');
         window.showMainNav('screen-home', document.querySelectorAll('nav button')[0]);
-        document.querySelector('.back-btn').style.display = 'none';
-        document.getElementById('header-turn').innerText = "";
+        if(document.querySelector('.back-btn')) document.querySelector('.back-btn').style.display = 'none';
+        if(document.getElementById('header-turn')) document.getElementById('header-turn').innerText = "";
     };
 
     window.toggleTheme = function() {
         let body = document.body; let isDark = body.getAttribute('data-theme') === 'dark';
         body.setAttribute('data-theme', isDark ? 'light' : 'dark');
-        document.getElementById('btn-theme').innerText = isDark ? "Désactivé" : "Activé";
+        if(document.getElementById('btn-theme')) document.getElementById('btn-theme').innerText = isDark ? "Désactivé" : "Activé";
     };
 
     /* === AMIS ET CHAT === */
     window.addFriend = function() {
-        let code = document.getElementById('add-friend-input').value;
+        let input = document.getElementById('add-friend-input');
+        let code = input ? input.value : '';
         if(code.length === 4 && code !== user.friendCode && !user.friends.find(f=>f.code === code)) { 
             let mockFriend = { code: code, name: "Joueur_" + code, avatar: "🐼", title: "Novice" };
             user.friends.push(mockFriend); window.saveUserData(); window.renderFriendsList();
-            alert(`Ami ${code} ajouté !`); document.getElementById('add-friend-input').value = ''; 
+            alert(`Ami ${code} ajouté !`); if(input) input.value = ''; 
         }
     };
 
     window.renderFriendsList = function() {
         const container = document.getElementById('friends-list-container');
+        if(!container) return;
         container.innerHTML = '';
         if(user.friends.length === 0) { container.innerHTML = '<p class="text-muted text-center" style="margin-top:10px;">Aucun ami.</p>'; return; }
 
         user.friends.forEach(f => {
-            let statusClass = Math.random() > 0.5 ? 'online' : 'offline';
+            let isOnline = Math.random() > 0.5; let statusClass = isOnline ? 'online' : 'offline';
             container.innerHTML += `
                 <div class="chat-friend-item" style="cursor: pointer;" onclick="window.openFriendProfile('${f.code}')">
                     <div class="avatar-circle small">${window.getAvatarHtml(f.avatar)}<div class="status-dot ${statusClass}"></div></div>
@@ -872,7 +886,9 @@ window.updateUI = function() {
     };
     
     window.renderChatFriends = function() {
-        const container = document.getElementById('private-chat-buttons'); container.innerHTML = '';
+        const container = document.getElementById('private-chat-buttons'); 
+        if(!container) return;
+        container.innerHTML = '';
         if(user.friends.length === 0) { container.innerHTML = '<p class="text-muted" style="padding:10px;">Ajoutez des amis pour discuter.</p>'; return; }
         
         user.friends.forEach(f => {
@@ -887,32 +903,43 @@ window.updateUI = function() {
     window.openFriendProfile = function(code) {
         let f = user.friends.find(x => x.code === code);
         if(f) {
-            document.getElementById('mfp-avatar').innerHTML = window.getAvatarHtml(f.avatar); document.getElementById('mfp-name').innerText = f.name;
-            document.getElementById('mfp-title').innerText = f.title; currentChatTarget = f.code;
-            document.getElementById('modal-friend-profile').classList.add('active');
+            let mfpAvatar = document.getElementById('mfp-avatar');
+            let mfpName = document.getElementById('mfp-name');
+            let mfpTitle = document.getElementById('mfp-title');
+            let modalMfp = document.getElementById('modal-friend-profile');
+            if(mfpAvatar) mfpAvatar.innerHTML = window.getAvatarHtml(f.avatar);
+            if(mfpName) mfpName.innerText = f.name;
+            if(mfpTitle) mfpTitle.innerText = f.title;
+            currentChatTarget = f.code;
+            if(modalMfp) modalMfp.classList.add('active');
         }
     };
     
     window.messageFriend = function() {
-        document.getElementById('modal-friend-profile').classList.remove('active');
+        let modalMfp = document.getElementById('modal-friend-profile');
+        if(modalMfp) modalMfp.classList.remove('active');
         window.openChatPanel('private', currentChatTarget);
     };
 
     window.openChatPanel = function(mode, targetCodeOrName) {
         currentChatMode = mode;
+        let titleEl = document.getElementById('chat-panel-title');
         if(mode === 'global') {
-            document.getElementById('chat-panel-title').innerText = "Chat Global";
+            if(titleEl) titleEl.innerText = "Chat Global";
         } else {
             currentChatTarget = targetCodeOrName;
             let f = user.friends.find(x => x.code === currentChatTarget);
-            document.getElementById('chat-panel-title').innerText = f ? f.name : "Chat Privé";
+            if(titleEl) titleEl.innerText = f ? f.name : "Chat Privé";
         }
-        document.getElementById('modal-chat-panel').classList.add('active');
+        let chatModal = document.getElementById('modal-chat-panel');
+        if(chatModal) chatModal.classList.add('active');
         window.loadPanelChat();
     };
 
     window.loadPanelChat = function() {
-        const c = document.getElementById('panel-chat-messages'); c.innerHTML = ''; let filteredMessages = [];
+        const c = document.getElementById('panel-chat-messages'); 
+        if(!c) return;
+        c.innerHTML = ''; let filteredMessages = [];
         if (currentChatMode === 'global') { filteredMessages = chatMessages.filter(m => m.target === 'global'); } 
         else {
             filteredMessages = chatMessages.filter(m => (m.target === currentChatTarget && m.author === user.name) || (m.target === user.name && m.author === "Joueur_" + currentChatTarget));
@@ -927,7 +954,7 @@ window.updateUI = function() {
     
     window.sendPanelMessage = function() {
         let input = document.getElementById('panel-chat-input');
-        if(input.value.trim() === '') return;
+        if(!input || input.value.trim() === '') return;
         let target = currentChatMode === 'global' ? 'global' : currentChatTarget;
         chatMessages.push({ author: user.name, target: target, text: input.value });
         localStorage.setItem('chat', JSON.stringify(chatMessages)); input.value = ''; window.loadPanelChat();
@@ -935,14 +962,16 @@ window.updateUI = function() {
 
     /* === BOUTIQUE === */
     window.renderShop = function() {
-        const avatarsDiv = document.getElementById('shop-avatars'); const titlesDiv = document.getElementById('shop-titles');
+        const avatarsDiv = document.getElementById('shop-avatars'); 
+        const titlesDiv = document.getElementById('shop-titles');
+        if(!avatarsDiv || !titlesDiv) return;
         avatarsDiv.innerHTML = ''; titlesDiv.innerHTML = '';
         if(document.getElementById('shop-solde')) document.getElementById('shop-solde').innerText = user.isAdmin ? "∞ 🪙" : `${user.tokens} 🪙`;
 
         shopItems.forEach((item, index) => {
-            if(item.type === 'avatar') {
+            if(item.type === 'avatar' && avatarsDiv) {
                 avatarsDiv.innerHTML += `<div class="shop-item"><div class="shop-avatar-circle">${window.getAvatarHtml(item.val)}</div><strong style="margin-top:auto;">Avatar Épique</strong><span style="font-size:0.8rem; font-weight:bold; color:var(--primary);">${item.price} 🪙</span><button class="btn small" style="margin-top:10px; width:100%;" onclick="window.buyItem(${index})">Acheter</button></div>`;
-            } else {
+            } else if (item.type === 'title' && titlesDiv) {
                 let colorStyle = item.color ? `color:${item.color};` : '';
                 titlesDiv.innerHTML += `<div class="shop-item blue"><strong style="${colorStyle} font-size:1.1rem; margin-bottom:10px;">${item.val}</strong><span style="font-size:0.8rem; font-weight:bold; color:var(--primary); margin-top:auto;">${item.price} 🪙</span><button class="btn small outline" style="margin-top:10px; width:100%;" onclick="window.buyItem(${index})">Acheter</button></div>`;
             }
@@ -970,12 +999,17 @@ window.updateUI = function() {
                 { id: 1, name: user.name, isConteur: false, isSpectre: false, role: '', avatar: user.avatar, pos: 0 }
             ];
             botCount = 0; currentRoomCode = code; meIsConteur = false;
-            document.getElementById('main-header').style.display = 'flex';
+            let mainHeader = document.getElementById('main-header');
+            if(mainHeader) mainHeader.style.display = 'flex';
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            document.getElementById('screen-room').classList.add('active');
-            document.getElementById('bottom-nav').style.display = 'none';
-            document.querySelector('.back-btn').style.display = 'block';
-            document.getElementById('room-code-display').innerText = currentRoomCode;
+            let screenRoom = document.getElementById('screen-room');
+            if(screenRoom) screenRoom.classList.add('active');
+            let bottomNav = document.getElementById('bottom-nav');
+            if(bottomNav) bottomNav.style.display = 'none';
+            let backBtn = document.querySelector('.back-btn');
+            if(backBtn) backBtn.style.display = 'block';
+            let roomCodeDisplay = document.getElementById('room-code-display');
+            if(roomCodeDisplay) roomCodeDisplay.innerText = currentRoomCode;
             window.renderRoomList();
         }
     };
@@ -985,12 +1019,17 @@ window.updateUI = function() {
         botCount = 0; playerNotes = {}; gamePhase = 'attente'; window.clearAllTimeouts();
         currentRoomCode = Math.floor(100000 + Math.random() * 900000).toString();
         
-        document.getElementById('main-header').style.display = 'flex';
+        let mainHeader = document.getElementById('main-header');
+        if(mainHeader) mainHeader.style.display = 'flex';
         document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-        document.getElementById('screen-room').classList.add('active');
-        document.getElementById('bottom-nav').style.display = 'none';
-        document.querySelector('.back-btn').style.display = 'block';
-        document.getElementById('room-code-display').innerText = currentRoomCode;
+        let screenRoom = document.getElementById('screen-room');
+        if(screenRoom) screenRoom.classList.add('active');
+        let bottomNav = document.getElementById('bottom-nav');
+        if(bottomNav) bottomNav.style.display = 'none';
+        let backBtn = document.querySelector('.back-btn');
+        if(backBtn) backBtn.style.display = 'block';
+        let roomCodeDisplay = document.getElementById('room-code-display');
+        if(roomCodeDisplay) roomCodeDisplay.innerText = currentRoomCode;
         window.renderRoomList();
     };
     
@@ -1007,7 +1046,7 @@ window.updateUI = function() {
     };
     
     window.renderRoomList = function() {
-        const list = document.getElementById('room-players-list'); list.innerHTML = '';
+        const list = document.getElementById('room-players-list'); if(!list) return; list.innerHTML = '';
         players.forEach(p => { 
             let badge = p.isConteur ? '<div style="color:var(--primary); font-weight:bold; font-size:0.8rem; margin-top:5px;">👑 Conteur</div>' : '';
             let btn = (!p.isConteur) ? `<button class="btn outline small" style="margin-top:10px; width:100%; font-size:1rem; padding:10px;" onclick="window.setConteur(${p.id})">Donner 👑</button>` : '';
@@ -1022,9 +1061,11 @@ window.updateUI = function() {
 
     window.toggleRole = function(id) {
         let tile = document.getElementById('tile-' + id);
+        if(!tile) return;
         if(selectedRoles.includes(id)) { selectedRoles = selectedRoles.filter(r => r !== id); tile.classList.remove('selected'); }
         else { selectedRoles.push(id); tile.classList.add('selected'); }
-        document.getElementById('role-count').innerText = selectedRoles.length;
+        let roleCount = document.getElementById('role-count');
+        if(roleCount) roleCount.innerText = selectedRoles.length;
     };
 
     function getRequiredDistribution(n) {
@@ -1053,21 +1094,32 @@ window.updateUI = function() {
         if(demons.length === 0) return alert("Vous devez sélectionner au moins 1 Démon dans l'urne !");
 
         let dist = getRequiredDistribution(n);
-        document.getElementById('ra-player-count').innerText = n;
-        document.getElementById('ra-distribution').innerText = `Villageois: ${dist.gentil} | Marginaux: ${dist.outsider} | Sbires: ${dist.sbire} | Démon: ${dist.demon}`;
+        let raCount = document.getElementById('ra-player-count');
+        let raDist = document.getElementById('ra-distribution');
+        if(raCount) raCount.innerText = n;
+        if(raDist) raDist.innerText = `Villageois: ${dist.gentil} | Marginaux: ${dist.outsider} | Sbires: ${dist.sbire} | Démon: ${dist.demon}`;
 
         window.randomizeRoles(true);
 
         document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
         if(meIsConteur) {
-            document.getElementById('screen-role-assignment').classList.add('active');
+            let screenRa = document.getElementById('screen-role-assignment');
+            if(screenRa) screenRa.classList.add('active');
         } else {
             let me = players.find(p => p.id === 0);
             let myRoleObj = rolesDB.find(r => r.name === me.role) || {emoji:'❓', speed:'?', desc:''};
-            document.getElementById('player-role-name').innerText = me.role; document.getElementById('player-role-emoji').innerHTML = window.getRoleImageHtml(myRoleObj);
-            document.getElementById('player-role-speed').innerText = myRoleObj.speed; document.getElementById('player-role-desc').innerText = myRoleObj.desc;
-            document.getElementById('screen-player').classList.add('active');
-            document.getElementById('btn-scenario').style.display = 'block';
+            let pName = document.getElementById('player-role-name');
+            let pEmoji = document.getElementById('player-role-emoji');
+            let pSpeed = document.getElementById('player-role-speed');
+            let pDesc = document.getElementById('player-role-desc');
+            if(pName) pName.innerText = me.role;
+            if(pEmoji) pEmoji.innerHTML = window.getRoleImageHtml(myRoleObj);
+            if(pSpeed) pSpeed.innerText = myRoleObj.speed;
+            if(pDesc) pDesc.innerText = myRoleObj.desc;
+            let screenPlayer = document.getElementById('screen-player');
+            if(screenPlayer) screenPlayer.classList.add('active');
+            let btnScenario = document.getElementById('btn-scenario');
+            if(btnScenario) btnScenario.style.display = 'block';
             window.triggerPhase('revelation');
         }
     };
@@ -1094,7 +1146,7 @@ window.updateUI = function() {
     };
 
     window.openRolePicker = function(id) {
-        playerToAssign = id; const container = document.getElementById('picker-tile-container'); container.innerHTML = '';
+        playerToAssign = id; const container = document.getElementById('picker-tile-container'); if(!container) return; container.innerHTML = '';
         let availableRoles = rolesDB.filter(r => selectedRoles.includes(r.id));
         
         availableRoles.forEach(r => {
@@ -1104,14 +1156,21 @@ window.updateUI = function() {
                 <div style="flex:1;"><strong style="color:var(--text-dark); font-size:1.1rem;">${r.name}</strong> <span class="text-muted">(Vit: ${r.speed})</span><br><span class="text-muted" style="font-size:0.8rem;">${r.desc}</span></div>
             </div>`;
         });
-        document.getElementById('modal-role-picker').classList.add('active');
+        let modalPicker = document.getElementById('modal-role-picker');
+        if(modalPicker) modalPicker.classList.add('active');
     };
 
     window.selectRoleForPlayer = function(roleName) {
-        if(playerToAssign !== null) { window.updatePlayerRole(playerToAssign, roleName); document.getElementById('modal-role-picker').classList.remove('active'); }
+        if(playerToAssign !== null) { 
+            window.updatePlayerRole(playerToAssign, roleName); 
+            let modalPicker = document.getElementById('modal-role-picker');
+            if(modalPicker) modalPicker.classList.remove('active'); 
+        }
     };
 
     window.renderRoleAssignment = function() {
+        let assignmentList = document.getElementById('assignment-list');
+        if(!assignmentList) return;
         let html = '';
         players.filter(p => !p.isConteur).forEach(p => {
             let currentRole = rolesDB.find(r => r.name === p.role);
@@ -1129,7 +1188,7 @@ window.updateUI = function() {
                 <button class="btn outline small" style="width:100%;" onclick="window.openRolePicker(${p.id})">Modifier le rôle</button>
             </div>`;
         });
-        document.getElementById('assignment-list').innerHTML = html;
+        assignmentList.innerHTML = html;
     };
 
     window.updatePlayerRole = function(id, roleName) { let p = players.find(x => x.id === id); if(p) { p.role = roleName; window.renderRoleAssignment(); } };
@@ -1143,19 +1202,27 @@ window.updateUI = function() {
             return alert(`Erreur de répartition !\n\nIl faut OBLIGATOIREMENT :\nVill: ${dist.gentil}, Marg: ${dist.outsider}, Sbires: ${dist.sbire}, Démon: ${dist.demon}`);
         }
 
-        document.getElementById('screen-role-assignment').classList.remove('active');
-        document.getElementById('btn-scenario').style.display = 'block';
-        document.getElementById('screen-conteur').classList.add('active');
+        let screenRa = document.getElementById('screen-role-assignment');
+        let btnScenario = document.getElementById('btn-scenario');
+        let screenConteur = document.getElementById('screen-conteur');
+        if(screenRa) screenRa.classList.remove('active');
+        if(btnScenario) btnScenario.style.display = 'block';
+        if(screenConteur) screenConteur.classList.add('active');
         window.triggerPhase('nuit');
     };
 
-    /* === SCÉNARIO & ORDRE NUIT === */
-    window.openScenarioModal = function() { document.getElementById('modal-scenario').classList.add('active'); window.switchScenarioTab('roles'); };
+    window.openScenarioModal = function() {
+        let modalScenario = document.getElementById('modal-scenario');
+        if(modalScenario) modalScenario.classList.add('active');
+        window.switchScenarioTab('roles');
+    };
 
     window.switchScenarioTab = function(tab) {
-        document.getElementById('tab-scenario-roles').classList.toggle('active', tab === 'roles');
-        document.getElementById('tab-scenario-order').classList.toggle('active', tab === 'order');
-        const content = document.getElementById('scenario-content'); content.innerHTML = '';
+        let tabRoles = document.getElementById('tab-scenario-roles');
+        let tabOrder = document.getElementById('tab-scenario-order');
+        if(tabRoles) tabRoles.classList.toggle('active', tab === 'roles');
+        if(tabOrder) tabOrder.classList.toggle('active', tab === 'order');
+        const content = document.getElementById('scenario-content'); if(!content) return; content.innerHTML = '';
         
         if (tab === 'roles') {
             let availableRoles = rolesDB.filter(r => selectedRoles.includes(r.id));
@@ -1181,7 +1248,6 @@ window.updateUI = function() {
         }
     };
 
-    /* === MOTEUR DE JEU (PHASES) === */
     window.triggerPhase = function(newPhase) {
         if(gamePhase === 'attente' && newPhase !== 'nuit' && newPhase !== 'revelation') return;
         gamePhase = newPhase; window.clearAllTimeouts(); 
@@ -1192,45 +1258,57 @@ window.updateUI = function() {
             window.renderTrack();
             
             if (newPhase === 'nuit') {
-                cTitle.innerText = `Tour ${turnCount} - La Nuit`; cNightTools.style.display = 'block'; cDayTools.style.display = 'none';
-                window.renderConteurAdjusters(); cControls.innerHTML = `<button class="btn success" style="padding:20px; font-size:1.2rem;" onclick="window.triggerPhase('jour')">☀️ Le jour se lève</button>`;
+                if(cTitle) cTitle.innerText = `Tour ${turnCount} - La Nuit`;
+                if(cNightTools) cNightTools.style.display = 'block';
+                if(cDayTools) cDayTools.style.display = 'none';
+                window.renderConteurAdjusters();
+                if(cControls) cControls.innerHTML = `<button class="btn success" style="padding:20px; font-size:1.2rem;" onclick="window.triggerPhase('jour')">☀️ Le jour se lève</button>`;
             } 
             else if (newPhase === 'jour') {
-                cTitle.innerText = `Tour ${turnCount} - Débats`; cNightTools.style.display = 'none'; cDayTools.style.display = 'flex';
-                document.getElementById('conteur-timer').innerText = "00:00"; cControls.innerHTML = `<p class="text-muted" style="margin-bottom:10px;">Attendez les demandes d'accusation.</p>`;
+                if(cTitle) cTitle.innerText = `Tour ${turnCount} - Débats`;
+                if(cNightTools) cNightTools.style.display = 'none';
+                if(cDayTools) cDayTools.style.display = 'flex';
+                let conteurTimer = document.getElementById('conteur-timer');
+                if(conteurTimer) conteurTimer.innerText = "00:00";
+                if(cControls) cControls.innerHTML = `<p class="text-muted" style="margin-bottom:10px;">Attendez les demandes d'accusation.</p>`;
             }
             else if (newPhase === 'accusation') {
-                cTitle.innerText = `Tour ${turnCount} - Votes`; cNightTools.style.display = 'none'; cDayTools.style.display = 'none';
-                cControls.innerHTML = `<p class="text-muted" style="text-align:center; font-size:1.1rem; margin-bottom:15px;">Les joueurs votent pour éliminer : <strong>${players.find(p=>p.id===tempAccusedId)?.name}</strong></p><button class="btn outline" style="padding:20px; font-size:1.2rem;" onclick="window.triggerPhase('aube')">🌅 Clore les votes</button>`;
+                if(cTitle) cTitle.innerText = `Tour ${turnCount} - Votes`;
+                if(cNightTools) cNightTools.style.display = 'none';
+                if(cDayTools) cDayTools.style.display = 'none';
+                let accusedP = players.find(p=>p.id===tempAccusedId);
+                if(cControls) cControls.innerHTML = `<p class="text-muted" style="text-align:center; font-size:1.1rem; margin-bottom:15px;">Les joueurs votent pour éliminer : <strong>${accusedP ? accusedP.name : ''}</strong></p><button class="btn outline" style="padding:20px; font-size:1.2rem;" onclick="window.triggerPhase('aube')">🌅 Clore les votes</button>`;
             }
             else if (newPhase === 'aube') {
-                cTitle.innerText = `Tour ${turnCount} - L'Aube`; cNightTools.style.display = 'none'; cDayTools.style.display = 'none';
-                cControls.innerHTML = `<button class="btn" style="background:var(--text-dark); padding:20px; font-size:1.2rem;" onclick="window.nextTurn()">🌙 Passer à la Nuit suivante</button>`;
+                if(cTitle) cTitle.innerText = `Tour ${turnCount} - L'Aube`;
+                if(cNightTools) cNightTools.style.display = 'none';
+                if(cDayTools) cDayTools.style.display = 'none';
+                if(cControls) cControls.innerHTML = `<button class="btn" style="background:var(--text-dark); padding:20px; font-size:1.2rem;" onclick="window.nextTurn()">🌙 Passer à la Nuit suivante</button>`;
             }
         } else {
             const pTitle = document.getElementById('player-phase-title'); const pDesc = document.getElementById('player-phase-desc');
             const pRole = document.getElementById('player-role-display'); const pGrid = document.getElementById('player-day-grid');
-            pRole.style.display = 'none'; pGrid.style.display = 'none';
+            if(pRole) pRole.style.display = 'none'; if(pGrid) pGrid.style.display = 'none';
 
             if (newPhase === 'revelation') {
-                pTitle.innerText = "Début de Partie"; pDesc.innerText = "Prenez connaissance de votre rôle."; pRole.style.display = 'flex';
+                if(pTitle) pTitle.innerText = "Début de Partie"; if(pDesc) pDesc.innerText = "Prenez connaissance de votre rôle."; if(pRole) pRole.style.display = 'flex';
                 if(players.find(p=>p.isConteur).id !== 0) window.safeTimeout(() => { window.triggerPhase('nuit'); }, 6000);
             }
             else if (newPhase === 'nuit') {
-                pTitle.innerText = "🌙 La Nuit tombe"; pDesc.innerText = "Fermez les yeux. Le Conteur appelle les rôles.";
+                if(pTitle) pTitle.innerText = "🌙 La Nuit tombe"; if(pDesc) pDesc.innerText = "Fermez les yeux. Le Conteur appelle les rôles.";
                 if(players.find(p=>p.isConteur).id !== 0) window.safeTimeout(() => { window.triggerPhase('jour'); }, 6000);
             }
             else if (newPhase === 'jour') {
-                pTitle.innerText = "☀️ Le Jour (Débats)"; pDesc.innerText = "Discutez. Vous pouvez demander à accuser un joueur."; pGrid.style.display = 'grid';
+                if(pTitle) pTitle.innerText = "☀️ Le Jour (Débats)"; if(pDesc) pDesc.innerText = "Discutez. Vous pouvez demander à accuser un joueur."; if(pGrid) pGrid.style.display = 'grid';
                 window.renderPlayerGrid();
             }
             else if (newPhase === 'accusation') {
-                pTitle.innerText = "⚖️ Phase de Vote"; pDesc.innerText = "Le Conteur a validé l'accusation !"; pGrid.style.display = 'grid';
+                if(pTitle) pTitle.innerText = "⚖️ Phase de Vote"; if(pDesc) pDesc.innerText = "Le Conteur a validé l'accusation !"; if(pGrid) pGrid.style.display = 'grid';
                 window.renderPlayerGrid();
                 if(players.find(p=>p.isConteur).id !== 0) window.safeTimeout(() => { window.triggerPhase('aube'); }, 15000);
             }
             else if (newPhase === 'aube') {
-                pTitle.innerText = "🌅 L'Aube & Révélations"; pDesc.innerText = "Bilan des votes. Découvrez votre case en bas."; pGrid.style.display = 'grid';
+                if(pTitle) pTitle.innerText = "🌅 L'Aube & Révélations"; if(pDesc) pDesc.innerText = "Bilan des votes. Découvrez votre case en bas."; if(pGrid) pGrid.style.display = 'grid';
                 window.resolveExecutions(); window.renderPlayerGrid();
                 if(players.find(p=>p.isConteur).id !== 0) window.safeTimeout(() => { window.nextTurn(); }, 6000);
             }
@@ -1243,23 +1321,26 @@ window.updateUI = function() {
         window.triggerPhase('nuit');
     };
 
-    /* === CHRONO === */
     window.startCustomTimer = function() {
-        let m = parseInt(document.getElementById('timer-min').value) || 0; let s = parseInt(document.getElementById('timer-sec').value) || 0;
+        let minInput = document.getElementById('timer-min');
+        let secInput = document.getElementById('timer-sec');
+        let m = minInput ? parseInt(minInput.value) || 0 : 0;
+        let s = secInput ? parseInt(secInput.value) || 0 : 0;
         let totalSec = (m * 60) + s; if(totalSec > 0) window.startTimer(totalSec);
     };
+
     window.startTimer = function(sec) {
         clearInterval(gameInterval); let disp = document.getElementById('conteur-timer');
         gameInterval = setInterval(() => {
-            let m = Math.floor(sec/60).toString().padStart(2,'0'); let s = (sec%60).toString().padStart(2,'0'); disp.innerText = `${m}:${s}`;
-            if(sec <= 0) { clearInterval(gameInterval); disp.innerText = "FIN !"; alert("Le temps de débat est écoulé !"); }
+            let m = Math.floor(sec/60).toString().padStart(2,'0'); let s = (sec%60).toString().padStart(2,'0'); 
+            if(disp) disp.innerText = `${m}:${s}`;
+            if(sec <= 0) { clearInterval(gameInterval); if(disp) disp.innerText = "FIN !"; alert("Le temps de débat est écoulé !"); }
             sec--;
         }, 1000);
     };
 
-    /* === PISTE CONTEUR === */
     window.renderTrack = function() {
-        const track = document.getElementById('conteur-track'); track.innerHTML = '';
+        const track = document.getElementById('conteur-track'); if(!track) return; track.innerHTML = '';
         for(let i=0; i<=12; i++) {
             let pionsHtml = '';
             players.filter(p => !p.isConteur && p.pos === i).forEach(p => {
@@ -1273,8 +1354,9 @@ window.updateUI = function() {
             track.innerHTML += `<div class="track-cell"><div class="cell-number">${i}</div><div class="player-pions-group">${pionsHtml}</div></div>`;
         }
     };
+
     window.renderConteurAdjusters = function() {
-        const div = document.getElementById('conteur-pos-adjust'); div.innerHTML = '';
+        const div = document.getElementById('conteur-pos-adjust'); if(!div) return; div.innerHTML = '';
         players.filter(p => !p.isConteur).forEach(p => {
             let roleObj = rolesDB.find(r => r.name === p.role) || { emoji: '❓', team: 'gentil' };
             let cardBg = (roleObj.team === 'gentil' || roleObj.team === 'outsider') ? 'rgba(49, 130, 206, 0.08)' : 'rgba(229, 62, 62, 0.08)';
@@ -1285,11 +1367,11 @@ window.updateUI = function() {
                 <div style="display:flex; align-items:center;"><button class="btn small outline" onclick="window.changePos(${p.id}, -1)">-</button><span style="width:40px;text-align:center;font-weight:700;font-size:1.2rem;">${p.pos}</span><button class="btn small" onclick="window.changePos(${p.id}, 1)">+</button></div></div>`;
         });
     };
+
     window.changePos = function(id, amount) { let p = players.find(x => x.id === id); if(!p.isSpectre) { p.pos = Math.max(0, Math.min(12, p.pos + amount)); window.renderTrack(); window.renderConteurAdjusters(); } };
 
-    /* === GRILLES JOUEUR === */
     window.renderPlayerGrid = function() {
-        const grid = document.getElementById('player-day-grid'); grid.innerHTML = '';
+        const grid = document.getElementById('player-day-grid'); if(!grid) return; grid.innerHTML = '';
         let availableRoles = rolesDB.filter(r => selectedRoles.includes(r.id));
         let options = availableRoles.map(r => `<option value="${r.name}">${r.emoji} ${r.name}</option>`).join('');
 
@@ -1317,7 +1399,6 @@ window.updateUI = function() {
 
     window.updatePlayerNote = function(id, val) { playerNotes[id] = val; };
 
-    // APPROBATION CONTEUR
     window.requestAccuse = function(targetId) {
         if (hasAccusedToday.includes(0)) return alert("Vous avez déjà demandé une accusation aujourd'hui !");
         if (hasBeenAccusedToday.includes(targetId)) return alert("Ce joueur a déjà été accusé aujourd'hui !");
@@ -1328,12 +1409,14 @@ window.updateUI = function() {
         if (players.find(p=>p.isConteur).id !== 0) {
             window.safeTimeout(() => { window.conteurAcceptAccusation(tempAccuseRequest); }, 2000);
         } else {
-            document.getElementById('conteur-accuse-notif').classList.add('show');
+            let notif = document.getElementById('conteur-accuse-notif');
+            if(notif) notif.classList.add('show');
         }
     };
 
     window.conteurAcceptAccusation = function(req = tempAccuseRequest) {
-        document.getElementById('conteur-accuse-notif').classList.remove('show');
+        let notif = document.getElementById('conteur-accuse-notif');
+        if(notif) notif.classList.remove('show');
         if(!req) return;
         
         hasAccusedToday.push(req.accuser); hasBeenAccusedToday.push(req.target);
@@ -1345,26 +1428,32 @@ window.updateUI = function() {
         let targetP = players.find(p => p.id === req.target);
 
         let overlay = document.getElementById('vs-overlay');
-        document.getElementById('vs-accuser').innerHTML = window.getAvatarHtml(accuserP ? accuserP.avatar : '👤'); 
-        document.getElementById('vs-accused').innerHTML = window.getAvatarHtml(targetP ? targetP.avatar : '👤');
-        overlay.style.display = 'flex';
+        let vsAccuser = document.getElementById('vs-accuser');
+        let vsAccused = document.getElementById('vs-accused');
+        if(vsAccuser) vsAccuser.innerHTML = window.getAvatarHtml(accuserP ? accuserP.avatar : '👤'); 
+        if(vsAccused) vsAccused.innerHTML = window.getAvatarHtml(targetP ? targetP.avatar : '👤');
+        if(overlay) overlay.style.display = 'flex';
         
         window.safeTimeout(() => { 
-            overlay.style.display = 'none';
+            if(overlay) overlay.style.display = 'none';
             if(!meIsConteur) {
-                document.getElementById('vote-target-name').innerText = targetP ? targetP.name : 'Inconnu';
-                document.getElementById('modal-vote').classList.add('active');
+                let targetNameEl = document.getElementById('vote-target-name');
+                let modalVote = document.getElementById('modal-vote');
+                if(targetNameEl) targetNameEl.innerText = targetP ? targetP.name : 'Inconnu';
+                if(modalVote) modalVote.classList.add('active');
             }
         }, 2500);
     };
 
     window.conteurRejectAccusation = function() {
-        document.getElementById('conteur-accuse-notif').classList.remove('show');
+        let notif = document.getElementById('conteur-accuse-notif');
+        if(notif) notif.classList.remove('show');
         tempAccuseRequest = null;
     };
 
     window.castVote = function(voteYes) {
-        document.getElementById('modal-vote').classList.remove('active');
+        let modalVote = document.getElementById('modal-vote');
+        if(modalVote) modalVote.classList.remove('active');
         let yesCount = voteYes ? 1 : 0;
         let livingPlayers = players.filter(p => !p.isSpectre && !p.isConteur);
         
@@ -1390,6 +1479,7 @@ window.updateUI = function() {
 
     window.revealPosition = function(show) {
         const d = document.getElementById('secret-data');
+        if(!d) return;
         if (show) {
             let me = players.find(p=>p.id===0);
             if (turnCount === 1) { d.innerText = "Inconnue (Tour 1)"; d.style.color = "var(--text-muted)"; } 
@@ -1400,7 +1490,8 @@ window.updateUI = function() {
 
     window.endGame = function(victory) {
         gamePhase = 'attente'; window.clearAllTimeouts();
-        document.getElementById('btn-scenario').style.display = 'none';
+        let btnScenario = document.getElementById('btn-scenario');
+        if(btnScenario) btnScenario.style.display = 'none';
         
         let gain = 10; user.gamesPlayed++;
         if (victory !== undefined && victory === true) { gain += 20; user.gamesWon++; }
@@ -1409,21 +1500,32 @@ window.updateUI = function() {
         alert(`Partie terminée ! +${gain} 💎 ajoutés à votre compte.`); window.returnToMenu();
     };
 
-    /* --- PANNEAU ADMIN --- */
-    window.openAdminPanel = function() { document.getElementById('modal-admin').classList.add('active'); };
+    window.openAdminPanel = function() { 
+        let modalAdmin = document.getElementById('modal-admin');
+        if(modalAdmin) modalAdmin.classList.add('active'); 
+    };
+
     window.adminAddShopItem = function() {
-        let type = document.getElementById('admin-item-type').value; 
-        let val = document.getElementById('admin-item-val').value;
-        let price = parseInt(document.getElementById('admin-item-price').value); 
-        let color = document.getElementById('admin-item-color').value;
-        if(val && price) { 
-            shopItems.push({ type, val, price, color }); 
+        let type = document.getElementById('admin-item-type');
+        let val = document.getElementById('admin-item-val');
+        let price = document.getElementById('admin-item-price');
+        let color = document.getElementById('admin-item-color');
+        
+        let tVal = type ? type.value : 'avatar';
+        let vVal = val ? val.value : '';
+        let pVal = price ? parseInt(price.value) : 0;
+        let cVal = color ? color.value : '';
+
+        if(vVal && pVal) { 
+            shopItems.push({ type: tVal, val: vVal, price: pVal, color: cVal }); 
             localStorage.setItem('shop', JSON.stringify(shopItems)); 
             window.renderShop(); 
             alert("Article ajouté !"); 
-            document.getElementById('modal-admin').classList.remove('active');
+            let modalAdmin = document.getElementById('modal-admin');
+            if(modalAdmin) modalAdmin.classList.remove('active'); 
         }
     };
+
     window.adminGiveTokens = function() { user.tokens += 1000; window.saveUserData(); window.updateUI(); alert("1000 💎 ajoutés !"); };
     window.adminClearChat = function() { chatMessages = []; localStorage.setItem('chat', JSON.stringify(chatMessages)); window.loadChat(); alert("Chat vidé !"); };
 
