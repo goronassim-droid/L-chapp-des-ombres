@@ -48,26 +48,30 @@
         }
 
         /* =========================================
-           BASE ET LAYOUT FULL SCREEN
+           BASE ET LAYOUT FULL SCREEN (CORRIGÉ POUR PC/MOBILE)
            ========================================= */
         * { box-sizing: border-box; }
         
         body { 
             margin: 0; font-family: 'Poppins', sans-serif; background-color: var(--bg-app); 
             color: var(--text-dark); display: flex; justify-content: center; align-items: center;
-            height: 100vh; width: 100vw; overflow: hidden; transition: background 0.3s; 
+            height: 100dvh; width: 100vw; overflow: hidden; transition: background 0.3s; 
         }
         
         #app-container { 
-            width: 100%; height: 100%; display: flex; flex-direction: column; 
+            width: 100%; height: 100dvh; display: flex; flex-direction: column; 
             background-color: var(--bg-app); position: relative; overflow: hidden;
         }
         
+        /* OPTIMISATION PC & TABLETTE */
         @media (min-width: 768px) {
             #app-container {
-                max-width: 450px;
-                height: 95vh; border-radius: 30px; box-shadow: 0 20px 50px rgba(0,0,0,0.15);
-                border: 8px solid #ffffff;
+                max-width: 1200px; /* Grand format au lieu du format téléphone contraint */
+                width: 95vw;
+                height: 96dvh; 
+                border-radius: 20px; 
+                box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+                border: none;
             }
         }
         
@@ -79,8 +83,13 @@
             width: 100%; display: flex; flex-direction: column; height: 100%; padding: 0 20px;
         }
 
-        .scrollable-area { flex: 1; overflow-y: auto; min-height: 0; padding: 10px 0; }
-        .scrollable-area::-webkit-scrollbar { display: none; }
+        /* BARRES DE DÉFILEMENT RESTAURÉES ET STYLISÉES */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+        .scrollable-area { flex: 1; overflow-y: auto; overflow-x: hidden; min-height: 0; padding: 10px 0; }
         
         .screen { display: none; flex: 1; overflow-y: auto; overflow-x: hidden; padding: 0; }
         .screen.active { display: flex; flex-direction: column; }
@@ -123,7 +132,8 @@
         .tokens-badge { font-weight: 700; background: var(--bg-card); padding: 8px 15px; border-radius: 20px; color: var(--primary); box-shadow: var(--shadow-soft); display: flex; align-items: center; gap: 5px; }
 
         nav { 
-            display: flex; background: var(--bg-card); padding: 15px 10px 25px 10px; 
+            display: flex; background: var(--bg-card); 
+            padding: 15px 10px; padding-bottom: max(15px, env(safe-area-inset-bottom));
             box-shadow: 0 -10px 30px rgba(0,0,0,0.03); z-index: 10; border-radius: 35px 35px 0 0; flex-shrink: 0;
             justify-content: space-around;
         }
@@ -171,7 +181,6 @@
         .circle-inner { width: 45px; height: 45px; border-radius: 50%; background: var(--bg-card); display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 0.9rem; color: var(--primary); }
 
         .trophy-scroll { display: flex; overflow-x: auto; gap: 15px; padding-bottom: 10px; }
-        .trophy-scroll::-webkit-scrollbar { display: none; }
         .trophy-badge { width: 60px; height: 60px; border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 2rem; flex-shrink: 0; box-shadow: var(--shadow-soft); transition: 0.3s;}
         
         .shop-banner { background: var(--grad-main); border-radius: 25px; padding: 20px; color: white; display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; box-shadow: var(--shadow-hover); }
@@ -183,11 +192,12 @@
         .activity-item:last-child, .chat-friend-item:last-child { border-bottom: none; }
 
         /* =========================================
-           JEU / GRILLES / PISTE (TAILLE x4)
+           JEU / GRILLES / PISTE
            ========================================= */
         .player-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 15px; margin-top: 15px; }
         .role-tile-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; margin-top: 10px; }
-        .assignment-grid { display: flex; flex-direction: column; gap: 15px; margin-top: 10px; }
+        .assignment-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px; margin-top: 15px; }
+        .room-players-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; }
 
         .role-tile { display: flex; align-items: center; background: var(--bg-card); padding: 12px; border-radius: 20px; border: 1px solid var(--border-color); cursor: pointer; transition: 0.2s; }
         .role-tile.selected { border: 2px solid var(--primary); background: rgba(242, 133, 78, 0.05); }
@@ -196,13 +206,12 @@
         .role-outsider { border-color: #cbd5e0; background: rgba(99, 179, 237, 0.05); }
         .role-sbire { border-color: #cbd5e0; background: rgba(252, 129, 129, 0.05); }
         .role-demon { border-color: #cbd5e0; background: rgba(229, 62, 62, 0.05); }
-        .role-tile-icon { width: 50px; height: 50px; font-size: 2.5rem; margin-right: 15px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;}
+        .role-tile-icon { width: 50px; height: 50px; font-size: 2.5rem; margin-right: 15px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; position: relative;}
 
-        /* Piste de Course Géante (Agrandie x4 visuellement) */
+        /* Piste Conteur Géante */
         .track-container { display: flex; overflow-x: auto; padding: 25px; gap: 25px; width: 100%; min-height: 250px; flex-shrink: 0; background: rgba(0,0,0,0.02); border-bottom: 1px solid var(--border-color); border-radius: 25px; }
         .track-cell { min-width: 180px; height: 100%; background: var(--bg-card); border-radius: 20px; display: flex; flex-direction: column; align-items: center; position: relative; padding: 15px; border: 2px solid var(--border-color); box-shadow: var(--shadow-soft); }
         .cell-number { font-size: 4rem; color: var(--border-color); font-weight: 800; position: absolute; top: 10px; right: 15px; z-index: 0; opacity: 0.4; }
-        
         .player-pions-group { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin-top: 60px; z-index: 1; width: 100%; overflow-y: auto; }
         .pion { width: 85px; height: 85px; border-radius: 50%; color: white; font-size: 3rem; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-hover); border: 4px solid white; overflow: hidden; position: relative;}
         .pion.spectre { filter: grayscale(100%); opacity: 0.5; }
@@ -214,11 +223,11 @@
 
         .adjust-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; margin-top: 10px; }
 
-        .grid-card-wrapper { background: var(--bg-card); border-radius: 20px; border: 1px solid var(--border-color); padding: 10px; text-align: center; }
+        .grid-card-wrapper { background: var(--bg-card); border-radius: 20px; border: 1px solid var(--border-color); padding: 10px; text-align: center; box-shadow: var(--shadow-soft); }
         .grid-card { position: relative; padding: 10px; cursor: pointer; border-radius: 15px; }
         .skull-badge { position: absolute; top: -5px; right: -5px; font-size: 1.5rem; background: white; border-radius: 50%; box-shadow: var(--shadow-soft); z-index: 2; }
 
-        #secret-position { background: var(--bg-card); padding: 25px; text-align: center; border-radius: 25px; margin-top: 20px; user-select: none; border: 2px solid var(--border-color); cursor: pointer; flex-shrink: 0; box-shadow: var(--shadow-soft); }
+        #secret-position { background: var(--bg-card); padding: 25px; text-align: center; border-radius: 20px; margin-top: 20px; user-select: none; border: 2px solid var(--border-color); cursor: pointer; flex-shrink: 0; box-shadow: var(--shadow-soft); }
         #secret-data { display: none; font-size: 3rem; color: var(--primary); margin-top: 10px; font-weight: 900; }
         .timer-display { font-size: 3.5rem; font-weight: 700; color: var(--primary); text-align: center; margin: 10px 0; }
 
@@ -259,6 +268,7 @@
 
 <div id="app-container">
     
+    <!-- HEADER FLOTTANT -->
     <div class="top-header-global" id="main-header" style="display: none;">
         <button class="back-btn" onclick="window.returnToMenu()">❮</button>
         <div style="flex:1;"></div>
@@ -405,50 +415,47 @@
         </div>
     </div>
 
-    <!-- ÉCRAN: PROFIL -->
+    <!-- ÉCRAN: PROFIL (Avec Jauge et Rôle Favori) -->
     <div id="screen-profile" class="screen">
         <div class="curved-header" style="padding-top: 70px;">
             <div class="avatar-circle" id="profile-avatar" style="margin-bottom: 15px; width:100px; height:100px; font-size:4rem;">👤</div>
             <h2 style="font-size: 1.8rem; color: white; margin-bottom: 5px;" id="profile-name">Pseudo</h2>
             <p style="opacity: 0.9;" id="profile-title">Titre Actuel</p>
+            
+            <div style="margin-top: 15px; text-align:center;">
+                <strong style="color:white; font-size:1.1rem; text-shadow: 0 2px 4px rgba(0,0,0,0.2);">Niveau <span id="profile-level">1</span></strong>
+                <div style="width: 70%; margin: 8px auto; background: rgba(0,0,0,0.3); height: 12px; border-radius: 6px; overflow: hidden; border:1px solid rgba(255,255,255,0.2);">
+                    <div id="profile-exp-bar" style="width: 0%; height: 100%; background: #4fd1c5; transition: width 0.5s;"></div>
+                </div>
+                <span style="font-size:0.8rem; color:white; opacity:0.8;"><span id="profile-exp">0</span> / <span id="profile-exp-next">100</span> EXP</span>
+            </div>
+            
+            <div style="margin-top:10px; font-size:0.9rem;">
+                <span style="opacity:0.8;">Rôle favori:</span> <strong id="profile-fav-role" style="color:white;">Aucun</strong>
+            </div>
         </div>
         
         <div class="content-wrapper scrollable-area">
-            
-            <div class="section-title">
-                <h3>Mes Statistiques</h3>
-            </div>
+            <div class="section-title"><h3>Mes Statistiques</h3></div>
             <div class="stats-grid" style="margin-bottom: 25px;">
                 <div class="stat-box">
                     <span style="font-size:0.8rem; color:var(--text-muted); font-weight:600;">Parties Jouées</span>
                     <h3 style="font-size:2rem; color:var(--text-dark); margin:5px 0;" id="profile-games">0</h3>
                     <div class="bar-chart">
-                        <div class="bar" style="height:30%;"></div>
-                        <div class="bar" style="height:60%;"></div>
-                        <div class="bar active" style="height:90%;"></div>
-                        <div class="bar" style="height:40%;"></div>
+                        <div class="bar" style="height:30%;"></div><div class="bar" style="height:60%;"></div><div class="bar active" style="height:90%;"></div><div class="bar" style="height:40%;"></div>
                     </div>
                 </div>
                 <div class="stat-box">
                     <span style="font-size:0.8rem; color:var(--text-muted); font-weight:600;">Taux Victoire</span>
-                    <div class="circle-chart">
-                        <div class="circle-inner" id="profile-winrate">0%</div>
-                    </div>
+                    <div class="circle-chart"><div class="circle-inner" id="profile-winrate">0%</div></div>
                     <p style="font-size:0.75rem; color:var(--text-muted); margin-top:10px;"><span id="profile-wins">0</span> Gagnées</p>
                 </div>
             </div>
 
-            <!-- TROPHEES GENERES EN JS -->
-            <div class="section-title">
-                <h3>Mes Trophées</h3>
-                <span>Voir tout</span>
-            </div>
-            <div class="trophy-scroll" id="badges-container" style="margin-bottom: 25px;">
-            </div>
+            <div class="section-title"><h3>Mes Trophées</h3><span>Voir tout</span></div>
+            <div class="trophy-scroll" id="badges-container" style="margin-bottom: 25px;"></div>
 
-            <div class="section-title">
-                <h3>Activité Récente</h3>
-            </div>
+            <div class="section-title"><h3>Activité Récente</h3></div>
             <div class="card-white" style="padding: 0 15px; margin-bottom: 25px;">
                 <div class="activity-item">
                     <div class="avatar-circle small" style="background:var(--pastel-purple); color:#805ad5;">🎮</div>
@@ -500,7 +507,7 @@
         </div>
     </div>
 
-    <!-- ÉCRAN: ATTRIBUTION DES RÔLES -->
+    <!-- ÉCRAN: ATTRIBUTION DES RÔLES (CONTEUR ONLY) -->
     <div id="screen-role-assignment" class="screen">
         <div class="content-wrapper" style="padding-top: 60px;">
             <h2 style="color:var(--primary);">Attribution des Rôles</h2>
@@ -608,6 +615,14 @@
         </div>
     </div>
 
+    <div id="modal-role-picker" class="modal">
+        <div class="modal-content">
+            <h2 style="margin-bottom:15px; text-align:center;">Choisir un rôle</h2>
+            <div class="role-tile-grid scrollable-area" id="picker-tile-container" style="max-height: 50vh;"></div>
+            <button class="btn outline" style="margin-top:15px;" onclick="document.getElementById('modal-role-picker').classList.remove('active')">Annuler</button>
+        </div>
+    </div>
+
     <div id="modal-role-selection" class="modal">
         <div class="modal-content" style="height: 90vh;">
             <h2 style="margin-bottom:10px;">Urne du Scénario</h2>
@@ -629,17 +644,43 @@
         </div>
     </div>
 
-    <!-- MODAL 7 JOURS (Bonus Quotidien) -->
+    <div id="modal-friend-profile" class="modal">
+        <div class="modal-content" style="align-items:center; padding:40px;">
+            <div class="avatar-circle" id="mfp-avatar" style="width: 100px; height: 100px; margin: 0 auto 15px auto; font-size: 4rem;">👤</div>
+            <h2 id="mfp-name" style="font-size:1.8rem;">Ami</h2>
+            <p class="text-muted" id="mfp-title" style="font-size:1.1rem; font-weight:600;">Titre</p>
+            <div style="margin-top: 30px; display: flex; flex-direction: column; gap: 15px; width:100%;">
+                <button class="btn blue" style="padding:15px;" onclick="window.messageFriend()">✉️ Envoyer un Message Privé</button>
+                <button class="btn outline" style="padding:15px;" onclick="document.getElementById('modal-friend-profile').classList.remove('active')">Fermer</button>
+            </div>
+        </div>
+    </div>
+
     <div id="modal-daily" class="modal">
         <div class="modal-content" style="align-items: center; justify-content: center; height: auto; padding: 30px 20px;">
             <h2 style="font-size: 1.8rem; color:var(--primary); text-align:center;">🎁 Bonus Quotidien</h2>
             <p style="font-size: 1rem; margin-top:5px; text-align:center; color:var(--text-muted);">Connecte-toi 7 jours de suite !</p>
             
-            <div id="daily-track" style="display:flex; gap:8px; margin: 25px 0; width:100%; overflow-x:auto; padding-bottom:10px;">
-                <!-- JS remplit ça -->
-            </div>
+            <div id="daily-track" style="display:flex; gap:8px; margin: 25px 0; width:100%; overflow-x:auto; padding-bottom:10px;"></div>
             
             <button class="btn" style="font-size: 1.2rem; padding: 15px; width:100%;" onclick="document.getElementById('modal-daily').classList.remove('active')">Récupérer</button>
+        </div>
+    </div>
+
+    <div id="modal-admin" class="modal">
+        <div class="modal-content" style="padding:20px; align-items:center;">
+            <h2 style="color: #e53e3e; text-align:center;">⚙️ Panneau Admin</h2>
+            <p class="text-muted" style="text-align:center; margin-bottom:15px;">Entrez un Emoji ou un chemin d'image</p>
+            <select id="admin-item-type" style="width:100%;">
+                <option value="avatar">Avatar</option>
+                <option value="title">Titre Honorifique</option>
+            </select>
+            <input type="text" id="admin-item-val" class="input-field" placeholder="Emoji ou Chemin Image">
+            <input type="number" id="admin-item-price" class="input-field" placeholder="Prix en 💎 (ex: 300)">
+            <input type="text" id="admin-item-color" class="input-field" placeholder="Couleur Hexa (Optionnel)">
+            <button class="btn admin" onclick="window.adminAddShopItem()">Ajouter l'article</button>
+            
+            <button class="btn" style="background:var(--bg-app); color:var(--text-dark); margin-top:10px;" onclick="document.getElementById('modal-admin').classList.remove('active')">Fermer</button>
         </div>
     </div>
 
@@ -711,7 +752,7 @@
         { id: 'cauchemar', name: "Le Cauchemar", team: "demon", emoji: "👹", speed: 2, order: 11, desc: "Élimine 1/nuit. +3 cases si cible devant." }
     ];
 
-    let user = { name: '', email: '', avatar: '👤', tokens: 0, title: 'Novice', friendCode: '', friends: [], isAdmin: false, lastLogin: '', streak: 0, gamesPlayed: 0, gamesWon: 0, itemsBought: 0 };
+    let user = { name: '', email: '', avatar: '👤', tokens: 0, title: 'Novice', friendCode: '', friends: [], isAdmin: false, lastLogin: '', streak: 0, gamesPlayed: 0, gamesWon: 0, exp: 0, level: 1, roleHistory: {}, gamesAsConteur: 0, itemsBought: 0 };
     let chatMessages = JSON.parse(localStorage.getItem('chat')) || [];
     let currentChatMode = 'global'; let currentChatTarget = '';
     
@@ -732,7 +773,7 @@
     let currentExecutionTarget = { id: null, votes: 0 }; let tempAccusedId = null; let tempAccuseRequest = null;
     let playerToAssign = null; 
 
-    /* === INITIALISATION FIREBASE === */
+    /* === INITIALISATION === */
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
     import { getAuth, signInWithPopup, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
     
@@ -777,12 +818,17 @@
             user.avatar = savedData.avatar || user.avatar; user.friendCode = savedData.friendCode || Math.floor(1000 + Math.random() * 9000).toString();
             user.friends = savedData.friends || []; user.lastLogin = savedData.lastLogin || ''; user.streak = savedData.streak || 0;
             user.gamesPlayed = savedData.gamesPlayed || 0; user.gamesWon = savedData.gamesWon || 0;
-            user.itemsBought = savedData.itemsBought || 0;
+            user.exp = savedData.exp || 0; user.level = savedData.level || 1; 
+            user.roleHistory = savedData.roleHistory || {}; user.gamesAsConteur = savedData.gamesAsConteur || 0; user.itemsBought = savedData.itemsBought || 0;
         } else {
-            user.tokens = 0; user.friendCode = Math.floor(1000 + Math.random() * 9000).toString(); user.gamesPlayed = 0; user.gamesWon = 0; user.itemsBought = 0;
+            user.tokens = 0; user.friendCode = Math.floor(1000 + Math.random() * 9000).toString(); user.gamesPlayed = 0; user.gamesWon = 0;
+            user.exp = 0; user.level = 1; user.roleHistory = {}; user.gamesAsConteur = 0; user.itemsBought = 0;
         }
         
-        window.saveUserData(); window.updateUI(); window.renderShop(); window.renderFriendsList();
+        window.saveUserData(); 
+        window.updateUI(); 
+        if (window.renderShop) window.renderShop(); 
+        if (window.renderFriendsList) window.renderFriendsList();
         
         let screenLogin = document.getElementById('screen-login'); if(screenLogin) screenLogin.classList.remove('active');
         let screenHome = document.getElementById('screen-home'); if(screenHome) screenHome.classList.add('active');
@@ -791,7 +837,7 @@
         window.checkDailyLogin();
         
         const container = document.getElementById('role-tile-container'); 
-        if (container) {
+        if(container) {
             container.innerHTML = '';
             const cats = { 'gentil': 'Villageois', 'outsider': 'Marginaux', 'sbire': 'Sbires', 'demon': 'Démons' };
             for (let team in cats) {
@@ -826,7 +872,19 @@
         if(document.getElementById('rank-my-avatar')) document.getElementById('rank-my-avatar').innerHTML = window.getAvatarHtml(user.avatar);
         if(document.getElementById('rank-my-wins')) document.getElementById('rank-my-wins').innerText = user.gamesWon;
 
-        // Trophées (avec id="badges-container" dans le HTML)
+        user.exp = user.exp || 0;
+        user.level = Math.floor(user.exp / 100) + 1;
+        let expCurrent = user.exp % 100;
+        if(document.getElementById('profile-level')) document.getElementById('profile-level').innerText = user.level;
+        if(document.getElementById('profile-exp')) document.getElementById('profile-exp').innerText = expCurrent;
+        if(document.getElementById('profile-exp-bar')) document.getElementById('profile-exp-bar').style.width = expCurrent + "%";
+
+        let favRole = "Aucun"; let maxPlays = 0;
+        for (const [role, count] of Object.entries(user.roleHistory || {})) {
+            if (count > maxPlays) { maxPlays = count; favRole = role; }
+        }
+        if(document.getElementById('profile-fav-role')) document.getElementById('profile-fav-role').innerText = favRole + (maxPlays > 0 ? ` (${maxPlays}x)` : "");
+
         const badges = [
             { id: 'b1', icon: '🎮', name: 'Débutant', desc: 'Jouer 1 partie', unlocked: user.gamesPlayed >= 1 },
             { id: 'b2', icon: '⚔️', name: 'Vétéran', desc: 'Jouer 20 parties', unlocked: user.gamesPlayed >= 20 },
@@ -835,7 +893,9 @@
             { id: 'b5', icon: '🌍', name: 'Influenceur', desc: 'Avoir 5 amis', unlocked: user.friends && user.friends.length >= 5 },
             { id: 'b6', icon: '🔥', name: 'Fidèle', desc: 'Connexion 3j', unlocked: user.streak >= 3 },
             { id: 'b7', icon: '💰', name: 'Riche', desc: '500 jetons', unlocked: user.tokens >= 500 },
-            { id: 'b8', icon: '🛍️', name: 'Dépensier', desc: 'Acheter 1 objet', unlocked: user.itemsBought >= 1 }
+            { id: 'b8', icon: '👑', name: 'Conteur', desc: 'Être conteur 1 fois', unlocked: (user.gamesAsConteur || 0) >= 1 },
+            { id: 'b9', icon: '🛍️', name: 'Dépensier', desc: 'Acheter 1 objet', unlocked: (user.itemsBought || 0) >= 1 },
+            { id: 'b10', icon: '⭐', name: 'Maître', desc: 'Niveau 5', unlocked: user.level >= 5 }
         ];
 
         let badgesContainer = document.getElementById('badges-container');
@@ -857,24 +917,21 @@
     window.checkDailyLogin = function() {
         const todayStr = new Date().toDateString();
         if (user.lastLogin !== todayStr) {
-            let lastDate = new Date(user.lastLogin || 0); 
+            let lastDate = new Date(user.lastLogin || new Date(0)); 
             let yesterday = new Date(); yesterday.setDate(yesterday.getDate() - 1);
-            
             if (lastDate.toDateString() === yesterday.toDateString()) { user.streak++; } else { user.streak = 1; }
             if (user.streak > 7) user.streak = 1;
             
             let rewardTokens = (user.streak === 7) ? 50 : 10;
-            user.tokens += rewardTokens; user.lastLogin = todayStr;
+            let rewardExp = 20;
+            user.tokens += rewardTokens; user.exp = (user.exp || 0) + rewardExp; user.lastLogin = todayStr;
             window.saveUserData(); window.updateUI();
             
             let trackContainer = document.getElementById('daily-track');
             if(trackContainer) {
                 let trackHtml = '';
                 for(let i=1; i<=7; i++) {
-                    let isPast = i < user.streak;
-                    let isToday = i === user.streak;
-                    let isFuture = i > user.streak;
-                    
+                    let isPast = i < user.streak; let isToday = i === user.streak; let isFuture = i > user.streak;
                     let bg = isToday ? 'var(--grad-main)' : (isPast ? '#48bb78' : '#e2e8f0');
                     let color = (isToday || isPast) ? 'white' : 'var(--text-muted)';
                     let scale = isToday ? 'transform: scale(1.1);' : '';
@@ -882,20 +939,12 @@
                     let rewardText = i === 7 ? '50💎' : '10💎';
                     let icon = isPast ? '✅' : (i === 7 ? '🎁' : '💎');
                     if (isToday) icon = '🎉';
-                    
-                    trackHtml += `
-                        <div style="min-width: 60px; background:${bg}; color:${color}; border-radius:15px; display:flex; flex-direction:column; align-items:center; padding:10px 5px; ${scale} ${opacity} transition:0.3s; box-shadow:var(--shadow-soft);">
-                            <span style="font-size:0.7rem; font-weight:bold; margin-bottom:5px;">Jour ${i}</span>
-                            <span style="font-size:1.5rem; margin-bottom:5px;">${icon}</span>
-                            <span style="font-size:0.8rem; font-weight:bold;">${rewardText}</span>
-                        </div>
-                    `;
+                    trackHtml += `<div style="min-width: 60px; background:${bg}; color:${color}; border-radius:15px; display:flex; flex-direction:column; align-items:center; padding:10px 5px; ${scale} ${opacity} transition:0.3s; box-shadow:var(--shadow-soft);">
+                        <span style="font-size:0.7rem; font-weight:bold; margin-bottom:5px;">Jour ${i}</span><span style="font-size:1.5rem; margin-bottom:5px;">${icon}</span><span style="font-size:0.8rem; font-weight:bold;">${rewardText}</span></div>`;
                 }
                 trackContainer.innerHTML = trackHtml;
             }
-            
-            let modalDaily = document.getElementById('modal-daily');
-            if(modalDaily) modalDaily.classList.add('active');
+            let modalDaily = document.getElementById('modal-daily'); if(modalDaily) modalDaily.classList.add('active');
         }
     };
 
@@ -932,39 +981,33 @@
         let code = input ? input.value : '';
         if(code.length === 4 && code !== user.friendCode && !user.friends.find(f=>f.code === code)) { 
             let mockFriend = { code: code, name: "Joueur_" + code, avatar: "🐼", title: "Novice" };
-            user.friends.push(mockFriend); window.saveUserData(); window.renderFriendsList();
+            user.friends.push(mockFriend); window.saveUserData(); if(window.renderFriendsList) window.renderFriendsList();
             alert(`Ami ${code} ajouté !`); if(input) input.value = ''; 
         }
     };
 
     window.renderFriendsList = function() {
         const container = document.getElementById('friends-list-container');
-        if(!container) return;
-        container.innerHTML = '';
+        if(!container) return; container.innerHTML = '';
         if(user.friends.length === 0) { container.innerHTML = '<p class="text-muted text-center" style="margin-top:10px;">Aucun ami.</p>'; return; }
 
         user.friends.forEach(f => {
             let statusClass = Math.random() > 0.5 ? 'online' : 'offline';
-            container.innerHTML += `
-                <div class="chat-friend-item" style="cursor: pointer;" onclick="window.openFriendProfile('${f.code}')">
-                    <div class="avatar-circle small">${window.getAvatarHtml(f.avatar)}<div class="status-dot ${statusClass}"></div></div>
-                    <div style="flex: 1;"><strong style="display:block; font-size:0.95rem;">${f.name}</strong><span class="text-muted" style="font-size:0.75rem;">Code: ${f.code}</span></div>
-                </div>`;
+            container.innerHTML += `<div class="chat-friend-item" style="cursor: pointer;" onclick="window.openFriendProfile('${f.code}')">
+                <div class="avatar-circle small">${window.getAvatarHtml(f.avatar)}<div class="status-dot ${statusClass}"></div></div>
+                <div style="flex: 1;"><strong style="display:block; font-size:0.95rem;">${f.name}</strong><span class="text-muted" style="font-size:0.75rem;">Code: ${f.code}</span></div></div>`;
         });
     };
     
     window.renderChatFriends = function() {
         const container = document.getElementById('private-chat-buttons'); 
-        if(!container) return;
-        container.innerHTML = '';
+        if(!container) return; container.innerHTML = '';
         if(user.friends.length === 0) { container.innerHTML = '<p class="text-muted" style="padding:10px;">Ajoutez des amis pour discuter.</p>'; return; }
         
         user.friends.forEach(f => {
-            container.innerHTML += `
-                <div class="chat-friend-item" style="cursor:pointer;" onclick="window.openChatPanel('private', '${f.code}')">
-                    <div class="avatar-circle small">${window.getAvatarHtml(f.avatar)}</div>
-                    <div style="flex:1;"><strong style="display:block; font-size:0.95rem;">${f.name}</strong><span class="text-muted" style="font-size:0.75rem;">Appuyez pour discuter</span></div>
-                </div>`;
+            container.innerHTML += `<div class="chat-friend-item" style="cursor:pointer;" onclick="window.openChatPanel('private', '${f.code}')">
+                <div class="avatar-circle small">${window.getAvatarHtml(f.avatar)}</div>
+                <div style="flex:1;"><strong style="display:block; font-size:0.95rem;">${f.name}</strong><span class="text-muted" style="font-size:0.75rem;">Appuyez pour discuter</span></div></div>`;
         });
     };
 
@@ -973,8 +1016,7 @@
         if(f) {
             if(document.getElementById('mfp-avatar')) document.getElementById('mfp-avatar').innerHTML = window.getAvatarHtml(f.avatar); 
             if(document.getElementById('mfp-name')) document.getElementById('mfp-name').innerText = f.name;
-            if(document.getElementById('mfp-title')) document.getElementById('mfp-title').innerText = f.title; 
-            currentChatTarget = f.code;
+            if(document.getElementById('mfp-title')) document.getElementById('mfp-title').innerText = f.title; currentChatTarget = f.code;
             if(document.getElementById('modal-friend-profile')) document.getElementById('modal-friend-profile').classList.add('active');
         }
     };
@@ -987,26 +1029,20 @@
     window.openChatPanel = function(mode, targetCodeOrName) {
         currentChatMode = mode;
         let titleEl = document.getElementById('chat-panel-title');
-        if(mode === 'global') {
-            if(titleEl) titleEl.innerText = "Chat Global";
-        } else {
-            currentChatTarget = targetCodeOrName;
-            let f = user.friends.find(x => x.code === currentChatTarget);
+        if(mode === 'global') { if(titleEl) titleEl.innerText = "Chat Global"; } 
+        else {
+            currentChatTarget = targetCodeOrName; let f = user.friends.find(x => x.code === currentChatTarget);
             if(titleEl) titleEl.innerText = f ? f.name : "Chat Privé";
         }
-        let chatModal = document.getElementById('modal-chat-panel');
-        if(chatModal) chatModal.classList.add('active');
+        let chatModal = document.getElementById('modal-chat-panel'); if(chatModal) chatModal.classList.add('active');
         window.loadPanelChat();
     };
 
     window.loadPanelChat = function() {
-        const c = document.getElementById('panel-chat-messages'); 
-        if(!c) return;
+        const c = document.getElementById('panel-chat-messages'); if(!c) return;
         c.innerHTML = ''; let filteredMessages = [];
         if (currentChatMode === 'global') { filteredMessages = chatMessages.filter(m => m.target === 'global'); } 
-        else {
-            filteredMessages = chatMessages.filter(m => (m.target === currentChatTarget && m.author === user.name) || (m.target === user.name && m.author === "Joueur_" + currentChatTarget));
-        }
+        else { filteredMessages = chatMessages.filter(m => (m.target === currentChatTarget && m.author === user.name) || (m.target === user.name && m.author === "Joueur_" + currentChatTarget)); }
 
         filteredMessages.forEach((msg, i) => {
             let isMe = (msg.author === user.name) ? 'me' : '';
@@ -1025,10 +1061,8 @@
 
     /* === BOUTIQUE === */
     window.renderShop = function() {
-        const avatarsDiv = document.getElementById('shop-avatars'); 
-        const titlesDiv = document.getElementById('shop-titles');
-        if(!avatarsDiv || !titlesDiv) return;
-        avatarsDiv.innerHTML = ''; titlesDiv.innerHTML = '';
+        const avatarsDiv = document.getElementById('shop-avatars'); const titlesDiv = document.getElementById('shop-titles');
+        if(!avatarsDiv || !titlesDiv) return; avatarsDiv.innerHTML = ''; titlesDiv.innerHTML = '';
         if(document.getElementById('shop-solde')) document.getElementById('shop-solde').innerText = user.isAdmin ? "∞ 🪙" : `${user.tokens} 🪙`;
 
         shopItems.forEach((item, index) => {
@@ -1048,7 +1082,7 @@
                 if(!user.isAdmin) user.tokens -= item.price;
                 if(item.type === 'avatar') user.avatar = item.val;
                 if(item.type === 'title') user.title = item.val;
-                user.itemsBought = (user.itemsBought || 0) + 1;
+                user.itemsBought = (user.itemsBought || 0) + 1; user.exp = (user.exp || 0) + 10;
                 window.saveUserData(); window.updateUI(); window.renderShop(); alert('Achat réussi !');
             }
         } else { alert("Fonds insuffisants ! Jouez pour en gagner."); }
@@ -1058,42 +1092,28 @@
     window.joinRoomCode = function() {
         let code = prompt("Entrez le code du salon à 6 chiffres :");
         if(code && code.length === 6) {
-            players = [
-                { id: 0, name: "Admin", isConteur: true, isSpectre: false, role: '', avatar: "👑", pos: 0 },
-                { id: 1, name: user.name, isConteur: false, isSpectre: false, role: '', avatar: user.avatar, pos: 0 }
-            ];
+            players = [{ id: 0, name: "Admin", isConteur: true, isSpectre: false, role: '', avatar: "👑", pos: 0 }, { id: 1, name: user.name, isConteur: false, isSpectre: false, role: '', avatar: user.avatar, pos: 0 }];
             botCount = 0; currentRoomCode = code; meIsConteur = false;
-            let mainHeader = document.getElementById('main-header');
-            if(mainHeader) mainHeader.style.display = 'flex';
+            let mainHeader = document.getElementById('main-header'); if(mainHeader) mainHeader.style.display = 'flex';
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            let screenRoom = document.getElementById('screen-room');
-            if(screenRoom) screenRoom.classList.add('active');
-            let bottomNav = document.getElementById('bottom-nav');
-            if(bottomNav) bottomNav.style.display = 'none';
-            let backBtn = document.querySelector('.back-btn');
-            if(backBtn) backBtn.style.display = 'block';
-            let roomCodeDisplay = document.getElementById('room-code-display');
-            if(roomCodeDisplay) roomCodeDisplay.innerText = currentRoomCode;
+            let screenRoom = document.getElementById('screen-room'); if(screenRoom) screenRoom.classList.add('active');
+            let bottomNav = document.getElementById('bottom-nav'); if(bottomNav) bottomNav.style.display = 'none';
+            let backBtn = document.querySelector('.back-btn'); if(backBtn) backBtn.style.display = 'block';
+            let roomCodeDisplay = document.getElementById('room-code-display'); if(roomCodeDisplay) roomCodeDisplay.innerText = currentRoomCode;
             window.renderRoomList();
         }
     };
 
     window.initRoom = function() {
         players = [{ id: 0, name: user.name, isConteur: true, isSpectre: false, role: '', avatar: user.avatar, pos: 0 }];
-        botCount = 0; playerNotes = {}; gamePhase = 'attente'; window.clearAllTimeouts();
-        currentRoomCode = Math.floor(100000 + Math.random() * 900000).toString();
+        botCount = 0; playerNotes = {}; gamePhase = 'attente'; window.clearAllTimeouts(); currentRoomCode = Math.floor(100000 + Math.random() * 900000).toString();
         
-        let mainHeader = document.getElementById('main-header');
-        if(mainHeader) mainHeader.style.display = 'flex';
+        let mainHeader = document.getElementById('main-header'); if(mainHeader) mainHeader.style.display = 'flex';
         document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-        let screenRoom = document.getElementById('screen-room');
-        if(screenRoom) screenRoom.classList.add('active');
-        let bottomNav = document.getElementById('bottom-nav');
-        if(bottomNav) bottomNav.style.display = 'none';
-        let backBtn = document.querySelector('.back-btn');
-        if(backBtn) backBtn.style.display = 'block';
-        let roomCodeDisplay = document.getElementById('room-code-display');
-        if(roomCodeDisplay) roomCodeDisplay.innerText = currentRoomCode;
+        let screenRoom = document.getElementById('screen-room'); if(screenRoom) screenRoom.classList.add('active');
+        let bottomNav = document.getElementById('bottom-nav'); if(bottomNav) bottomNav.style.display = 'none';
+        let backBtn = document.querySelector('.back-btn'); if(backBtn) backBtn.style.display = 'block';
+        let roomCodeDisplay = document.getElementById('room-code-display'); if(roomCodeDisplay) roomCodeDisplay.innerText = currentRoomCode;
         window.renderRoomList();
     };
     
@@ -1105,8 +1125,7 @@
     window.removeBot = function() { if(players.length > 1) { players.pop(); botCount--; window.renderRoomList(); } };
     
     window.setConteur = function(id) {
-        players.forEach(p => p.isConteur = false); players.find(p => p.id === id).isConteur = true;
-        meIsConteur = (id === 0); window.renderRoomList();
+        players.forEach(p => p.isConteur = false); players.find(p => p.id === id).isConteur = true; meIsConteur = (id === 0); window.renderRoomList();
     };
     
     window.renderRoomList = function() {
@@ -1114,76 +1133,51 @@
         players.forEach(p => { 
             let badge = p.isConteur ? '<div style="color:var(--primary); font-weight:bold; font-size:0.8rem; margin-top:5px;">👑 Conteur</div>' : '';
             let btn = (!p.isConteur) ? `<button class="btn outline small" style="margin-top:10px; width:100%; font-size:1rem; padding:10px;" onclick="window.setConteur(${p.id})">Donner 👑</button>` : '';
-            list.innerHTML += `
-            <div class="card-white" style="display:flex; flex-direction:column; align-items:center; padding:15px; text-align:center;">
+            list.innerHTML += `<div class="card-white" style="display:flex; flex-direction:column; align-items:center; padding:15px; text-align:center;">
                 <div class="avatar-circle" style="width:60px; height:60px; font-size:2.5rem; margin-bottom:10px;">${window.getAvatarHtml(p.avatar)}</div>
-                <strong style="font-size:1.2rem;">${p.name}</strong>
-                ${badge} ${btn}
-            </div>`; 
+                <strong style="font-size:1.2rem;">${p.name}</strong>${badge} ${btn}</div>`; 
         });
     };
 
     window.toggleRole = function(id) {
-        let tile = document.getElementById('tile-' + id);
-        if(!tile) return;
+        let tile = document.getElementById('tile-' + id); if(!tile) return;
         if(selectedRoles.includes(id)) { selectedRoles = selectedRoles.filter(r => r !== id); tile.classList.remove('selected'); }
         else { selectedRoles.push(id); tile.classList.add('selected'); }
-        let roleCount = document.getElementById('role-count');
-        if(roleCount) roleCount.innerText = selectedRoles.length;
+        let roleCount = document.getElementById('role-count'); if(roleCount) roleCount.innerText = selectedRoles.length;
     };
 
     function getRequiredDistribution(n) {
-        if (n < 5) return null;
-        let d = { gentil: 0, outsider: 0, sbire: 0, demon: 1 };
-        if (n===5) { d.gentil=3; d.outsider=0; d.sbire=1; }
-        else if (n===6) { d.gentil=3; d.outsider=1; d.sbire=1; }
-        else if (n===7) { d.gentil=5; d.outsider=0; d.sbire=1; }
-        else if (n===8) { d.gentil=5; d.outsider=1; d.sbire=1; }
-        else if (n===9) { d.gentil=5; d.outsider=2; d.sbire=1; }
-        else if (n===10) { d.gentil=7; d.outsider=0; d.sbire=2; }
-        else if (n===11) { d.gentil=7; d.outsider=1; d.sbire=2; }
-        else if (n===12) { d.gentil=7; d.outsider=2; d.sbire=2; }
-        else if (n===13) { d.gentil=9; d.outsider=0; d.sbire=3; }
-        else if (n===14) { d.gentil=9; d.outsider=1; d.sbire=3; }
-        else if (n>=15) { d.gentil=9; d.outsider=2; d.sbire=3; }
-        return d;
+        if (n < 5) return null; let d = { gentil: 0, outsider: 0, sbire: 0, demon: 1 };
+        if (n===5) { d.gentil=3; d.outsider=0; d.sbire=1; } else if (n===6) { d.gentil=3; d.outsider=1; d.sbire=1; } else if (n===7) { d.gentil=5; d.outsider=0; d.sbire=1; }
+        else if (n===8) { d.gentil=5; d.outsider=1; d.sbire=1; } else if (n===9) { d.gentil=5; d.outsider=2; d.sbire=1; } else if (n===10) { d.gentil=7; d.outsider=0; d.sbire=2; }
+        else if (n===11) { d.gentil=7; d.outsider=1; d.sbire=2; } else if (n===12) { d.gentil=7; d.outsider=2; d.sbire=2; } else if (n===13) { d.gentil=9; d.outsider=0; d.sbire=3; }
+        else if (n===14) { d.gentil=9; d.outsider=1; d.sbire=3; } else if (n>=15) { d.gentil=9; d.outsider=2; d.sbire=3; } return d;
     }
 
     window.startRoleAssignment = function() {
         let nonConteurs = players.filter(p => !p.isConteur); let n = nonConteurs.length;
         if(n < 5) return alert("Il faut au moins 5 joueurs et 1 Conteur (6 personnes minimum) pour jouer à ce jeu !");
         
-        let availableRoles = rolesDB.filter(r => selectedRoles.includes(r.id));
-        let demons = availableRoles.filter(r => r.team === 'demon');
+        let availableRoles = rolesDB.filter(r => selectedRoles.includes(r.id)); let demons = availableRoles.filter(r => r.team === 'demon');
         if(demons.length === 0) return alert("Vous devez sélectionner au moins 1 Démon dans l'urne !");
 
         let dist = getRequiredDistribution(n);
-        let raCount = document.getElementById('ra-player-count');
-        let raDist = document.getElementById('ra-distribution');
-        if(raCount) raCount.innerText = n;
-        if(raDist) raDist.innerText = `Villageois: ${dist.gentil} | Marginaux: ${dist.outsider} | Sbires: ${dist.sbire} | Démon: ${dist.demon}`;
+        let raCount = document.getElementById('ra-player-count'); let raDist = document.getElementById('ra-distribution');
+        if(raCount) raCount.innerText = n; if(raDist) raDist.innerText = `Villageois: ${dist.gentil} | Marginaux: ${dist.outsider} | Sbires: ${dist.sbire} | Démon: ${dist.demon}`;
 
         window.randomizeRoles(true);
 
         document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
         if(meIsConteur) {
-            let screenRa = document.getElementById('screen-role-assignment');
-            if(screenRa) screenRa.classList.add('active');
+            let screenRa = document.getElementById('screen-role-assignment'); if(screenRa) screenRa.classList.add('active');
         } else {
-            let me = players.find(p => p.id === 0);
-            let myRoleObj = rolesDB.find(r => r.name === me.role) || {emoji:'❓', speed:'?', desc:''};
-            let pName = document.getElementById('player-role-name');
-            let pEmoji = document.getElementById('player-role-emoji');
-            let pSpeed = document.getElementById('player-role-speed');
-            let pDesc = document.getElementById('player-role-desc');
-            if(pName) pName.innerText = me.role;
-            if(pEmoji) pEmoji.innerHTML = window.getRoleIconWithBadge(myRoleObj);
-            if(pSpeed) pSpeed.innerText = myRoleObj.speed;
-            if(pDesc) pDesc.innerText = myRoleObj.desc;
-            let screenPlayer = document.getElementById('screen-player');
-            if(screenPlayer) screenPlayer.classList.add('active');
-            let btnScenario = document.getElementById('btn-scenario');
-            if(btnScenario) btnScenario.style.display = 'block';
+            let me = players.find(p => p.id === 0); let myRoleObj = rolesDB.find(r => r.name === me.role) || {emoji:'❓', speed:'?', desc:''};
+            let pName = document.getElementById('player-role-name'); let pEmoji = document.getElementById('player-role-emoji');
+            let pSpeed = document.getElementById('player-role-speed'); let pDesc = document.getElementById('player-role-desc');
+            if(pName) pName.innerText = me.role; if(pEmoji) pEmoji.innerHTML = window.getRoleIconWithBadge(myRoleObj);
+            if(pSpeed) pSpeed.innerText = myRoleObj.speed; if(pDesc) pDesc.innerText = myRoleObj.desc;
+            let screenPlayer = document.getElementById('screen-player'); if(screenPlayer) screenPlayer.classList.add('active');
+            let btnScenario = document.getElementById('btn-scenario'); if(btnScenario) btnScenario.style.display = 'block';
             window.triggerPhase('revelation');
         }
     };
@@ -1197,10 +1191,7 @@
         let poolDemons = availableRoles.filter(r => r.team === 'demon').sort(() => 0.5 - Math.random());
 
         let finalDeck = [];
-        const pickRoles = (pool, count, fallback) => {
-            for(let i=0; i<count; i++) { if(pool.length > 0) finalDeck.push(pool.pop()); else finalDeck.push(rolesDB.find(r => r.team === fallback)); }
-        };
-
+        const pickRoles = (pool, count, fallback) => { for(let i=0; i<count; i++) { if(pool.length > 0) finalDeck.push(pool.pop()); else finalDeck.push(rolesDB.find(r => r.team === fallback)); } };
         pickRoles(poolGentils, dist.gentil, 'gentil'); pickRoles(poolOutsiders, dist.outsider, 'outsider');
         pickRoles(poolSbires, dist.sbire, 'sbire'); pickRoles(poolDemons, dist.demon, 'demon');
 
@@ -1212,7 +1203,6 @@
     window.openRolePicker = function(id) {
         playerToAssign = id; const container = document.getElementById('picker-tile-container'); if(!container) return; container.innerHTML = '';
         let availableRoles = rolesDB.filter(r => selectedRoles.includes(r.id));
-        
         availableRoles.forEach(r => {
             let teamClass = `role-${r.team}`;
             container.innerHTML += `<div class="role-tile ${teamClass}" onclick="window.selectRoleForPlayer('${r.id}')">
@@ -1220,38 +1210,25 @@
                 <div style="flex:1;"><strong style="color:var(--text-dark); font-size:1.1rem;">${r.name}</strong> <span class="text-muted">(Vit: ${r.speed})</span><br><span class="text-muted" style="font-size:0.8rem;">${r.desc}</span></div>
             </div>`;
         });
-        let modalPicker = document.getElementById('modal-role-picker');
-        if(modalPicker) modalPicker.classList.add('active');
+        let modalPicker = document.getElementById('modal-role-picker'); if(modalPicker) modalPicker.classList.add('active');
     };
 
     window.selectRoleForPlayer = function(roleId) {
         let roleObj = rolesDB.find(r => r.id === roleId);
-        if(playerToAssign !== null && roleObj) { 
-            window.updatePlayerRole(playerToAssign, roleObj.name); 
-            let modalPicker = document.getElementById('modal-role-picker');
-            if(modalPicker) modalPicker.classList.remove('active'); 
-        }
+        if(playerToAssign !== null && roleObj) { window.updatePlayerRole(playerToAssign, roleObj.name); let modalPicker = document.getElementById('modal-role-picker'); if(modalPicker) modalPicker.classList.remove('active'); }
     };
 
     window.renderRoleAssignment = function() {
-        let assignmentList = document.getElementById('assignment-list');
-        if(!assignmentList) return;
-        let html = '';
+        let assignmentList = document.getElementById('assignment-list'); if(!assignmentList) return; let html = '';
         players.filter(p => !p.isConteur).forEach(p => {
-            let currentRole = rolesDB.find(r => r.name === p.role);
-            if(!currentRole) currentRole = rolesDB.filter(r => selectedRoles.includes(r.id))[0];
+            let currentRole = rolesDB.find(r => r.name === p.role); if(!currentRole) currentRole = rolesDB.filter(r => selectedRoles.includes(r.id))[0];
             let teamClass = `role-${currentRole.team}`;
-            
-            html += `
-            <div class="card-white" style="display:flex; flex-direction:column; align-items:center; padding:15px; text-align:center;">
+            html += `<div class="card-white" style="display:flex; flex-direction:column; align-items:center; padding:15px; text-align:center;">
                 <div class="avatar-circle small" style="margin-bottom:5px;">${window.getAvatarHtml(p.avatar)}</div>
                 <strong style="font-size:1.1rem; margin-bottom:10px;">${p.name}</strong>
                 <div class="role-tile ${teamClass}" style="width:100%; padding:10px; margin-bottom:10px; pointer-events:none; flex-direction:column; text-align:center; gap:5px;">
-                    <div style="width:50px; height:50px; position:relative;">${window.getRoleIconWithBadge(currentRole)}</div>
-                    <strong style="color:var(--text-dark); font-size:1rem;">${currentRole.name}</strong>
-                </div>
-                <button class="btn outline small" style="width:100%;" onclick="window.openRolePicker(${p.id})">Choisir le rôle</button>
-            </div>`;
+                    <div style="width:50px; height:50px; position:relative;">${window.getRoleIconWithBadge(currentRole)}</div><strong style="color:var(--text-dark); font-size:1rem;">${currentRole.name}</strong></div>
+                <button class="btn outline small" style="width:100%;" onclick="window.openRolePicker(${p.id})">Choisir le rôle</button></div>`;
         });
         assignmentList.innerHTML = html;
     };
@@ -1259,52 +1236,34 @@
     window.updatePlayerRole = function(id, roleName) { let p = players.find(x => x.id === id); if(p) { p.role = roleName; window.renderRoleAssignment(); } };
 
     window.confirmAndStart = function() {
-        let nonConteurs = players.filter(p => !p.isConteur); let dist = getRequiredDistribution(nonConteurs.length);
-        let currentDist = { gentil: 0, outsider: 0, sbire: 0, demon: 0 };
+        let nonConteurs = players.filter(p => !p.isConteur); let dist = getRequiredDistribution(nonConteurs.length); let currentDist = { gentil: 0, outsider: 0, sbire: 0, demon: 0 };
         nonConteurs.forEach(p => { let r = rolesDB.find(x => x.name === p.role); if(r) currentDist[r.team]++; });
 
         if(currentDist.gentil !== dist.gentil || currentDist.outsider !== dist.outsider || currentDist.sbire !== dist.sbire || currentDist.demon !== dist.demon) {
-            return alert(`Erreur de répartition !\n\nVous avez mis :\nVill: ${currentDist.gentil}, Marg: ${currentDist.outsider}, Sbires: ${currentDist.sbire}, Démon: ${currentDist.demon}\n\nIl faut OBLIGATOIREMENT :\nVill: ${dist.gentil}, Marg: ${dist.outsider}, Sbires: ${dist.sbire}, Démon: ${dist.demon}`);
+            return alert(`Erreur de répartition !\n\nIl faut OBLIGATOIREMENT :\nVill: ${dist.gentil}, Marg: ${dist.outsider}, Sbires: ${dist.sbire}, Démon: ${dist.demon}`);
         }
 
-        let screenRa = document.getElementById('screen-role-assignment');
-        let btnScenario = document.getElementById('btn-scenario');
-        let screenConteur = document.getElementById('screen-conteur');
-        if(screenRa) screenRa.classList.remove('active');
-        if(btnScenario) btnScenario.style.display = 'block';
-        if(screenConteur) screenConteur.classList.add('active');
+        let screenRa = document.getElementById('screen-role-assignment'); let btnScenario = document.getElementById('btn-scenario'); let screenConteur = document.getElementById('screen-conteur');
+        if(screenRa) screenRa.classList.remove('active'); if(btnScenario) btnScenario.style.display = 'block'; if(screenConteur) screenConteur.classList.add('active');
         window.triggerPhase('nuit');
     };
 
     /* === SCÉNARIO & ORDRE NUIT === */
-    window.openScenarioModal = function() {
-        let modalScenario = document.getElementById('modal-scenario');
-        if(modalScenario) modalScenario.classList.add('active');
-        window.switchScenarioTab('roles');
-    };
+    window.openScenarioModal = function() { let modalScenario = document.getElementById('modal-scenario'); if(modalScenario) modalScenario.classList.add('active'); window.switchScenarioTab('roles'); };
 
     window.switchScenarioTab = function(tab) {
-        let tabRoles = document.getElementById('tab-scenario-roles');
-        let tabOrder = document.getElementById('tab-scenario-order');
-        if(tabRoles) tabRoles.classList.toggle('active', tab === 'roles');
-        if(tabOrder) tabOrder.classList.toggle('active', tab === 'order');
+        let tabRoles = document.getElementById('tab-scenario-roles'); let tabOrder = document.getElementById('tab-scenario-order');
+        if(tabRoles) tabRoles.classList.toggle('active', tab === 'roles'); if(tabOrder) tabOrder.classList.toggle('active', tab === 'order');
         const content = document.getElementById('scenario-content'); if(!content) return; content.innerHTML = '';
         
         if (tab === 'roles') {
-            let availableRoles = rolesDB.filter(r => selectedRoles.includes(r.id));
-            let html = '<div class="role-tile-grid">';
-            availableRoles.forEach(r => { 
-                let tClass = `role-${r.team}`;
-                html += `<div class="role-tile ${tClass}"><div class="role-tile-icon" style="position:relative;">${window.getRoleIconWithBadge(r)}</div><div style="flex:1;"><strong style="color:var(--text-dark);">${r.name}</strong> <span class="text-muted" style="font-size:0.75rem;">(Vit: ${r.speed})</span><br><span class="text-muted" style="font-size:0.8rem;">${r.desc}</span></div></div>`; 
-            });
+            let availableRoles = rolesDB.filter(r => selectedRoles.includes(r.id)); let html = '<div class="role-tile-grid">';
+            availableRoles.forEach(r => { let tClass = `role-${r.team}`; html += `<div class="role-tile ${tClass}"><div class="role-tile-icon" style="position:relative;">${window.getRoleIconWithBadge(r)}</div><div style="flex:1;"><strong style="color:var(--text-dark);">${r.name}</strong> <span class="text-muted" style="font-size:0.75rem;">(Vit: ${r.speed})</span><br><span class="text-muted" style="font-size:0.8rem;">${r.desc}</span></div></div>`; });
             html += '</div>'; content.innerHTML = html;
         } else {
             let rolesToShow = [];
-            if(meIsConteur) {
-                let activeRoles = players.filter(p => !p.isConteur).map(p => p.role); rolesToShow = rolesDB.filter(r => activeRoles.includes(r.name) && r.order < 99);
-            } else {
-                rolesToShow = rolesDB.filter(r => selectedRoles.includes(r.id) && r.order < 99);
-            }
+            if(meIsConteur) { let activeRoles = players.filter(p => !p.isConteur).map(p => p.role); rolesToShow = rolesDB.filter(r => activeRoles.includes(r.name) && r.order < 99); } 
+            else { rolesToShow = rolesDB.filter(r => selectedRoles.includes(r.id) && r.order < 99); }
             rolesToShow.sort((a,b) => a.order - b.order);
             
             let html = '<ol style="padding-left: 20px; font-size:1.1rem; line-height:2;">';
@@ -1326,30 +1285,25 @@
             
             if (newPhase === 'nuit') {
                 if(cTitle) cTitle.innerText = `Tour ${turnCount} - La Nuit`;
-                if(cNightTools) cNightTools.style.display = 'block';
-                if(cDayTools) cDayTools.style.display = 'none';
+                if(cNightTools) cNightTools.style.display = 'block'; if(cDayTools) cDayTools.style.display = 'none';
                 window.renderConteurAdjusters();
                 if(cControls) cControls.innerHTML = `<button class="btn success" style="padding:20px; font-size:1.2rem;" onclick="window.triggerPhase('jour')">☀️ Le jour se lève</button>`;
             } 
             else if (newPhase === 'jour') {
                 if(cTitle) cTitle.innerText = `Tour ${turnCount} - Débats`;
-                if(cNightTools) cNightTools.style.display = 'none';
-                if(cDayTools) cDayTools.style.display = 'flex';
-                let conteurTimer = document.getElementById('conteur-timer');
-                if(conteurTimer) conteurTimer.innerText = "00:00";
+                if(cNightTools) cNightTools.style.display = 'none'; if(cDayTools) cDayTools.style.display = 'flex';
+                let conteurTimer = document.getElementById('conteur-timer'); if(conteurTimer) conteurTimer.innerText = "00:00";
                 if(cControls) cControls.innerHTML = `<p class="text-muted" style="margin-bottom:10px;">Attendez les demandes d'accusation.</p>`;
             }
             else if (newPhase === 'accusation') {
                 if(cTitle) cTitle.innerText = `Tour ${turnCount} - Votes`;
-                if(cNightTools) cNightTools.style.display = 'none';
-                if(cDayTools) cDayTools.style.display = 'none';
+                if(cNightTools) cNightTools.style.display = 'none'; if(cDayTools) cDayTools.style.display = 'none';
                 let accusedP = players.find(p=>p.id===tempAccusedId);
                 if(cControls) cControls.innerHTML = `<p class="text-muted" style="text-align:center; font-size:1.1rem; margin-bottom:15px;">Les joueurs votent pour éliminer : <strong>${accusedP ? accusedP.name : ''}</strong></p><button class="btn outline" style="padding:20px; font-size:1.2rem;" onclick="window.triggerPhase('aube')">🌅 Clore les votes</button>`;
             }
             else if (newPhase === 'aube') {
                 if(cTitle) cTitle.innerText = `Tour ${turnCount} - L'Aube`;
-                if(cNightTools) cNightTools.style.display = 'none';
-                if(cDayTools) cDayTools.style.display = 'none';
+                if(cNightTools) cNightTools.style.display = 'none'; if(cDayTools) cDayTools.style.display = 'none';
                 if(cControls) cControls.innerHTML = `<button class="btn" style="background:var(--text-dark); padding:20px; font-size:1.2rem;" onclick="window.nextTurn()">🌙 Passer à la Nuit suivante</button>`;
             }
         } else {
@@ -1389,10 +1343,8 @@
     };
 
     window.startCustomTimer = function() {
-        let minInput = document.getElementById('timer-min');
-        let secInput = document.getElementById('timer-sec');
-        let m = minInput ? parseInt(minInput.value) || 0 : 0;
-        let s = secInput ? parseInt(secInput.value) || 0 : 0;
+        let minInput = document.getElementById('timer-min'); let secInput = document.getElementById('timer-sec');
+        let m = minInput ? parseInt(minInput.value) || 0 : 0; let s = secInput ? parseInt(secInput.value) || 0 : 0;
         let totalSec = (m * 60) + s; if(totalSec > 0) window.startTimer(totalSec);
     };
 
@@ -1413,7 +1365,6 @@
             players.filter(p => !p.isConteur && p.pos === i).forEach(p => {
                 let roleObj = rolesDB.find(r => r.name === p.role) || { emoji: '❓', order: 99, team: 'gentil' };
                 let teamClass = (roleObj.team === 'gentil' || roleObj.team === 'outsider') ? 'bg-good' : 'bg-evil';
-                
                 pionsHtml += `<div class="pion-container" onclick="alert('${p.name} est : ${roleObj.emoji} ${p.role}')">
                     <div class="pion ${p.isSpectre?'spectre':''} ${teamClass}">${window.getRoleIconWithBadge(roleObj)}</div><div class="pion-label">${p.name}</div></div>`;
             });
@@ -1427,7 +1378,6 @@
             let roleObj = rolesDB.find(r => r.name === p.role) || { emoji: '❓', team: 'gentil' };
             let cardBg = (roleObj.team === 'gentil' || roleObj.team === 'outsider') ? 'rgba(49, 130, 206, 0.08)' : 'rgba(229, 62, 62, 0.08)';
             let borderColor = (roleObj.team === 'gentil' || roleObj.team === 'outsider') ? '#3182ce' : '#e53e3e';
-            
             div.innerHTML += `<div class="card-white" style="margin-bottom:0; display:flex; justify-content:space-between; align-items:center; padding:10px; background:${cardBg}; border-color:${borderColor};">
                 <span style="font-weight:600; font-size:1.1rem; color:${borderColor}; cursor:pointer;" onclick="alert('${roleObj.emoji} ${roleObj.name}')"><span class="adjust-role-icon" style="width:35px; height:35px; position:relative;">${window.getRoleIconWithBadge(roleObj)}</span> ${p.name}</span>
                 <div style="display:flex; align-items:center;"><button class="btn small outline" onclick="window.changePos(${p.id}, -1)">-</button><span style="width:40px;text-align:center;font-weight:700;font-size:1.2rem;">${p.pos}</span><button class="btn small" onclick="window.changePos(${p.id}, 1)">+</button></div></div>`;
@@ -1559,8 +1509,18 @@
         let btnScenario = document.getElementById('btn-scenario');
         if(btnScenario) btnScenario.style.display = 'none';
         
+        let me = players.find(p=>p.id===0);
+        if(me && !meIsConteur) {
+            user.roleHistory = user.roleHistory || {};
+            user.roleHistory[me.role] = (user.roleHistory[me.role] || 0) + 1;
+        } else if (meIsConteur) {
+            user.gamesAsConteur = (user.gamesAsConteur || 0) + 1;
+        }
+
         let gain = 10; user.gamesPlayed++;
         if (victory !== undefined && victory === true) { gain += 20; user.gamesWon++; }
+        
+        user.exp = (user.exp || 0) + 30;
         user.tokens += gain; window.saveUserData(); window.updateUI();
         
         alert(`Partie terminée ! +${gain} 💎 ajoutés à votre compte.`); window.returnToMenu();
