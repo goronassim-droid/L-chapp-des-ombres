@@ -41,66 +41,43 @@
         }
 
         /* =========================================
-           BASE ET LAYOUT
+           BASE ET LAYOUT FULL SCREEN RESPONSIVE
            ========================================= */
         * { box-sizing: border-box; }
         
         body { 
             margin: 0; font-family: 'Poppins', sans-serif; background-color: var(--bg-app); 
-            color: var(--text-dark); transition: background 0.3s;
-            height: 100dvh; width: 100vw; overflow: hidden;
+            color: var(--text-dark); display: flex; justify-content: center; align-items: center;
+            height: 100dvh; width: 100vw; overflow: hidden; transition: background 0.3s; 
         }
         
         #app-container { 
             width: 100%; height: 100%; display: flex; flex-direction: column; 
-            background-color: var(--bg-app); position: relative;
+            background-color: var(--bg-app); position: relative; overflow: hidden;
         }
-
-        /* --- MODE PC ET TABLETTE (VRAI SITE WEB) --- */
+        
+        /* OPTIMISATION PC & TABLETTE */
         @media (min-width: 768px) {
-            body { 
-                height: auto; min-height: 100vh; overflow-y: auto; overflow-x: hidden; 
+            body { padding: 20px; }
+            #app-container {
+                max-width: 1000px;
+                height: 100%; border-radius: 30px; box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+                border: 8px solid #ffffff; margin: 0 auto;
             }
-            #app-container { 
-                display: block; height: auto; min-height: 100vh;
-            }
-            nav { 
-                position: fixed; top: 0; left: 0; width: 100px; height: 100vh;
-                flex-direction: column !important; justify-content: center !important; gap: 35px;
-                border-radius: 0 !important; border-right: 1px solid var(--border-color);
-                box-shadow: 2px 0 15px rgba(0,0,0,0.03) !important; padding: 0 !important;
-            }
-            nav button { flex: none !important; height: 75px; }
-            nav button span.icon { font-size: 1.5rem; }
-            nav button span.label { font-size: 0.7rem; margin-top:5px; }
-            
-            .screen.active { 
-                display: block !important; margin-left: 100px; min-height: 100vh; overflow: visible !important;
-            }
-            #screen-login.active { margin-left: 0 !important; display: flex !important; justify-content: center; align-items: center; min-height: 100vh; }
-            
-            .content-wrapper { max-width: 1000px; margin: 0 auto; padding: 40px 20px !important; }
-            .curved-header { border-radius: 25px !important; margin: 30px auto 20px auto !important; max-width: 960px; padding: 30px !important; }
-            .top-header-global { position: fixed; width: calc(100% - 100px); left: 100px; }
-            
-            .modal-content { max-width: 600px !important; border-radius: 25px !important; margin: auto; height: auto !important; max-height: 90vh; }
-            #modal-scenario .modal-content, #modal-role-selection .modal-content, #modal-role-picker .modal-content { max-width: 900px !important; }
         }
-
+        
         h1, h2, h3, h4, h5 { margin: 0; color: var(--text-dark); }
         p { margin: 0; }
         .text-muted { color: var(--text-muted); font-size: 0.85rem; }
         
-        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        /* Gestion du défilement fluide */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
 
         .content-wrapper { width: 100%; display: flex; flex-direction: column; padding: 20px; min-height: min-content;}
         .screen { display: none; flex: 1; overflow-y: auto; overflow-x: hidden; padding: 0; }
         .screen.active { display: flex; flex-direction: column; }
-        
-        .modal .scrollable-area { flex: 1; overflow-y: auto; min-height: 0; padding: 10px 0; }
 
         /* =========================================
            BOUTONS ET INPUTS
@@ -128,7 +105,7 @@
         .input-field:focus, select:focus { border-color: var(--primary); }
 
         /* =========================================
-           HEADER ET NAVIGATION
+           HEADER ET NAVIGATION (5 Onglets)
            ========================================= */
         .top-header-global { 
             padding: 15px 20px; display: flex; justify-content: space-between; 
@@ -156,6 +133,7 @@
         /* =========================================
            UI COMPOSANTS ET CARTES
            ========================================= */
+        /* Bandeau réduit en taille */
         .curved-header {
             background: var(--grad-main); border-radius: 0 0 35px 35px;
             padding: 40px 20px 20px 20px; text-align: center; color: white; margin-bottom: 10px; box-shadow: var(--shadow-soft); flex-shrink:0;
@@ -200,7 +178,7 @@
         .player-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 15px; margin-top: 15px; }
         .role-tile-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 12px; margin-top: 10px; }
         .assignment-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px; margin-top: 15px; }
-        .room-players-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; }
+        .room-players-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 15px; }
 
         .role-tile { display: flex; align-items: center; background: var(--bg-card); padding: 15px; border-radius: 20px; border: 1px solid var(--border-color); cursor: pointer; transition: 0.2s; }
         .role-tile.selected { border: 2px solid var(--primary); background: rgba(242, 133, 78, 0.05); }
@@ -235,7 +213,6 @@
         .spectre { opacity: 0.5; filter: grayscale(100%); }
 
         #secret-position { background: var(--bg-card); padding: 25px; text-align: center; border-radius: 25px; margin-top: 20px; user-select: none; border: 2px solid var(--border-color); cursor: pointer; flex-shrink: 0; box-shadow: var(--shadow-soft); }
-        #secret-position:active { transform: scale(0.98); }
         #secret-data { display: none; font-size: 3rem; color: var(--primary); margin-top: 10px; font-weight: 900; }
         .timer-display { font-size: 3.5rem; font-weight: 700; color: var(--primary); text-align: center; margin: 10px 0; }
 
@@ -662,6 +639,11 @@
             <input type="number" id="admin-item-price" class="input-field" placeholder="Prix en 💎 (ex: 300)">
             <input type="text" id="admin-item-color" class="input-field" placeholder="Couleur Hexa (Optionnel)">
             <button class="btn admin" onclick="window.adminAddShopItem()">Ajouter l'article</button>
+
+            <h4 style="margin-top:25px; font-size:1.2rem;">Configuration IA (Bots)</h4>
+            <input type="password" id="admin-api-key" class="input-field" placeholder="Clé API Gemini (Optionnel)">
+            <button class="btn outline" style="padding:15px; font-size:1.1rem;" onclick="window.adminSaveApiKey()">Sauvegarder la clé</button>
+            
             <button class="btn" style="background:var(--bg-app); color:var(--text-dark); margin-top:10px;" onclick="document.getElementById('modal-admin').classList.remove('active')">Fermer</button>
         </div>
     </div>
@@ -962,7 +944,7 @@
         let code = input ? input.value : '';
         if(code.length === 4 && code !== user.friendCode && !user.friends.find(f=>f.code === code)) { 
             let mockFriend = { code: code, name: "Joueur_" + code, avatar: "🐼", title: "Novice" };
-            user.friends.push(mockFriend); window.saveUserData(); if(window.renderFriendsList) window.renderFriendsList();
+            user.friends.push(mockFriend); window.saveUserData(); window.renderFriendsList();
             alert(`Ami ${code} ajouté !`); if(input) input.value = ''; 
         }
     };
@@ -1052,12 +1034,9 @@
         chatMessages.push({ author: user.name, target: target, text: input.value });
         localStorage.setItem('chat', JSON.stringify(chatMessages)); input.value = ''; window.loadPanelChat();
         
-        // DÉCLENCHE LE BOT SI CHAT GLOBAL
-        if(target === 'global' && players.length > 2 && window.triggerBotResponse) {
-            window.triggerBotResponse();
-        }
+        if(target === 'global' && players.length > 2 && window.triggerBotResponse) { window.triggerBotResponse(); }
     };
-    
+
     window.sendChatMessage = function() {
         let input = document.getElementById('chat-input');
         if(!input || input.value.trim() === '') return;
@@ -1067,10 +1046,7 @@
         input.value = ''; 
         if(window.loadChat) window.loadChat();
         
-        // DÉCLENCHE LE BOT SI CHAT GLOBAL
-        if(target === 'global' && players.length > 2 && window.triggerBotResponse) {
-            window.triggerBotResponse();
-        }
+        if(target === 'global' && players.length > 2 && window.triggerBotResponse) { window.triggerBotResponse(); }
     };
 
     /* === BOUTIQUE === */
@@ -1597,6 +1573,14 @@
         if(modalAdmin) modalAdmin.classList.add('active'); 
     };
 
+    window.adminSaveApiKey = function() {
+        let input = document.getElementById('admin-api-key');
+        if(input) {
+            localStorage.setItem('gemini_api_key', input.value.trim());
+            alert("Clé API sauvegardée localement !");
+        }
+    };
+
     window.adminAddShopItem = function() {
         let type = document.getElementById('admin-item-type');
         let val = document.getElementById('admin-item-val');
@@ -1611,7 +1595,7 @@
         if(vVal && pVal) { 
             shopItems.push({ type: tVal, val: vVal, price: pVal, color: cVal }); 
             localStorage.setItem('shop', JSON.stringify(shopItems)); 
-            window.renderShop(); 
+            if(window.renderShop) window.renderShop(); 
             alert("Article ajouté !"); 
             let modalAdmin = document.getElementById('modal-admin');
             if(modalAdmin) modalAdmin.classList.remove('active'); 
@@ -1619,12 +1603,11 @@
     };
 
     window.adminGiveTokens = function() { user.tokens += 1000; window.saveUserData(); window.updateUI(); alert("1000 💎 ajoutés !"); };
-    window.adminClearChat = function() { chatMessages = []; localStorage.setItem('chat', JSON.stringify(chatMessages)); window.loadChat(); alert("Chat vidé !"); };
+    window.adminClearChat = function() { chatMessages = []; localStorage.setItem('chat', JSON.stringify(chatMessages)); if(window.loadChat) window.loadChat(); alert("Chat vidé !"); };
 
     // === SYSTEME D'IA POUR LES BOTS ===
-    const GEMINI_API_KEY = "AQ.Ab8RN6JKiPcZTGCQEqvn1DWcLkKUXbf1Y8dmZ13CMn4Z7PIThw";
-
     window.triggerBotResponse = async function() {
+        const GEMINI_API_KEY = localStorage.getItem('gemini_api_key');
         if (!GEMINI_API_KEY) return;
 
         let bots = players.filter(p => !p.isConteur && p.id !== 1);
