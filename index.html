@@ -25,8 +25,6 @@
             --border-color: #f2e9df;
             --online-color: #48bb78; 
             --offline-color: #f56565;
-            
-            /* Compatibilité jeu */
             --grad-purple: var(--grad-main);
             --grad-blue: linear-gradient(135deg, #63b3ed, #4fd1c5);
             --grad-yellow: linear-gradient(135deg, #fbd38d, #f6e05e);
@@ -55,29 +53,54 @@
             width: 100%; height: 100%; display: flex; flex-direction: column; 
             background-color: var(--bg-app); position: relative; overflow: hidden;
         }
-        
-        /* OPTIMISATION PC & TABLETTE */
+
+        /* --- MODE PC ET TABLETTE (VRAI SITE WEB) --- */
         @media (min-width: 768px) {
-            body { padding: 20px; }
-            #app-container {
-                max-width: 1000px;
-                height: 100%; border-radius: 30px; box-shadow: 0 20px 50px rgba(0,0,0,0.15);
-                border: 8px solid #ffffff; margin: 0 auto;
+            body { 
+                height: auto; min-height: 100vh; overflow-y: auto; overflow-x: hidden; background-color: #f2e9df;
             }
+            #app-container { 
+                display: block; height: auto; min-height: 100vh; background-color: var(--bg-app);
+                max-width: 1300px; border-radius: 30px; box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+                border: 8px solid #ffffff; margin: 20px auto; overflow: hidden;
+            }
+            nav { 
+                position: fixed; top: 0; left: 0; width: 100px; height: 100vh;
+                flex-direction: column !important; justify-content: center !important; gap: 35px;
+                border-radius: 0 !important; border-right: 1px solid var(--border-color);
+                box-shadow: 2px 0 15px rgba(0,0,0,0.03) !important; padding: 0 !important;
+            }
+            nav button { flex: none !important; height: 75px; }
+            nav button span.icon { font-size: 1.5rem; }
+            nav button span.label { font-size: 0.7rem; margin-top:5px; }
+            
+            .screen.active { 
+                display: block !important; margin-left: 100px; min-height: 100vh; overflow: visible !important;
+            }
+            #screen-login.active { margin-left: 0 !important; display: flex !important; justify-content: center; align-items: center; min-height: 100vh; }
+            
+            .content-wrapper { max-width: 1000px; margin: 0 auto; padding: 40px 20px !important; }
+            .curved-header { border-radius: 25px !important; margin: 30px auto 20px auto !important; max-width: 960px; padding: 30px !important; }
+            .top-header-global { position: fixed; width: calc(100% - 100px); left: 100px; }
+            
+            .modal-content { max-width: 600px !important; border-radius: 25px !important; margin: auto; height: auto !important; max-height: 90vh; }
+            #modal-scenario .modal-content, #modal-role-selection .modal-content, #modal-role-picker .modal-content { max-width: 900px !important; }
         }
-        
+
         h1, h2, h3, h4, h5 { margin: 0; color: var(--text-dark); }
         p { margin: 0; }
         .text-muted { color: var(--text-muted); font-size: 0.85rem; }
         
-        /* Gestion du défilement fluide */
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        /* Barres de défilement stylisées */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
 
         .content-wrapper { width: 100%; display: flex; flex-direction: column; padding: 20px; min-height: min-content;}
         .screen { display: none; flex: 1; overflow-y: auto; overflow-x: hidden; padding: 0; }
         .screen.active { display: flex; flex-direction: column; }
+        .modal .scrollable-area { flex: 1; overflow-y: auto; min-height: 0; padding: 10px 0; }
 
         /* =========================================
            BOUTONS ET INPUTS
@@ -133,7 +156,6 @@
         /* =========================================
            UI COMPOSANTS ET CARTES
            ========================================= */
-        /* Bandeau réduit en taille */
         .curved-header {
             background: var(--grad-main); border-radius: 0 0 35px 35px;
             padding: 40px 20px 20px 20px; text-align: center; color: white; margin-bottom: 10px; box-shadow: var(--shadow-soft); flex-shrink:0;
@@ -159,6 +181,7 @@
         .circle-inner { width: 45px; height: 45px; border-radius: 50%; background: var(--bg-card); display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 0.9rem; color: var(--primary); }
 
         .trophy-scroll { display: flex; overflow-x: auto; gap: 15px; padding-bottom: 10px; }
+        .trophy-scroll::-webkit-scrollbar { display: none; }
         .trophy-badge { width: 65px; height: 65px; border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 2.2rem; flex-shrink: 0; box-shadow: var(--shadow-soft); transition: 0.3s;}
         
         .shop-banner { background: var(--grad-main); border-radius: 25px; padding: 25px; color: white; display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; box-shadow: var(--shadow-hover); }
@@ -178,7 +201,7 @@
         .player-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 15px; margin-top: 15px; }
         .role-tile-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 12px; margin-top: 10px; }
         .assignment-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px; margin-top: 15px; }
-        .room-players-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 15px; }
+        .room-players-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; }
 
         .role-tile { display: flex; align-items: center; background: var(--bg-card); padding: 15px; border-radius: 20px; border: 1px solid var(--border-color); cursor: pointer; transition: 0.2s; }
         .role-tile.selected { border: 2px solid var(--primary); background: rgba(242, 133, 78, 0.05); }
@@ -416,10 +439,17 @@
                 <button class="btn outline" style="width:auto; padding: 0 20px;" onclick="window.addFriend()">Ajouter</button>
             </div>
             
+            <div class="card-white" style="display:flex; flex-direction:column; gap:10px; margin-bottom: 25px; padding:20px;">
+                <span style="font-weight:600; font-size:1.1rem; margin-bottom:5px;">Configuration IA (Bots)</span>
+                <input type="password" id="user-api-key" class="input-field" placeholder="Clé API Gemini (Optionnel)" style="margin:0; padding:12px;">
+                <button class="btn small outline" style="font-size:1rem; padding:12px; width:100%;" onclick="window.saveApiKey()">Sauvegarder la clé</button>
+            </div>
+
             <div class="card-white" style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 25px; padding:20px;">
                 <span style="font-weight:600; font-size:1.1rem;">Mode Nuit</span>
                 <button class="btn small" style="background:var(--border-color); color:var(--text-dark); font-size:1rem; padding:10px 20px;" onclick="window.toggleTheme()" id="btn-theme">Désactivé</button>
             </div>
+            
             <button class="btn outline" style="color:var(--offline-color); border-color:var(--offline-color); margin-bottom:40px; padding:15px; font-size:1.1rem;" onclick="window.logout()">Déconnexion</button>
         </div>
     </div>
@@ -627,27 +657,6 @@
         </div>
     </div>
 
-    <div id="modal-admin" class="modal">
-        <div class="modal-content" style="padding:20px; align-items:center;">
-            <h2 style="color: #e53e3e; text-align:center;">⚙️ Panneau Admin</h2>
-            <p class="text-muted" style="text-align:center; margin-bottom:15px;">Entrez un Emoji ou un chemin d'image</p>
-            <select id="admin-item-type" style="width:100%;">
-                <option value="avatar">Avatar</option>
-                <option value="title">Titre Honorifique</option>
-            </select>
-            <input type="text" id="admin-item-val" class="input-field" placeholder="Emoji ou Chemin Image">
-            <input type="number" id="admin-item-price" class="input-field" placeholder="Prix en 💎 (ex: 300)">
-            <input type="text" id="admin-item-color" class="input-field" placeholder="Couleur Hexa (Optionnel)">
-            <button class="btn admin" onclick="window.adminAddShopItem()">Ajouter l'article</button>
-
-            <h4 style="margin-top:25px; font-size:1.2rem;">Configuration IA (Bots)</h4>
-            <input type="password" id="admin-api-key" class="input-field" placeholder="Clé API Gemini (Optionnel)">
-            <button class="btn outline" style="padding:15px; font-size:1.1rem;" onclick="window.adminSaveApiKey()">Sauvegarder la clé</button>
-            
-            <button class="btn" style="background:var(--bg-app); color:var(--text-dark); margin-top:10px;" onclick="document.getElementById('modal-admin').classList.remove('active')">Fermer</button>
-        </div>
-    </div>
-
     <!-- NAVBAR BASSE -->
     <nav id="bottom-nav" style="display: none;">
         <button class="active" onclick="window.showMainNav('screen-home', this)">
@@ -737,7 +746,7 @@
     let currentExecutionTarget = { id: null, votes: 0 }; let tempAccusedId = null; let tempAccuseRequest = null;
     let playerToAssign = null; 
 
-    /* === INITIALISATION FIREBASE === */
+    /* === INITIALISATION FIREBASE ET CONNEXION === */
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
     import { getAuth, signInWithPopup, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
     
@@ -755,7 +764,7 @@
         try {
             const provider = new GoogleAuthProvider(); const result = await signInWithPopup(auth, provider);
             user.name = result.user.displayName || "Joueur"; user.email = result.user.email; user.avatar = '👤';
-            checkAdmin(user.email); finalizeLogin();
+            finalizeLogin();
         } catch (error) { alert("Erreur Google: " + error.message); }
     };
 
@@ -766,14 +775,18 @@
             let emailInput = document.getElementById('login-email'); let passInput = document.getElementById('login-pass');
             let email = emailInput ? emailInput.value : ''; let pass = passInput ? passInput.value : '';
             if(!email || email.trim() === '') return alert("Email requis."); if(!pass || pass.trim() === '') return alert("Mot de passe requis.");
-            user.name = email.split('@')[0]; user.avatar = '👤'; checkAdmin(email);
+            user.name = email.split('@')[0]; user.avatar = '👤';
         }
         finalizeLogin();
     };
 
-    function checkAdmin(email) {
-        if(email && email.toLowerCase() === "nassim57132@gmail.com") { user.isAdmin = true; user.name = "👑 Admin Nassim"; document.body.classList.add('admin-mode'); }
-    }
+    window.saveApiKey = function() {
+        let input = document.getElementById('user-api-key');
+        if(input) {
+            localStorage.setItem('gemini_api_key', input.value.trim());
+            alert("Clé API sauvegardée ! Les bots vont maintenant parler.");
+        }
+    };
 
     function finalizeLogin() {
         let savedData = JSON.parse(localStorage.getItem('user_' + user.name));
@@ -804,11 +817,11 @@
             container.innerHTML = '';
             const cats = { 'gentil': 'Villageois', 'outsider': 'Marginaux', 'sbire': 'Sbires', 'demon': 'Démons' };
             for (let team in cats) {
-                container.innerHTML += `<h4 style="margin:15px 0 5px 0; grid-column: 1 / -1;">${cats[team]}</h4>`;
+                container.innerHTML += `<h4 style="margin:15px 0 5px 0; grid-column: 1 / -1; font-size:1.2rem;">${cats[team]}</h4>`;
                 rolesDB.filter(r=>r.team===team).forEach(r => {
                     let teamClass = `role-${r.team}`;
                     container.innerHTML += `<div class="role-tile ${teamClass} selected" id="tile-${r.id}" onclick="window.toggleRole('${r.id}')">
-                        <div class="role-tile-icon">${window.getRoleIconWithBadge(r)}</div><div style="flex:1;"><strong>${r.name}</strong> <span class="text-muted" style="font-size:0.75rem;">(Vit: ${r.speed})</span><br><span class="text-muted" style="font-size:0.8rem;">${r.desc}</span></div></div>`;
+                        <div class="role-tile-icon">${window.getRoleIconWithBadge(r)}</div><div style="flex:1;"><strong style="color:var(--text-dark); font-size:1.1rem;">${r.name}</strong> <span class="text-muted" style="font-size:0.8rem;">(Vit: ${r.speed})</span><br><span class="text-muted" style="font-size:0.85rem;">${r.desc}</span></div></div>`;
                 });
             }
         }
@@ -820,7 +833,7 @@
     window.updateUI = function() {
         if(document.getElementById('home-username')) document.getElementById('home-username').innerText = user.name;
         if(document.getElementById('home-title')) document.getElementById('home-title').innerText = user.title;
-        if(document.getElementById('ui-tokens')) document.getElementById('ui-tokens').innerText = user.isAdmin ? "∞" : user.tokens;
+        if(document.getElementById('ui-tokens')) document.getElementById('ui-tokens').innerText = user.tokens;
         if(document.getElementById('profile-name')) document.getElementById('profile-name').innerText = user.name;
         if(document.getElementById('profile-title')) document.getElementById('profile-title').innerText = user.title;
         if(document.getElementById('profile-avatar')) document.getElementById('profile-avatar').innerHTML = window.getAvatarHtml(user.avatar);
@@ -834,6 +847,9 @@
         if(document.getElementById('rank-my-name')) document.getElementById('rank-my-name').innerText = user.name;
         if(document.getElementById('rank-my-avatar')) document.getElementById('rank-my-avatar').innerHTML = window.getAvatarHtml(user.avatar);
         if(document.getElementById('rank-my-wins')) document.getElementById('rank-my-wins').innerText = user.gamesWon;
+
+        let apiKeyInput = document.getElementById('user-api-key');
+        if(apiKeyInput) apiKeyInput.value = localStorage.getItem('gemini_api_key') || '';
 
         user.exp = user.exp || 0;
         user.level = Math.floor(user.exp / 100) + 1;
@@ -1055,7 +1071,7 @@
         const titlesDiv = document.getElementById('shop-titles');
         if(!avatarsDiv || !titlesDiv) return;
         avatarsDiv.innerHTML = ''; titlesDiv.innerHTML = '';
-        if(document.getElementById('shop-solde')) document.getElementById('shop-solde').innerText = user.isAdmin ? "∞ 🪙" : `${user.tokens} 🪙`;
+        if(document.getElementById('shop-solde')) document.getElementById('shop-solde').innerText = user.tokens + " 🪙";
 
         shopItems.forEach((item, index) => {
             if(item.type === 'avatar') {
@@ -1069,9 +1085,9 @@
     
     window.buyItem = function(index) {
         let item = shopItems[index];
-        if(user.isAdmin || user.tokens >= item.price) {
+        if(user.tokens >= item.price) {
             if(confirm(`Acheter cet article pour ${item.price} 🪙 ?`)) {
-                if(!user.isAdmin) user.tokens -= item.price;
+                user.tokens -= item.price;
                 if(item.type === 'avatar') user.avatar = item.val;
                 if(item.type === 'title') user.title = item.val;
                 user.itemsBought = (user.itemsBought || 0) + 1; user.exp = (user.exp || 0) + 10;
@@ -1569,41 +1585,10 @@
     };
 
     window.openAdminPanel = function() { 
-        let modalAdmin = document.getElementById('modal-admin');
-        if(modalAdmin) modalAdmin.classList.add('active'); 
+        // L'admin panel n'existe plus, on redirige vers le profil
+        window.showMainNav('screen-profile', document.querySelectorAll('nav button')[4]);
+        alert("La configuration de l'IA se trouve maintenant en bas de ton profil !");
     };
-
-    window.adminSaveApiKey = function() {
-        let input = document.getElementById('admin-api-key');
-        if(input) {
-            localStorage.setItem('gemini_api_key', input.value.trim());
-            alert("Clé API sauvegardée localement !");
-        }
-    };
-
-    window.adminAddShopItem = function() {
-        let type = document.getElementById('admin-item-type');
-        let val = document.getElementById('admin-item-val');
-        let price = document.getElementById('admin-item-price');
-        let color = document.getElementById('admin-item-color');
-        
-        let tVal = type ? type.value : 'avatar';
-        let vVal = val ? val.value : '';
-        let pVal = price ? parseInt(price.value) : 0;
-        let cVal = color ? color.value : '';
-
-        if(vVal && pVal) { 
-            shopItems.push({ type: tVal, val: vVal, price: pVal, color: cVal }); 
-            localStorage.setItem('shop', JSON.stringify(shopItems)); 
-            if(window.renderShop) window.renderShop(); 
-            alert("Article ajouté !"); 
-            let modalAdmin = document.getElementById('modal-admin');
-            if(modalAdmin) modalAdmin.classList.remove('active'); 
-        }
-    };
-
-    window.adminGiveTokens = function() { user.tokens += 1000; window.saveUserData(); window.updateUI(); alert("1000 💎 ajoutés !"); };
-    window.adminClearChat = function() { chatMessages = []; localStorage.setItem('chat', JSON.stringify(chatMessages)); if(window.loadChat) window.loadChat(); alert("Chat vidé !"); };
 
     // === SYSTEME D'IA POUR LES BOTS ===
     window.triggerBotResponse = async function() {
