@@ -200,7 +200,7 @@
         .player-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 15px; margin-top: 15px; }
         .role-tile-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 12px; margin-top: 10px; }
         .assignment-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px; margin-top: 15px; }
-        .room-players-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 15px; }
+        .room-players-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; }
 
         .role-tile { display: flex; align-items: center; background: var(--bg-card); padding: 15px; border-radius: 20px; border: 1px solid var(--border-color); cursor: pointer; transition: 0.2s; }
         .role-tile.selected { border: 2px solid var(--primary); background: rgba(242, 133, 78, 0.05); }
@@ -210,6 +210,7 @@
         .role-demon { border-color: #cbd5e0; background: rgba(229, 62, 62, 0.05); }
         .role-tile-icon { width: 60px; height: 60px; font-size: 3rem; margin-right: 15px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; position: relative;}
 
+        /* Piste Conteur Géante */
         .track-container { display: flex; overflow-x: auto; padding: 25px; gap: 25px; width: 100%; min-height: 250px; flex-shrink: 0; background: rgba(0,0,0,0.02); border-bottom: 1px solid var(--border-color); border-radius: 25px; touch-action: pan-x pan-y;}
         .track-cell { min-width: 180px; height: 100%; background: var(--bg-card); border-radius: 20px; display: flex; flex-direction: column; align-items: center; position: relative; padding: 15px; border: 2px solid var(--border-color); box-shadow: var(--shadow-soft); }
         .cell-number { font-size: 4rem; color: var(--border-color); font-weight: 800; position: absolute; top: 10px; right: 15px; z-index: 0; opacity: 0.4; }
@@ -234,6 +235,7 @@
         .spectre { opacity: 0.5; filter: grayscale(100%); }
 
         #secret-position { background: var(--bg-card); padding: 25px; text-align: center; border-radius: 25px; margin-top: 20px; user-select: none; border: 2px solid var(--border-color); cursor: pointer; flex-shrink: 0; box-shadow: var(--shadow-soft); }
+        #secret-position:active { transform: scale(0.98); }
         #secret-data { display: none; font-size: 3rem; color: var(--primary); margin-top: 10px; font-weight: 900; }
         .timer-display { font-size: 3.5rem; font-weight: 700; color: var(--primary); text-align: center; margin: 10px 0; }
 
@@ -270,6 +272,7 @@
 
 <div id="app-container">
     
+    <!-- HEADER FLOTTANT -->
     <div class="top-header-global" id="main-header" style="display: none;">
         <button class="back-btn" onclick="window.returnToMenu()">❮</button>
         <div style="flex:1;"></div>
@@ -546,6 +549,7 @@
         </div>
     </div>
 
+    <!-- BOUTON SCENARIO -->
     <button class="fab-scenario" id="btn-scenario" onclick="window.openScenarioModal()">📖 Scénario</button>
 
     <!-- =========================================
@@ -803,7 +807,9 @@
             user.exp = 0; user.level = 1; user.roleHistory = {}; user.gamesAsConteur = 0; user.itemsBought = 0;
         }
         
-        window.saveUserData(); window.updateUI(); window.renderShop(); window.renderFriendsList();
+        window.saveUserData(); window.updateUI(); 
+        if(window.renderShop) window.renderShop(); 
+        if(window.renderFriendsList) window.renderFriendsList();
         
         let screenLogin = document.getElementById('screen-login'); if(screenLogin) screenLogin.classList.remove('active');
         let screenHome = document.getElementById('screen-home'); if(screenHome) screenHome.classList.add('active');
@@ -812,7 +818,7 @@
         window.checkDailyLogin();
         
         const container = document.getElementById('role-tile-container'); 
-        if(container) {
+        if (container) {
             container.innerHTML = '';
             const cats = { 'gentil': 'Villageois', 'outsider': 'Marginaux', 'sbire': 'Sbires', 'demon': 'Démons' };
             for (let team in cats) {
@@ -956,7 +962,7 @@
         let code = input ? input.value : '';
         if(code.length === 4 && code !== user.friendCode && !user.friends.find(f=>f.code === code)) { 
             let mockFriend = { code: code, name: "Joueur_" + code, avatar: "🐼", title: "Novice" };
-            user.friends.push(mockFriend); window.saveUserData(); window.renderFriendsList();
+            user.friends.push(mockFriend); window.saveUserData(); if(window.renderFriendsList) window.renderFriendsList();
             alert(`Ami ${code} ajouté !`); if(input) input.value = ''; 
         }
     };
@@ -1045,6 +1051,26 @@
         let target = currentChatMode === 'global' ? 'global' : currentChatTarget;
         chatMessages.push({ author: user.name, target: target, text: input.value });
         localStorage.setItem('chat', JSON.stringify(chatMessages)); input.value = ''; window.loadPanelChat();
+        
+        // DÉCLENCHE LE BOT SI CHAT GLOBAL
+        if(target === 'global' && players.length > 2 && window.triggerBotResponse) {
+            window.triggerBotResponse();
+        }
+    };
+    
+    window.sendChatMessage = function() {
+        let input = document.getElementById('chat-input');
+        if(!input || input.value.trim() === '') return;
+        let target = currentChatMode === 'global' ? 'global' : currentChatTarget;
+        chatMessages.push({ author: user.name, target: target, text: input.value });
+        localStorage.setItem('chat', JSON.stringify(chatMessages)); 
+        input.value = ''; 
+        if(window.loadChat) window.loadChat();
+        
+        // DÉCLENCHE LE BOT SI CHAT GLOBAL
+        if(target === 'global' && players.length > 2 && window.triggerBotResponse) {
+            window.triggerBotResponse();
+        }
     };
 
     /* === BOUTIQUE === */
@@ -1420,7 +1446,7 @@
                 <span style="font-weight:600; font-size:1.1rem; color:${borderColor}; cursor:pointer; display:flex; align-items:center; gap:10px;" onclick="window.showRoleInfo('${p.role}')">
                     <div style="width:45px; height:45px; position:relative;">${window.getRoleIconWithBadge(roleObj)}</div> ${p.name}
                 </span>
-                <div style="display:flex; align-items:center;"><button class="btn small outline" onclick="window.changePos(${p.id}, -1)">-</button><span style="width:50px;text-align:center;font-weight:700;font-size:1.4rem;">${p.pos}</span><button class="btn small" onclick="window.changePos(${p.id}, 1)">+</button></div></div>`;
+                <div style="display:flex; align-items:center;"><button class="btn small outline" onclick="window.changePos(${p.id}, -1)">-</button><span style="width:40px;text-align:center;font-weight:700;font-size:1.2rem;">${p.pos}</span><button class="btn small" onclick="window.changePos(${p.id}, 1)">+</button></div></div>`;
         });
     };
 
@@ -1438,14 +1464,14 @@
             
             grid.innerHTML += `
             <div class="grid-card-wrapper">
-                <div class="grid-card ${p.isSpectre?'spectre':''}" ${clickAction} style="border:none; box-shadow:none; padding:15px;">
+                <div class="grid-card ${p.isSpectre?'spectre':''}" ${clickAction} style="border:none; box-shadow:none; padding:10px;">
                     ${skull}
-                    <div style="display:flex; justify-content:center; align-items:center; margin-bottom:15px;">
-                        <div class="avatar-circle" style="width:85px; height:85px; font-size:3.5rem; background:transparent;">${window.getAvatarHtml(p.avatar)}</div>
+                    <div style="display:flex; justify-content:center; align-items:center; gap:10px; margin-bottom:10px;">
+                        <div class="avatar-circle" style="width:70px; height:70px; font-size:2.5rem; background:transparent;">${window.getAvatarHtml(p.avatar)}</div>
                     </div>
-                    <div style="font-weight:700; font-size:1.3rem; margin-bottom:5px;">${p.name} ${p.isSpectre?'👻':''}</div>
+                    <div style="font-weight:700; font-size:1.1rem; margin-bottom:5px;">${p.name} ${p.isSpectre?'👻':''}</div>
                 </div>
-                <select class="input-field" style="margin:0; padding:10px; font-size:1rem; border-color:transparent; background:rgba(0,0,0,0.03);" onchange="window.updatePlayerNote(${p.id}, this.value)">
+                <select class="input-field" style="margin:0; padding:8px; font-size:0.9rem; border-color:transparent; background:rgba(0,0,0,0.03);" onchange="window.updatePlayerNote(${p.id}, this.value)">
                     <option value="">-- Rôle ? --</option>
                     ${options.replace(`value="${noteVal}"`, `value="${noteVal}" selected`)}
                 </select>
@@ -1560,7 +1586,7 @@
         let gain = 10; user.gamesPlayed++;
         if (victory !== undefined && victory === true) { gain += 20; user.gamesWon++; }
         
-        user.exp = (user.exp || 0) + 30; // 30 exp per game
+        user.exp = (user.exp || 0) + 30;
         user.tokens += gain; window.saveUserData(); window.updateUI();
         
         alert(`Partie terminée ! +${gain} 💎 ajoutés à votre compte.`); window.returnToMenu();
@@ -1594,6 +1620,51 @@
 
     window.adminGiveTokens = function() { user.tokens += 1000; window.saveUserData(); window.updateUI(); alert("1000 💎 ajoutés !"); };
     window.adminClearChat = function() { chatMessages = []; localStorage.setItem('chat', JSON.stringify(chatMessages)); window.loadChat(); alert("Chat vidé !"); };
+
+    // === SYSTEME D'IA POUR LES BOTS ===
+    const GEMINI_API_KEY = "AQ.Ab8RN6JKiPcZTGCQEqvn1DWcLkKUXbf1Y8dmZ13CMn4Z7PIThw";
+
+    window.triggerBotResponse = async function() {
+        if (!GEMINI_API_KEY) return;
+
+        let bots = players.filter(p => !p.isConteur && p.id !== 1);
+        if(bots.length === 0) return;
+
+        let botQuiParle = bots[Math.floor(Math.random() * bots.length)];
+        let roleDuBot = rolesDB.find(r => r.name === botQuiParle.role) || {name: "Inconnu", desc: ""};
+
+        let historique = chatMessages.slice(-6).map(m => `${m.author}: ${m.text}`).join("\n");
+
+        let prompt = `Tu joues à un jeu de rôle caché en ligne type Loup-Garou.
+        Ton nom dans le jeu est : ${botQuiParle.name}.
+        Ton rôle secret est : ${roleDuBot.name} (${roleDuBot.desc}). Ne dis jamais explicitement ton rôle si tu es un monstre ou un sbire.
+        Voici les derniers messages du chat :
+        ${historique}
+        
+        Réponds au dernier message. Sois naturel, bluffe si besoin, accuse ou défends-toi. Fais une seule phrase courte. Ne mets pas de préfixe avant ton message.`;
+
+        setTimeout(async () => {
+            try {
+                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+                });
+                
+                const data = await response.json();
+                let reponseBot = data.candidates[0].content.parts[0].text.trim();
+
+                chatMessages.push({ author: botQuiParle.name, target: 'global', text: reponseBot });
+                localStorage.setItem('chat', JSON.stringify(chatMessages));
+                
+                if(window.loadChat) window.loadChat();
+                if(window.loadPanelChat) window.loadPanelChat();
+
+            } catch(e) {
+                console.error("L'IA du bot a rencontré une erreur:", e);
+            }
+        }, 2500);
+    };
 
 </script>
 </body>
